@@ -1,5 +1,5 @@
 import bcrypt
-from flask import Flask, flash, redirect, render_template, request, session, url_for
+from flask import flash, redirect, render_template, request, url_for
 
 from ticket_system import app
 from ticket_system.models import MessageForm, TicketDB, Admin, db
