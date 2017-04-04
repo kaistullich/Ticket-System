@@ -1,16 +1,34 @@
 <head>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <style>
+        body {
+            background-color: #dedede;
+        }
+        .body_text {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 16px;
+        }
+
+        #tix_header {
+            text-align: center;
+            color: #02b300;
+        }
+
+    </style>
 </head>
 <body>
-    <p><b>Dear {{ c_name }},</b></p>
-    <p>We have received your ticket <b>#{{ tix }}</b> and a dedicated team member will take a look into the issue as soon as possible!</p>
-    <p>Regards,</p>
+    <h1 id="tix_header">Ticket #{{ tix }} Successfully Received!</h1><br><br>
     <div class="container">
-        <p>
-            fitBody Customer Support <br>
-            One Washington Square <br>
-            San Jose, CA 95103 <br>
-            (800) 545 - 7799 <br>
-        </p>
+        <div class="body_text">
+            <p><b>Dear {{ c_name }},</b></p>
+            <p>We have received your ticket and a dedicated team member will take a look into the issue as soon as possible!</p>
+            <p>Regards,</p>
+            <p>
+                fitBody Customer Support <br>
+                One Washington Square <br>
+                San Jose, CA 95103 <br>
+                (800) 545 - 7799 <br>
+            </p>
+        </div>
     </div>
 </body>
