@@ -2,7 +2,7 @@ import json
 
 from flask import flash, redirect, render_template, request, url_for
 
-from ticket_system.emails import notification
+from ticket_system.emails import notification, twilioSMS
 from ticket_system.models import MessageForm, TicketDB, db, app
 
 with open('ticket_system/config.json') as f:
@@ -16,6 +16,7 @@ def home():
     if form.validate_on_submit() and request.method == 'POST':
         name = form.name.data
         email = form.email.data
+        number = form.phone_number.data
         message = form.message.data
 
         new_ticket = TicketDB(name=name, email=email, message=message)
@@ -23,6 +24,7 @@ def home():
         db.session.commit()
 
         notification(name, email)
+        twilioSMS(number, name)
 
         flash('Your tickets was successfully submitted!')
         return redirect(url_for('home'))
