@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
 
 {% block container %}
 
@@ -9,6 +10,24 @@
     <div class="container">
         <div class="jumbotron text-center" id="home-jumbotron">
             <h1>Welcome to fitBody</h1>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-4 col-md-offset-4 register-box">
+            <h3>Submit a new Support Ticket</h3>
+            <br>
+            {% if error %}
+                <p class="error"><strong>Error:</strong> {{ error }}</p>
+            {% endif %}
+            <form method="POST" action="/home" id="register-form" class="form-group">
+                {{ form.hidden_tag() }}
+                {{ wtf.form_field(form.name) }}
+                {{ wtf.form_field(form.email) }}
+                {{ wtf.form_field(form.message) }}
+                <p><input class="btn btn-success" type="submit" value="Ticket"></p>
+            </form>
+            </div>
         </div>
     </div>
 </body>
