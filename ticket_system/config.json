@@ -1,0 +1,6 @@
+{
+  "DATABASE_FILE": "fitBody_registration.sqlite",
+  "SQLALCHEMY_DATABASE_URI": "sqlite://///Users/kai/github-projects/BUS110a-Final/ticket_system.sqlite",
+  "SQLALCHEMY_ECHO": true,
+  "SQLALCHEMY_TRACK_MODIFICATIONS": true
+}
