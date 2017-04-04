@@ -2,7 +2,7 @@ import json
 
 from flask import flash, redirect, render_template, request, url_for
 
-from ticket_system.emails import email_notification, twilio_sms
+from ticket_system.all_notifications import email_notification, twilio_sms
 from ticket_system.models import MessageForm, TicketDB, db, app
 
 from random import randrange
