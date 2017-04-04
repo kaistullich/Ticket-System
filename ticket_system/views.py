@@ -27,7 +27,6 @@ def home():
         db.session.commit()
 
         ticket = TicketDB.query.filter_by(ticket_num=rand_num).first()
-        print(ticket.ticket_num)
 
         email_notification(name, email, rand_num)
         twilio_sms(number, name, ticket.ticket_num)
