@@ -5,8 +5,8 @@ from ticket_system import app
 from ticket_system.models import MessageForm, TicketDB, Admin, db
 
 
-@app.route('/')
-@app.route('/home', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/home')
 def home():
     form = MessageForm()
     if form.validate_on_submit() and request.method == 'POST':

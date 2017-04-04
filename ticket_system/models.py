@@ -4,6 +4,7 @@ import json
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 from flask_bootstrap import Bootstrap
+from flask_mail import Mail
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField
@@ -21,7 +22,14 @@ app.config['DATABASE_FILE'] = config_f['DATABASE_FILE']
 app.config['SQLALCHEMY_DATABASE_URI'] = config_f['SQLALCHEMY_DATABASE_URI']
 app.config['SQLALCHEMY_ECHO'] = config_f['SQLALCHEMY_ECHO']
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = config_f['SQLALCHEMY_TRACK_MODIFICATIONS']
+app.config['MAIL_SERVER'] = config_f['MAIL_SERVER']
+app.config['MAIL_PORT'] = config_f['MAIL_PORT']
+app.config['MAIL_USERNAME'] = config_f['MAIL_USERNAME']
+app.config['MAIL_PASSWORD'] = config_f['MAIL_PASSWORD']
+app.config['MAIL_USE_TLS'] = config_f['MAIL_USE_TLS']
+app.config['MAIL_USE_SSL'] = config_f['MAIL_USE_SSL']
 db = SQLAlchemy(app)
+mail = Mail(app)
 admin = Admin(app, template_mode='bootstrap3')
 
 
