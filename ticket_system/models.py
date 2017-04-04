@@ -1,5 +1,5 @@
-import os
 import json
+import os
 
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView

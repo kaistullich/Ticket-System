@@ -2,9 +2,10 @@ import json
 
 from flask import render_template
 from flask_mail import Message
-from .decorators import async_
+
 from ticket_system import app
 from ticket_system.models import mail
+from .decorators import async_
 
 
 with open('ticket_system/config.json') as f:
