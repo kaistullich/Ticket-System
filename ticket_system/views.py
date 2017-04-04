@@ -14,7 +14,7 @@ with open('ticket_system/config.json') as f:
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/home', methods=['GET', 'POST'])
 def home():
-    rand_num = randrange(100, 100000)
+    rand_num = randrange(100, 1000000)
     form = MessageForm()
     if form.validate_on_submit() and request.method == 'POST':
         name = form.name.data
