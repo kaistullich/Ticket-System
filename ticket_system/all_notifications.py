@@ -61,9 +61,11 @@ def twilio_sms(cust_to, cust_name, tix_num):
 
     client = Client(account_sid, auth_token)
 
+    message = ("Dear {name}, your ticket #{t_num} was successfully received by fitBody! \n\n\n\
+    *** DO NOT RESPOND, THIS IS AN AUTOMATED MESSAGE ***".format(name=cust_name, t_num=tix_num))
+
     client.messages.create(
         to=cust_to,
         from_=config_f['from_'],
-        body="Dear {name}, your ticket #{t_num} was successfully received by fitBody! \
-                \n\n\n*** DO NOT RESPOND, THIS IS AN AUTOMATED MESSAGE ***".format(name=cust_name, t_num=tix_num)
+        body=message
     )
