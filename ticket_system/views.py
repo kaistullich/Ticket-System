@@ -1,7 +1,7 @@
 import bcrypt
 import json
 from flask import flash, redirect, render_template, request, url_for
-from ticket_system.models import MessageForm, TicketDB, Admin, db, app, mail
+from ticket_system.models import MessageForm, TicketDB, Admin, db, app
 from ticket_system.emails import notification
 with open('ticket_system/config.json') as f:
     config_f = json.load(f)
