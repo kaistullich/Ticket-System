@@ -25,15 +25,15 @@ def send_email(subject, sender, recipients, html_body):
     send_async_email(app, msg)
 
 
-def notification(c_name, c_email):
+def notification(cust_name, cust_email):
     send_email("Support Ticket Received!",
                config_f['MAIL_USERNAME'],
-               [c_email],
+               [cust_email],
                render_template("follower_email.html",
-                               c_name=c_name))
+                               c_name=cust_name))
 
 
-def twilioSMS(p_to, p_name):
+def twilioSMS(cust_to, cust_name):
     # Twilio Auth
     account_sid = config_f['account_sid']
     auth_token = config_f['auth_token']
@@ -41,7 +41,7 @@ def twilioSMS(p_to, p_name):
     client = Client(account_sid, auth_token)
 
     client.messages.create(
-        to=p_to,
-        from_="+16505390961",
-        body="Dear {name}, your ticket was received!".format(name=p_name)
+        to=cust_to,
+        from_=config_f['from_'],
+        body="Dear {name}, your ticket was received!".format(name=cust_name)
     )
