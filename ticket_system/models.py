@@ -7,8 +7,8 @@ from flask_bootstrap import Bootstrap
 from flask_mail import Mail
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField
-from wtforms.validators import InputRequired, Email
+from wtforms import StringField, TextAreaField, IntegerField
+from wtforms.validators import InputRequired, Email, Length
 
 from ticket_system import app
 
@@ -36,6 +36,11 @@ admin = Admin(app, template_mode='bootstrap3')
 class MessageForm(FlaskForm):
     name = StringField('Name:', [InputRequired()])
     email = StringField('Email:', [InputRequired(), Email('Invalid Email!')])
+    phone_number = StringField('Phone Number:', [InputRequired(),
+                                                 Length(min=10,
+                                                        max=10,
+                                                        message='Phone number must be 10 digits!')
+                                                 ])
     message = TextAreaField('Message:', [InputRequired()])
 
 
@@ -49,5 +54,6 @@ class TicketDB(db.Model):
 class TicketAdminView(ModelView):
     create_template = 'create.html'
     edit_template = 'edit.html'
+
 
 admin.add_view(TicketAdminView(TicketDB, db.session))
