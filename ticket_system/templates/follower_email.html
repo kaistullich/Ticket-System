@@ -1,4 +1,16 @@
-<p>Dear {{ c_name }},</p>
-<p>We have received your ticket and a dedicated team member will take a look into the issue as soon as possible!</p>
-<p>Regards,</p>
-<p><code>fitBody Customer Support</code></p>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+</head>
+<body>
+    <p>Dear {{ c_name }},</p>
+    <p>We have received your ticket <b>#{{ tix }}</b> and a dedicated team member will take a look into the issue as soon as possible!</p>
+    <p>Regards,</p>
+    <div class="container">
+        <p>
+            fitBody Customer Support <br>
+            One Washington Square <br>
+            San Jose, CA 95103 <br>
+            (800) 545 - 7799 <br>
+        </p>
+    </div>
+</body>
