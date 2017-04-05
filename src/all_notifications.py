@@ -2,14 +2,13 @@ import json
 
 from flask import render_template
 from flask_mail import Message
-
-from ticket_system import app
-from ticket_system.models import mail
-from .decorators import async_
-
 from twilio.rest import Client
 
-with open('ticket_system/config.json') as f:
+from src import app
+from src.models import mail
+from .decorators import async_
+
+with open('src/config.json') as f:
     config_f = json.load(f)
 
 

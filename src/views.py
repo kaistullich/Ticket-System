@@ -1,13 +1,12 @@
 import json
+from random import randrange
 
 from flask import flash, redirect, render_template, request, url_for
 
-from ticket_system.all_notifications import email_notification, twilio_sms
-from ticket_system.models import MessageForm, TicketDB, db, app
+from src.all_notifications import email_notification, twilio_sms
+from src.models import MessageForm, TicketDB, db, app
 
-from random import randrange
-
-with open('ticket_system/config.json') as f:
+with open('src/config.json') as f:
     config_f = json.load(f)
 
 

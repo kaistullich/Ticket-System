@@ -7,12 +7,12 @@ from flask_bootstrap import Bootstrap
 from flask_mail import Mail
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, IntegerField
+from wtforms import StringField, TextAreaField
 from wtforms.validators import InputRequired, Email, Length
 
-from ticket_system import app
+from src import app
 
-with open('ticket_system/config.json') as f:
+with open('src/config.json') as f:
     config_f = json.load(f)
 
 app.secret_key = os.urandom(24)
