@@ -31,7 +31,7 @@ def home():
         email_notification(name, email, rand_num)
         twilio_sms(number, name, ticket.ticket_num)
 
-        flash('Your tickets was successfully submitted!')
+        flash('Your tickets was successfully submitted!', 'success')
         return redirect(url_for('home'))
 
     return render_template('home.html', form=form)
