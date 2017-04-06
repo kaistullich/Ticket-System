@@ -45,6 +45,9 @@ class MessageForm(FlaskForm):
 
 
 class TicketDB(db.Model):
+
+    __tablename__ = 'Ticket'
+
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     ticket_num = db.Column(db.Integer, nullable=False, unique=True)
     name = db.Column(db.String(50), nullable=False)
