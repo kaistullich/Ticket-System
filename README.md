@@ -8,6 +8,8 @@ This project was the final for BUS4-92 at San Jose State University. Here are a 
  * Sign-up for a free Gmail email account if you do not already have one: [Gmail Sign-up](https://accounts.google.com/SignUp?hl=en-GB)
 
 
+***
+
 ### Part 1:
 After completing the steps above clone the directory wherever you would like to place it
 
@@ -42,7 +44,7 @@ ticket_system.sqlite
 ***
 
 
-### Part 1:
+### Part 2:
 Open the `config.json` file you just created, and paste in the following JSON:
 
 ```
