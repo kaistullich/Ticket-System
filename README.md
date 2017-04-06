@@ -7,6 +7,8 @@ This project was the final for BUS4-92 at San Jose State University. Here are a 
  * Have Git installed on your system: [Download](https://git-scm.com/downloads) and instructions for setup [Here](https://git-scm.com/book/en/v2)
  * Sign-up for a free Gmail email account if you do not already have one: [Gmail Sign-up](https://accounts.google.com/SignUp?hl=en-GB)
 
+
+### Part 1:
 After completing the steps above clone the directory wherever you would like to place it
 
 ```
@@ -18,7 +20,7 @@ Then install all dependencies:
 
 `$ pip3 install -r requirements.txt`
 
-Now, open up a `Ticket-System` in a text editor. Create a new file called `config.json`. The folder structure will look like this:
+Now, open up a `Ticket-System` in a text editor. Create a new file called `config.json` inside the `src` folder. The folder structure will look like this:
 
 ```
 Ticket-System\
@@ -37,10 +39,10 @@ ticket_system.sqlite
 
 ```
 
-The order of some files _MAY_ be different, but all file names **should** be the same.
-
 ***
 
+
+### Part 1:
 Open the `config.json` file you just created, and paste in the following JSON:
 
 ```
