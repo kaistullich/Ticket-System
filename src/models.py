@@ -43,9 +43,9 @@ class MessageForm(FlaskForm):
                                                         message='Phone number must be 10 digits!')
                                                  ])
     ticket_type = SelectField('Select an issue', [InputRequired()], choices=[('subscription', 'Subscriptions'),
-                                                                             ('map', 'Google Maps'),
+                                                                             ('maps', 'Google Maps'),
                                                                              ('profile', 'Personal Profile'),
-                                                                             ('ship', 'Shipping'),
+                                                                             ('shipping', 'Shipping'),
                                                                              ('apparel', 'Apparel'),
                                                                              ('other', 'other')
                                                                              ])
