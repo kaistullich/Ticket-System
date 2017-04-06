@@ -71,6 +71,11 @@ def twilio_sms(cust_to, cust_name, tix_num):
 
 
 def ticket_call(dept_number):
+    """
+    
+    :param dept_number: the number being pulled from the DB to contact employee
+    :return: initiate the call
+    """
     call = client.api.account.calls.create(to=dept_number,
                                            from_=config_f['from_'],
                                            # TODO: change URL to new ngrok url
