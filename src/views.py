@@ -18,23 +18,53 @@ with open('src/config.json') as f:
 def home():
     rand_num = randrange(100, 1000000)
     form = MessageForm()
+
+    found = False
+    tix_num_que = TicketDB.query.all()
+    for n in tix_num_que:
+        if n == rand_num:
+            found = True
+            new_rand_num = randrange(10, 100000)
+
     if form.validate_on_submit() and request.method == 'POST':
-        name = form.name.data
-        email = form.email.data
-        number = form.phone_number.data
-        message = form.message.data
 
-        new_ticket = TicketDB(name=name, ticket_num=rand_num, email=email, message=message)
-        db.session.add(new_ticket)
-        db.session.commit()
+        if found:
+            name = form.name.data
+            email = form.email.data
+            number = form.phone_number.data
+            type_ = form.ticket_type.data
+            message = form.message.data
 
-        ticket = TicketDB.query.filter_by(ticket_num=rand_num).first()
+            new_ticket = TicketDB(ticketID=new_rand_num, name=name, email=email, ticket_group=type_, message=message)
+            db.session.add(new_ticket)
+            db.session.commit()
 
-        email_notification(name, email, rand_num)
-        twilio_sms(number, name, ticket.ticket_num)
+            ticket = TicketDB.query.filter_by(ticketID=rand_num).first()
 
-        flash('Your tickets was successfully submitted!', 'success')
-        return redirect(url_for('home'))
+            email_notification(name, email, rand_num)
+            twilio_sms(number, name, ticket.ticketID)
+
+            flash('Your tickets was successfully submitted!', 'success')
+            return redirect(url_for('home'))
+
+        else:
+            name = form.name.data
+            email = form.email.data
+            number = form.phone_number.data
+            type_ = form.ticket_type.data
+            message = form.message.data
+
+            new_ticket = TicketDB(ticketID=rand_num, name=name, email=email, ticket_group=type_, message=message)
+            db.session.add(new_ticket)
+            db.session.commit()
+
+            ticket = TicketDB.query.filter_by(ticketID=rand_num).first()
+
+            email_notification(name, email, rand_num)
+            twilio_sms(number, name, ticket.ticketID)
+
+            flash('Your tickets was successfully submitted!', 'success')
+            return redirect(url_for('home'))
 
     return render_template('home.html', form=form)
 
