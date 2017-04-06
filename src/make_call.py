@@ -13,6 +13,7 @@ client = Client(account_sid, auth_token)
 def ticket_call(dept_number):
     call = client.api.account.calls.create(to=dept_number,
                                            from_=config_f['from_'],
+                                           # TODO: change URL to new ngrok url
                                            url="https://4b49a3e0.ngrok.io/words",
                                            )
     print(call.sid)

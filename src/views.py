@@ -43,6 +43,6 @@ def home():
 def hello_monkey():
     """Respond to incoming requests."""
     resp = VoiceResponse()
-    resp.say("Hello Olaf Stullich, how are you today? It is a nice day outside, it is currently 3:52PM in Morgan Hill, California. Good bye!")
+    resp.say("{{{ <FILL WITH VOICE TEXT> }}}")
 
     return str(resp)
