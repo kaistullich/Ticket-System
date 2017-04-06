@@ -22,7 +22,7 @@ def home():
     found = False
     tix_num_que = TicketDB.query.all()
     for n in tix_num_que:
-        if n == rand_num:
+        if n.ticketID == rand_num:
             found = True
             new_rand_num = randrange(10, 100000)
 
