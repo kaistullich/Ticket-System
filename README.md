@@ -9,8 +9,8 @@ This project was the final for BUS4-92 at San Jose State University. Here are a 
 
 
 ***
-
-### Part 1:
+## SETUP
+#### Part 1:
 After completing the steps above clone the directory wherever you would like to place it
 
 ```
@@ -20,7 +20,9 @@ $ cd Ticket-System
 
 Then install all dependencies:
 
-`$ pip3 install -r requirements.txt`
+`$ pip3 install -r requirements.txt` (MacOSX)
+`$ pip install -r requirements.txt` (Windows)
+
 
 Now, open up a `Ticket-System` in a text editor. Create a new file called `config.json` inside the `src` folder. The folder structure will look like this:
 
@@ -35,6 +37,7 @@ Ticket-System\
     views.py
     config.json
 .gitignore
+config_instructions.txt
 README.md
 run.py
 ticket_system.sqlite
@@ -44,7 +47,7 @@ ticket_system.sqlite
 ***
 
 
-### Part 2:
+#### Part 2:
 Open the `config.json` file you just created, and paste in the following JSON:
 
 ```
@@ -64,3 +67,19 @@ Open the `config.json` file you just created, and paste in the following JSON:
   "from_": ""
 }
 ```
+
+Follow the instructions inside of the `config_instructions.txt` file to fill in the blank values.
+
+***
+
+## Launch App
+
+We are not ready to launch the system. Head into your Terminal (MacOSX) or CMD (Windows).
+From within your CLI enter:
+
+`$ pip3 run.py` (MacOSX)
+
+`$ pip run.py` (Windows)
+
+By running this command you can open up any webbrowser and naviaget to `localhost:5000`
+or `127.0.0.1:5000`
