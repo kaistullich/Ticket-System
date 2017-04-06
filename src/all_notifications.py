@@ -11,6 +11,10 @@ from .decorators import async_
 with open('src/config.json') as f:
     config_f = json.load(f)
 
+account_sid = config_f['account_sid']
+auth_token = config_f['auth_token']
+client = Client(account_sid, auth_token)
+
 
 # Decorator is utilized for Asynchronous tasks
 @async_
@@ -55,10 +59,6 @@ def twilio_sms(cust_to, cust_name, tix_num):
     :param tix_num: this is the ticket num, randomly generated
     :return: sends the SMS
     """
-    account_sid = config_f['account_sid']
-    auth_token = config_f['auth_token']
-
-    client = Client(account_sid, auth_token)
 
     message = ("Dear {name}, your ticket #{t_num} was successfully received by fitBody! \n\n\n\
     *** DO NOT RESPOND, THIS IS AN AUTOMATED MESSAGE ***".format(name=cust_name, t_num=tix_num))
@@ -68,3 +68,12 @@ def twilio_sms(cust_to, cust_name, tix_num):
         from_=config_f['from_'],
         body=message
     )
+
+
+def ticket_call(dept_number):
+    call = client.api.account.calls.create(to=dept_number,
+                                           from_=config_f['from_'],
+                                           # TODO: change URL to new ngrok url
+                                           url="https://4b49a3e0.ngrok.io/words",
+                                           )
+    print(call.sid)
