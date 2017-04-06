@@ -33,6 +33,7 @@ mail = Mail(app)
 admin = Admin(app, template_mode='bootstrap3')
 
 
+# All Forms below:
 class MessageForm(FlaskForm):
     name = StringField('Name:', [InputRequired()])
     email = StringField('Email:', [InputRequired(), Email('Invalid Email!')])
@@ -44,6 +45,7 @@ class MessageForm(FlaskForm):
     message = TextAreaField('Message:', [InputRequired()])
 
 
+# All Database Models below:
 class TicketDB(db.Model):
 
     __tablename__ = 'Ticket'
@@ -102,7 +104,7 @@ class AgentsAdminView(ModelView):
     create_template = 'create.html'
     edit_template = 'edit.html'
 
-
+# All Admin Views for DB's below:
 admin.add_view(TicketAdminView(TicketDB, db.session))
 admin.add_view(DepartmentAdminView(DepartmentDB, db.session))
 admin.add_view(CustomersAdminView(CustomerDB, db.session))
