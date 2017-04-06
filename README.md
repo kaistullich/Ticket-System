@@ -8,6 +8,7 @@ This project was the final for BUS4-92 at San Jose State University. Here are a 
 
 After completing the two steps above clone the directory wherever you would like to place it
 
-`git clone https://github.com/kaistullich/Ticket-System.git`
-
-`cd Ticket-System`
+```
+git clone https://github.com/kaistullich/Ticket-System.git
+cd Ticket-System
+```
