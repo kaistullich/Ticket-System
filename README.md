@@ -39,6 +39,8 @@ ticket_system.sqlite
 
 The order of some files _MAY_ be different, but all file names **should** be the same.
 
+***
+
 Open the `config.json` file you just created, and paste in the following JSON:
 
 ```
