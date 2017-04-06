@@ -48,11 +48,39 @@ class TicketDB(db.Model):
 
     __tablename__ = 'Ticket'
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    ticketID = db.Column(db.Integer, primary_key=True, autoincrement=True, unique=True)
     ticket_num = db.Column(db.Integer, nullable=False, unique=True)
     name = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(50), nullable=False)
     message = db.Column(db.String(500), nullable=False)
+
+
+class DepartmentDB(db.Model):
+
+    __tablename__ = 'Department'
+
+    deptID = db.Column(db.Integer, primary_key=True, autoincrement=True, unique=True)
+    deptName = db.Column(db.String(25), nullable=False)
+    agentID = db.Column(db.Integer, nullable=False)
+
+
+class CustomerDB(db.Model):
+
+    __tablename__ = 'Customers'
+
+    custID = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    cust_name = db.Column(db.String(50), nullable=False)
+    cust_email = db.Column(db.String(60), nullable=False)
+    cust_phone = db.Column(db.Integer, nullable=False)
+
+
+class AgentDB(db.Model):
+
+    __tablename__ = 'Agents'
+
+    agentID = db.Column(db.Integer, primary_key=True, autoincrement=True, unique=True)
+    agent_name = db.Column(db.String(45))
+    agent_phone = db.Column(db.Integer)
 
 
 class TicketAdminView(ModelView):
@@ -60,4 +88,22 @@ class TicketAdminView(ModelView):
     edit_template = 'edit.html'
 
 
+class DepartmentAdminView(ModelView):
+    create_template = 'create.html'
+    edit_template = 'edit.html'
+
+
+class CustomersAdminView(ModelView):
+    create_template = 'create.html'
+    edit_template = 'edit.html'
+
+
+class AgentsAdminView(ModelView):
+    create_template = 'create.html'
+    edit_template = 'edit.html'
+
+
 admin.add_view(TicketAdminView(TicketDB, db.session))
+admin.add_view(DepartmentAdminView(DepartmentDB, db.session))
+admin.add_view(CustomersAdminView(CustomerDB, db.session))
+admin.add_view(AgentsAdminView(AgentDB, db.session))
