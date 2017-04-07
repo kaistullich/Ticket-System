@@ -35,16 +35,17 @@ def home():
             tix_type = form.ticket_type.data
             severity = form.severity.data
             message = form.message.data
+            status = "open"
 
             new_ticket = TicketDB(ticketID=rand_num, name=name, email=email, ticket_group=tix_type,
-                                  ticket_severity=severity, message=message)
+                                  ticket_severity=severity, message=message, ticket_status=status)
             db.session.add(new_ticket)
             db.session.commit()
 
             ticket = TicketDB.query.filter_by(ticketID=rand_num).first()
 
             email_notification(name, email, rand_num)
-            # twilio_sms(number, name, ticket.ticketID)
+            twilio_sms(number, name, ticket.ticketID)
 
             flash('Your tickets was successfully submitted!', 'success')
             return redirect(url_for('home'))
@@ -56,16 +57,17 @@ def home():
             tix_type = form.ticket_type.data
             severity = form.severity.data
             message = form.message.data
+            status = "open"
 
             new_ticket = TicketDB(ticketID=new_rand_num, name=name, email=email, ticket_group=tix_type,
-                                  ticket_severity=severity, message=message)
+                                  ticket_severity=severity, message=message, ticket_status=status)
             db.session.add(new_ticket)
             db.session.commit()
 
             ticket = TicketDB.query.filter_by(ticketID=new_rand_num).first()
 
             email_notification(name, email, rand_num)
-            # twilio_sms(number, name, ticket.ticketID)
+            twilio_sms(number, name, ticket.ticketID)
 
             flash('Your tickets was successfully submitted!', 'success')
             return redirect(url_for('home'))
@@ -76,7 +78,10 @@ def home():
 @app.route("/words", methods=['GET', 'POST'])
 def hello_monkey():
     """Respond to incoming requests."""
+    tix_severity = TicketDB.query.all()
+    for tickets in tix_severity:
+        pass
     resp = VoiceResponse()
-    resp.say("{{{ <FILL WITH VOICE TEXT> }}}")
+    resp.say("")
 
     return str(resp)
