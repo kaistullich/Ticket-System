@@ -103,7 +103,7 @@ def login():
             if psw_hash:
                 return redirect(url_for('admin.index'))
         else:
-            flash('That username or password does not match, try again', 'error')
+            flash(u'That username or password does not match, try again', 'warning')
 
     return render_template('login.html', form=form)
 
