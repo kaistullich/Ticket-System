@@ -42,13 +42,18 @@ class MessageForm(FlaskForm):
                                                         max=10,
                                                         message='Phone number must be 10 digits!')
                                                  ])
-    ticket_type = SelectField('Select an issue', [InputRequired()], choices=[('subscription', 'Subscriptions'),
-                                                                             ('maps', 'Google Maps'),
-                                                                             ('profile', 'Personal Profile'),
-                                                                             ('shipping', 'Shipping'),
-                                                                             ('apparel', 'Apparel'),
-                                                                             ('other', 'other')
-                                                                             ])
+    ticket_type = SelectField('Select an issue:', [InputRequired()], choices=[('subscription', 'Subscriptions'),
+                                                                              ('maps', 'Google Maps'),
+                                                                              ('profile', 'Personal Profile'),
+                                                                              ('shipping', 'Shipping'),
+                                                                              ('apparel', 'Apparel'),
+                                                                              ('other', 'other')
+                                                                              ])
+    severity = SelectField('Provide the severity of the ticket:', [InputRequired()],
+                                  choices=[('1', '1 - High Priority'),
+                                           ('2', '2 - Medium Priority'),
+                                           ('3', '3 - Low Priority')
+                                           ])
     message = TextAreaField('Message:', [InputRequired()])
 
 
@@ -60,6 +65,7 @@ class TicketDB(db.Model):
     name = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(50), nullable=False)
     ticket_group = db.Column(db.String(30), nullable=False)
+    ticket_severity = db.Column(db.Integer, nullable=False)
     message = db.Column(db.String(500), nullable=False)
 
 
