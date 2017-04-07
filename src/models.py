@@ -7,7 +7,7 @@ from flask_bootstrap import Bootstrap
 from flask_mail import Mail
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, SelectField
+from wtforms import StringField, TextAreaField, SelectField, PasswordField
 from wtforms.validators import InputRequired, Email, Length
 
 from src import app
@@ -34,7 +34,7 @@ admin = Admin(app, template_mode='bootstrap3')
 
 
 # All Forms below:
-class MessageForm(FlaskForm):
+class TicketForm(FlaskForm):
     name = StringField('Name:', [InputRequired()])
     email = StringField('Email:', [InputRequired(), Email('Invalid Email!')])
     phone_number = StringField('Phone Number:', [InputRequired(),
@@ -55,6 +55,15 @@ class MessageForm(FlaskForm):
                                            ('3', '3 - Low Priority')
                                            ])
     message = TextAreaField('Message:', [InputRequired()])
+
+
+
+class LoginForm(FlaskForm):
+    """
+    Agent Login Form to access the Database
+    """
+    username = StringField('Username:', [InputRequired()])
+    password = PasswordField('Password', [InputRequired()])
 
 
 # All Database Models below:
@@ -97,6 +106,12 @@ class AgentDB(db.Model):
     agent_phone = db.Column(db.Integer)
 
 
+class AgentLoginDB(db.Model):
+    __tablename__ = 'Login'
+
+    username = db.Column(db.String(4), primary_key=True)
+    password = db.Column(db.String(60))
+
 # All Admin Views for each table
 class TicketAdminView(ModelView):
     create_template = 'create.html'
@@ -119,7 +134,7 @@ class AgentsAdminView(ModelView):
 
 
 # All Admin Views for DB's below:
-admin.add_view(TicketAdminView(TicketDB, db.session))
+admin.add_view(TicketAdminView(TicketDB, db.session, menu_icon_type='glyph', menu_icon_value='glyphicon-home'))
 admin.add_view(DepartmentAdminView(DepartmentDB, db.session))
 admin.add_view(CustomersAdminView(CustomerDB, db.session))
 admin.add_view(AgentsAdminView(AgentDB, db.session))
