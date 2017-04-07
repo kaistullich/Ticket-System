@@ -70,6 +70,7 @@ def twilio_sms(cust_to, cust_name, tix_num):
     )
 
 
+@async_
 def ticket_call(dept_number):
     """
     
