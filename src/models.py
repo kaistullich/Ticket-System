@@ -68,6 +68,8 @@ class TicketDB(db.Model):
     ticket_severity = db.Column(db.Integer, nullable=False)
     message = db.Column(db.String(500), nullable=False)
     ticket_status = db.Column(db.String(10), nullable=False)
+    ticket_date = db.Column(db.String(20), nullable=False)
+    ticket_time = db.Column(db.Integer, nullable=False)
 
 
 class DepartmentDB(db.Model):
