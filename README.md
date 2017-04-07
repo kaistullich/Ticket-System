@@ -52,7 +52,7 @@ ticket_system.sqlite
 #### Part 2:
 Open the `config.json` file you just created, and paste in the following JSON:
 
-```
+```json
 {
   "DATABASE_FILE": "ticket_system.sqlite",
   "SQLALCHEMY_DATABASE_URI": "sqlite://///",
