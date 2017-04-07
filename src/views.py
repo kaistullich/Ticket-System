@@ -1,4 +1,5 @@
 import json
+import time
 from random import randrange
 
 from flask import flash, redirect, render_template, request, url_for
@@ -27,7 +28,7 @@ def home():
             new_rand_num = randrange(10, 100000)
 
     if form.validate_on_submit() and request.method == 'POST':
-
+        # Block will be executed if ticketID did NOT match random
         if not found:
             name = form.name.data
             email = form.email.data
@@ -35,21 +36,25 @@ def home():
             tix_type = form.ticket_type.data
             severity = form.severity.data
             message = form.message.data
-            status = "open"
+            status = "Open"
+            tix_date = time.strftime('%a, %d %b %Y')
+            tix_time = time.strftime('%H%M')
 
             new_ticket = TicketDB(ticketID=rand_num, name=name, email=email, ticket_group=tix_type,
-                                  ticket_severity=severity, message=message, ticket_status=status)
+                                  ticket_severity=severity, message=message, ticket_status=status, ticket_date=tix_date,
+                                  ticket_time=tix_time)
             db.session.add(new_ticket)
             db.session.commit()
 
             ticket = TicketDB.query.filter_by(ticketID=rand_num).first()
 
-            email_notification(name, email, rand_num)
-            twilio_sms(number, name, ticket.ticketID)
+            # email_notification(name, email, rand_num)
+            # twilio_sms(number, name, ticket.ticketID)
 
             flash('Your tickets was successfully submitted!', 'success')
             return redirect(url_for('home'))
 
+        # Block will be executed if ticketID MATCHED random
         else:
             name = form.name.data
             email = form.email.data
@@ -57,7 +62,8 @@ def home():
             tix_type = form.ticket_type.data
             severity = form.severity.data
             message = form.message.data
-            status = "open"
+            status = "Open"
+            tix_datetime = time.strftime('%H%M')
 
             new_ticket = TicketDB(ticketID=new_rand_num, name=name, email=email, ticket_group=tix_type,
                                   ticket_severity=severity, message=message, ticket_status=status)
@@ -78,9 +84,11 @@ def home():
 @app.route("/words", methods=['GET', 'POST'])
 def hello_monkey():
     """Respond to incoming requests."""
-    tix_severity = TicketDB.query.all()
-    for tickets in tix_severity:
-        pass
+    tickets = TicketDB.query.all()
+    for ticket in tickets:
+        if ticket.ticket_severity == 1:
+            if ticket.ticket_status == "Open":
+                print(ticket.ticketID)
     resp = VoiceResponse()
     resp.say("")
 
