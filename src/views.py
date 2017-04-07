@@ -1,3 +1,4 @@
+import bcrypt
 import json
 import time
 from random import randrange
@@ -5,7 +6,7 @@ from random import randrange
 from flask import flash, redirect, render_template, request, url_for
 
 from src.all_notifications import email_notification, twilio_sms, ticket_call
-from src.models import MessageForm, TicketDB, db, app
+from src.models import TicketForm, LoginForm, TicketDB, AgentLoginDB, db, app
 
 from twilio.twiml.voice_response import VoiceResponse
 
@@ -17,7 +18,7 @@ with open('src/config.json') as f:
 @app.route('/home', methods=['GET', 'POST'])
 def home():
     rand_num = randrange(100, 1000000)
-    form = MessageForm()
+    form = TicketForm()
 
     found = False
     tix_num_que = TicketDB.query.all()
@@ -51,7 +52,8 @@ def home():
             for ticket in tickets:
                 if ticket.ticket_severity == 1:
                     if ticket.ticket_status == "Open":
-                        ticket_call('6507876895')
+                        pass
+                        # ticket_call('6507876895')
             # email_notification(name, email, rand_num)
             # twilio_sms(number, name, ticket.ticketID)
 
@@ -85,6 +87,25 @@ def home():
             return redirect(url_for('home'))
 
     return render_template('home.html', form=form)
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+
+    if form.validate_on_submit() and request.method == 'POST':
+        username = form.username.data
+        password = form.password.data
+        agent = AgentLoginDB.query.filter_by(username=username).first()
+
+        if agent:
+            psw_hash = bcrypt.checkpw(password.encode('utf-8'), agent.password.encode('utf-8'))
+            if psw_hash:
+                return redirect(url_for('admin.index'))
+        else:
+            flash('That username or password does not match, try again', 'error')
+
+    return render_template('login.html', form=form)
 
 
 @app.route("/words", methods=['GET', 'POST'])
