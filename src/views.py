@@ -23,6 +23,11 @@ def home():
     found = False
     tix_num_que = TicketDB.query.all()
     for n in tix_num_que:
+        """
+        Loops through all the TicketID's and sees if there is a match 
+        between the rand_num and a TicketID. If a match is found, then
+        `Found` changes to `True` and `new_rand_num` is a assigned.
+        """
         if n.ticketID == rand_num:
             found = True
             new_rand_num = randrange(10, 100000)
@@ -40,22 +45,26 @@ def home():
             tix_date = time.strftime('%a, %d %b %Y')
             tix_time = time.strftime('%H%M')
 
+            # Insert new completed ticket into TicketDB
             new_ticket = TicketDB(ticketID=rand_num, name=name, email=email, ticket_group=tix_type,
                                   ticket_severity=severity, message=message, ticket_status=status, ticket_date=tix_date,
                                   ticket_time=tix_time)
             db.session.add(new_ticket)
             db.session.commit()
 
+            # Query needed to notify ticker # by SMS
             ticket = TicketDB.query.filter_by(ticketID=rand_num).first()
 
+            # Query TicketDB to find P1 tickets that are "Open"
             tickets = TicketDB.query.all()
             for ticket in tickets:
                 if ticket.ticket_severity == 1:
                     if ticket.ticket_status == "Open":
-                        pass
-                        # ticket_call('6507876895')
-            # email_notification(name, email, rand_num)
-            # twilio_sms(number, name, ticket.ticketID)
+                        ticket_call('6507876895')
+
+            # Send off both Email / SMS notifications
+            email_notification(name, email, rand_num)
+            twilio_sms(number, name, ticket.ticketID)
 
             flash('Your tickets was successfully submitted!', 'success')
             return redirect(url_for('home'))
@@ -72,16 +81,19 @@ def home():
             tix_date = time.strftime('%a, %d %b %Y')
             tix_time = time.strftime('%H%M')
 
+            # Insert new completed ticket into TicketDB
             new_ticket = TicketDB(ticketID=new_rand_num, name=name, email=email, ticket_group=tix_type,
                                   ticket_severity=severity, message=message, ticket_status=status, ticket_date=tix_date,
                                   ticket_time=tix_time)
             db.session.add(new_ticket)
             db.session.commit()
 
+            # Query needed to notify ticker # by SMS
             ticket = TicketDB.query.filter_by(ticketID=new_rand_num).first()
 
-            # email_notification(name, email, rand_num)
-            # twilio_sms(number, name, ticket.ticketID)
+            # Send off both Email / SMS notifications
+            email_notification(name, email, rand_num)
+            twilio_sms(number, name, ticket.ticketID)
 
             flash('Your tickets was successfully submitted!', 'success')
             return redirect(url_for('home'))
@@ -91,6 +103,7 @@ def home():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+
     form = LoginForm()
 
     if form.validate_on_submit() and request.method == 'POST':
@@ -113,7 +126,7 @@ def ticket_voice():
     """Respond to incoming requests."""
     # TODO: Put name of dept and ticket number into voice
     resp = VoiceResponse()
-    resp.say("A new Priority 1 ticket has been created and assigned to the {name} team. Ticket number {t_num}. \
-             Please log in within 1 hour to respond to the ticket.".format(name=None, t_num=None), loop=3)
+    resp.say("A new Priority 1 ticket has been created and assigned to the {dept} team. Ticket number {t_num}. \
+             Please log in within 1 hour to respond to the ticket.".format(dept='Database', t_num=''), loop=3)
 
     return str(resp)
