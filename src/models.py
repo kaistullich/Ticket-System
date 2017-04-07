@@ -1,3 +1,4 @@
+import flask_restless
 import json
 import os
 
@@ -50,12 +51,11 @@ class TicketForm(FlaskForm):
                                                                               ('other', 'other')
                                                                               ])
     severity = SelectField('Provide the severity of the ticket:', [InputRequired()],
-                                  choices=[('1', '1 - High Priority'),
-                                           ('2', '2 - Medium Priority'),
-                                           ('3', '3 - Low Priority')
-                                           ])
+                           choices=[('1', '1 - High Priority'),
+                                    ('2', '2 - Medium Priority'),
+                                    ('3', '3 - Low Priority')
+                                    ])
     message = TextAreaField('Message:', [InputRequired()])
-
 
 
 class LoginForm(FlaskForm):
@@ -112,6 +112,7 @@ class AgentLoginDB(db.Model):
     username = db.Column(db.String(4), primary_key=True)
     password = db.Column(db.String(60))
 
+
 # All Admin Views for each table
 class TicketAdminView(ModelView):
     create_template = 'create.html'
@@ -138,3 +139,9 @@ admin.add_view(TicketAdminView(TicketDB, db.session, menu_icon_type='glyph', men
 admin.add_view(DepartmentAdminView(DepartmentDB, db.session))
 admin.add_view(CustomersAdminView(CustomerDB, db.session))
 admin.add_view(AgentsAdminView(AgentDB, db.session))
+
+# API Manager
+manager = flask_restless.APIManager(app, flask_sqlalchemy_db=db)
+manager.create_api(TicketDB,
+                   methods=['GET', 'POST']
+                   )
