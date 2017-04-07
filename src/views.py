@@ -28,21 +28,23 @@ def home():
 
     if form.validate_on_submit() and request.method == 'POST':
 
-        if found:
+        if not found:
             name = form.name.data
             email = form.email.data
             number = form.phone_number.data
-            type_ = form.ticket_type.data
+            tix_type = form.ticket_type.data
+            severity = form.severity.data
             message = form.message.data
 
-            new_ticket = TicketDB(ticketID=new_rand_num, name=name, email=email, ticket_group=type_, message=message)
+            new_ticket = TicketDB(ticketID=rand_num, name=name, email=email, ticket_group=tix_type,
+                                  ticket_severity=severity, message=message)
             db.session.add(new_ticket)
             db.session.commit()
 
             ticket = TicketDB.query.filter_by(ticketID=rand_num).first()
 
             email_notification(name, email, rand_num)
-            twilio_sms(number, name, ticket.ticketID)
+            # twilio_sms(number, name, ticket.ticketID)
 
             flash('Your tickets was successfully submitted!', 'success')
             return redirect(url_for('home'))
@@ -51,17 +53,19 @@ def home():
             name = form.name.data
             email = form.email.data
             number = form.phone_number.data
-            type_ = form.ticket_type.data
+            tix_type = form.ticket_type.data
+            severity = form.severity.data
             message = form.message.data
 
-            new_ticket = TicketDB(ticketID=rand_num, name=name, email=email, ticket_group=type_, message=message)
+            new_ticket = TicketDB(ticketID=new_rand_num, name=name, email=email, ticket_group=tix_type,
+                                  ticket_severity=severity, message=message)
             db.session.add(new_ticket)
             db.session.commit()
 
-            ticket = TicketDB.query.filter_by(ticketID=rand_num).first()
+            ticket = TicketDB.query.filter_by(ticketID=new_rand_num).first()
 
             email_notification(name, email, rand_num)
-            twilio_sms(number, name, ticket.ticketID)
+            # twilio_sms(number, name, ticket.ticketID)
 
             flash('Your tickets was successfully submitted!', 'success')
             return redirect(url_for('home'))
