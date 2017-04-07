@@ -21,10 +21,12 @@ $ cd Ticket-System
 Then install all dependencies:
 
 `$ pip3 install -r requirements.txt` (MacOSX)
+
 `$ pip install -r requirements.txt` (Windows)
 
 
-Now, open up a `Ticket-System` in a text editor. Create a new file called `config.json` inside the `src` folder. The folder structure will look like this:
+Now, open up a `Ticket-System` in a text editor. Create a new file called `config.json` inside the `src` folder. 
+The folder structure will look like this:
 
 ```
 Ticket-System\
@@ -81,5 +83,5 @@ From within your CLI enter:
 
 `$ pip run.py` (Windows)
 
-By running this command you can open up any webbrowser and naviaget to `localhost:5000`
+By running this command you can open up any web browser and navigate to `localhost:5000`
 or `127.0.0.1:5000`
