@@ -77,7 +77,8 @@ Create the SQLite DB. To do this, open your _Terminal_ or _CMD_ and navigate to 
 structure. From there type in `python3` or `python`  and execute the following commands:
 
 ```
-$ ~/Ticket-System python 2
+$ ~/Ticket-System python3
+
 Python 3.5.2 (v3.5.2:4def2a2901a5, Jun 26 2016, 10:47:25) 
 [GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin
 Type "help", "copyright", "credits" or "license" for more information.
