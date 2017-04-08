@@ -72,6 +72,18 @@ Open the `config.json` file you just created, and paste in the following JSON:
 
 Follow the instructions inside of the `config_instructions.txt` file to fill in the blank values.
 
+### Part 3:
+Create the SQLite DB. To do this, open your _Terminal_ or _CMD_ and navigate to the top level of the folder 
+structure. From there type in `python3` or `python`  and execute the following commands:
+
+```python
+>>> $ ~/Ticket-System
+>>> $ from src.models import db
+>>> $ db.create_all()
+```
+
+This will spit out a bunch of information regarding the creation of the Database and all of the tables inside of
+it.
 ***
 
 ## Launch App
