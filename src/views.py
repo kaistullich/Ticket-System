@@ -115,13 +115,12 @@ def login():
     return render_template('login.html', form=form)
 
 
-@app.route("/words", methods=['GET', 'POST'])
-def ticket_voice():
+@app.route("/reminder", methods=['GET', 'POST'])
+def ticket_reminder():
     """Respond to incoming requests."""
     # TODO: Put name of dept and ticket number into voice
-
     resp = VoiceResponse()
-    resp.say("A new Priority 1 ticket has been created and assigned to the {dept} team. Ticket number {t_num}. \
-             Please log in within 1 hour to respond to the ticket.".format(dept='Database', t_num=''), loop=3)
+    resp.say('Reminder, there are one or more priority 1 tickets with a status of open that have not been acknowledged \
+             for 60 or more minutes.', loop=2, voice='woman')
 
     return str(resp)
