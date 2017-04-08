@@ -136,3 +136,9 @@ def ticket_voice():
              Please log in within 1 hour to respond to the ticket.".format(dept='Database', t_num=over_time), loop=3)
 
     return str(resp)
+
+
+@app.route('/ajax')
+def ajax():
+    data = []
+    return render_template('ajax.html', data=data)
