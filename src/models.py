@@ -50,10 +50,10 @@ class TicketForm(FlaskForm):
                                                                               ('apparel', 'Apparel'),
                                                                               ('other', 'other')
                                                                               ])
-    severity = SelectField('Provide the severity of the ticket:', [InputRequired()],
-                           choices=[('1', '1 - High Priority'),
-                                    ('2', '2 - Medium Priority'),
-                                    ('3', '3 - Low Priority')
+    severity = SelectField('Business Impact:', [InputRequired()],
+                           choices=[('3', 'P3 - General'),
+                                    ('2', 'P2 - Degraded'),
+                                    ('1', 'P1 - Critical Outgae')
                                     ])
     message = TextAreaField('Message:', [InputRequired()])
 
