@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block container %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <h4 id="tickets"></h4>
+    <script>
+        $.ajax({
+            type: "GET",
+            datatype: 'json',
+            url: "http://127.0.0.1:5000/api/Ticket",
+            success: function(data){
+                parseTickets(data)
+            },
+            error: function(error){
+                console.log(error.responseText)
+            }
+        });
+
+        function parseTickets(data){
+            var list = {{ data | safe }};
+            var all_tickets = data.objects;
+            for (var i = 0; i < all_tickets.length; i++){
+                var ticket = all_tickets[i];
+                list.push(ticket);
+
+            }
+            console.log(list);
+        }
+    </script>
+{% endblock %}
