@@ -79,7 +79,7 @@ def ticket_call(dept_number):
     """
     call = client.api.account.calls.create(to=dept_number,
                                            from_=config_f['from_'],
-                                           # TODO: change URL to new HTTPS ngrok url
-                                           url="https://66ed200d.ngrok.io/words",
+                                           # TODO: change URL to new HTTPS ngrok url WITH /words
+                                           url="https://4acefb6c.ngrok.io/words",
                                            )
     print(call.sid)

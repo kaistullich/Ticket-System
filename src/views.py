@@ -3,8 +3,6 @@ import json
 import time
 from random import randrange
 
-from src.check_time import ticket_time_check
-
 from flask import flash, redirect, render_template, request, url_for
 
 from src.all_notifications import email_notification, twilio_sms, ticket_call
@@ -19,7 +17,6 @@ with open('src/config.json') as f:
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/home', methods=['GET', 'POST'])
 def home():
-    # ticket_time_check()
     rand_num = randrange(100, 1000000)
     form = TicketForm()
 
@@ -59,16 +56,9 @@ def home():
             # Query needed to notify ticker # by SMS
             ticket = TicketDB.query.filter_by(ticketID=rand_num).first()
 
-            # Query TicketDB to find P1 tickets that are "Open"
-            # tickets = TicketDB.query.all()
-            # for ticket in tickets:
-            #     if ticket.ticket_severity == 1:
-            #         if ticket.ticket_status == "Open":
-            #             ticket_call('4084655095')
-
             # Send off both Email / SMS notifications
             email_notification(name, email, rand_num)
-            # twilio_sms(number, name, ticket.ticketID)
+            twilio_sms(number, name, ticket.ticketID)
 
             flash('Your tickets was successfully submitted!', 'success')
             return redirect(url_for('home'))
@@ -129,16 +119,9 @@ def login():
 def ticket_voice():
     """Respond to incoming requests."""
     # TODO: Put name of dept and ticket number into voice
-    over_time = ticket_time_check()
 
     resp = VoiceResponse()
     resp.say("A new Priority 1 ticket has been created and assigned to the {dept} team. Ticket number {t_num}. \
-             Please log in within 1 hour to respond to the ticket.".format(dept='Database', t_num=over_time), loop=3)
+             Please log in within 1 hour to respond to the ticket.".format(dept='Database', t_num=''), loop=3)
 
     return str(resp)
-
-
-@app.route('/ajax')
-def ajax():
-    data = []
-    return render_template('ajax.html', data=data)
