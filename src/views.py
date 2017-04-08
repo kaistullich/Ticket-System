@@ -68,7 +68,7 @@ def home():
 
             # Send off both Email / SMS notifications
             email_notification(name, email, rand_num)
-            twilio_sms(number, name, ticket.ticketID)
+            # twilio_sms(number, name, ticket.ticketID)
 
             flash('Your tickets was successfully submitted!', 'success')
             return redirect(url_for('home'))
