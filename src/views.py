@@ -68,8 +68,12 @@ def login():
             psw_hash = bcrypt.checkpw(password.encode('utf-8'), agent.password.encode('utf-8'))
             if psw_hash:
                 return redirect(url_for('admin.index'))
+            else:
+                flash(u'That username or password does not match, try again', 'warning')
+                return redirect(url_for('login'))
         else:
             flash(u'That username or password does not match, try again', 'warning')
+            return redirect(url_for('login'))
 
     return render_template('login.html', form=form)
 
