@@ -25,7 +25,7 @@ def send_async_email(app, msg):
 
 def send_email(subject, sender, recipients, html_body):
     """
-    
+
     :param subject: the subject in the email    
     :param sender: the email sender
     :param recipients: `list` of email addresses
@@ -39,7 +39,7 @@ def send_email(subject, sender, recipients, html_body):
 
 def email_notification(cust_name, cust_email, tix):
     """
-        
+
     :param cust_name: customer name comes from form submission
     :param cust_email: customer email comes from form submission
     :param tix: this is the ticket num, randomly generated
@@ -53,7 +53,7 @@ def email_notification(cust_name, cust_email, tix):
 
 def twilio_sms(cust_to, cust_name, tix_num):
     """
-    
+
     :param cust_to: phone number, comes from form submission
     :param cust_name: customer name comes from form submission
     :param tix_num: this is the ticket num, randomly generated
@@ -70,16 +70,29 @@ def twilio_sms(cust_to, cust_name, tix_num):
     )
 
 
-@async_
-def ticket_call(dept_number):
+def ticket_reminder_call(dept_number):
     """
-    
+
     :param dept_number: the number being pulled from the DB to contact employee
     :return: initiate the call
     """
     call = client.api.account.calls.create(to=dept_number,
                                            from_=config_f['from_'],
                                            # TODO: change URL to new HTTPS ngrok url WITH /reminder
-                                           url="https://5244b5b0.ngrok.io/reminder",
+                                           url="https://27d3f05a.ngrok.io/reminder",
+                                           )
+    print(call.sid)
+
+
+def ticket_creation_call(dept_number):
+    """
+
+    :param dept_number: the number being pulled from the DB to contact employee
+    :return: initiate the call
+    """
+    call = client.api.account.calls.create(to=dept_number,
+                                           from_=config_f['from_'],
+                                           # TODO: change URL to new HTTPS ngrok url WITH /ticket_creation
+                                           url="https://27d3f05a.ngrok.io/ticket_creation",
                                            )
     print(call.sid)
