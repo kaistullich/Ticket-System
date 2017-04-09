@@ -1,7 +1,6 @@
 import bcrypt
 import json
 import time
-from random import randrange
 
 from flask import flash, redirect, render_template, request, url_for
 
@@ -17,84 +16,41 @@ with open('src/config.json') as f:
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/home', methods=['GET', 'POST'])
 def home():
-    rand_num = randrange(100, 1000000)
-    form = TicketForm()
 
-    found = False
-    tix_num_que = TicketDB.query.all()
-    for n in tix_num_que:
-        """
-        Loops through all the TicketID's and sees if there is a match 
-        between the `rand_num` and a TicketID in the TicketDB. If a match 
-        is found, then `Found` changes to `True` and `new_rand_num` 
-        is assigned.
-        """
-        if n.ticketID == rand_num:
-            found = True
-            new_rand_num = randrange(10, 100000)
+    form = TicketForm()
 
     if form.validate_on_submit() and request.method == 'POST':
         # Block will be executed if ticketID did NOT match random
-        if not found:
-            name = form.name.data
-            email = form.email.data
-            number = form.phone_number.data
-            tix_type = form.ticket_type.data
-            severity = form.severity.data
-            message = form.message.data
-            status = "Open"
-            tix_date = time.strftime('%D')
-            tix_time = time.strftime('%H%M')
+        cust_name = form.name.data
+        cust_email = form.email.data
+        cust_phone = form.phone_number.data
+        tix_dept = form.ticket_type.data
+        tix_severity = form.severity.data
+        tix_msg = form.message.data
+        tix_status = "Open"
+        tix_recv_date = time.strftime('%D')
+        tix_recv_time = time.strftime('%H%M')
 
-            # Insert new completed ticket into TicketDB
-            new_ticket = TicketDB(ticketID=rand_num, name=name, email=email, ticket_group=tix_type,
-                                  ticket_severity=severity, message=message, ticket_status=status, ticket_date=tix_date,
-                                  ticket_time=tix_time)
-            db.session.add(new_ticket)
-            db.session.commit()
+        # Insert new completed ticket into TicketDB
+        new_ticket = TicketDB(cust_name=cust_name, cust_email=cust_email, cust_phone=cust_phone,
+                            tix_dept=tix_dept, tix_severity=tix_severity, tix_msg=tix_msg,
+                            tix_status=tix_status, tix_recv_date=tix_recv_date, tix_recv_time=tix_recv_time)
+        db.session.add(new_ticket)
+        db.session.commit()
 
-            # Query needed to notify ticker # by SMS
-            ticket = TicketDB.query.filter_by(ticketID=rand_num).first()
+        # Query needed to notify ticker # by SMS
+        ticket = TicketDB.query.filter_by(cust_email=cust_email).first()
 
-            # Send off both Email / SMS notifications
-            email_notification(name, email, rand_num)
-            twilio_sms(number, name, ticket.ticketID)
+        # Send off both Email / SMS notifications
+        email_notification(cust_name, cust_email, ticket.ticketID)
+        twilio_sms(number, name, ticket.ticketID)
 
-            # Send call to agent if new ticket submit is of severity type 1
-            if severity == '1':
-                ticket_creation_call(config_f['dept_num'])
+        # Send call to agent if new ticket submit is of severity type 1
+        if severity == '1':
+            ticket_creation_call(config_f['dept_num'])
 
-            flash('Your tickets was successfully submitted!', 'success')
-            return redirect(url_for('home'))
-
-        # Block will be executed if ticketID MATCHED random
-        else:
-            name = form.name.data
-            email = form.email.data
-            number = form.phone_number.data
-            tix_type = form.ticket_type.data
-            severity = form.severity.data
-            message = form.message.data
-            status = "Open"
-            tix_date = time.strftime('%D')
-            tix_time = time.strftime('%H%M')
-
-            # Insert new completed ticket into TicketDB
-            new_ticket = TicketDB(ticketID=new_rand_num, name=name, email=email, ticket_group=tix_type,
-                                  ticket_severity=severity, message=message, ticket_status=status, ticket_date=tix_date,
-                                  ticket_time=tix_time)
-            db.session.add(new_ticket)
-            db.session.commit()
-
-            # Query needed to notify ticker # by SMS
-            ticket = TicketDB.query.filter_by(ticketID=new_rand_num).first()
-
-            # Send off both Email / SMS notifications
-            email_notification(name, email, rand_num)
-            twilio_sms(number, name, ticket.ticketID)
-
-            flash('Your tickets was successfully submitted!', 'success')
-            return redirect(url_for('home'))
+        flash('Your tickets was successfully submitted!', 'success')
+        return redirect(url_for('home'))
 
     return render_template('home.html', form=form)
 
@@ -132,7 +88,9 @@ def ticket_reminder_route():
 @app.route('/ticket_creation', methods=['GET', 'POST'])
 def ticket_creation():
     # TODO: Put `tix_ID` with NEW ticket submission
+
+    ticket = TicketDB.query.filter_by(cust_email=cust_email).first()
     resp = VoiceResponse()
-    resp.say('A new priority 1 ticket with ID {tix_ID} has been created'.format(tix_ID=''), loop=2, voice='man')
+    resp.say('A new priority 1 ticket with ID {tix_ID} has been created'.format(tix_ID=ticket.ticketID), loop=2, voice='man')
 
     return str(resp)
