@@ -1,11 +1,11 @@
 import bcrypt
 import json
 import time
-
+import twilio
 from flask import flash, redirect, render_template, request, url_for
 
 from src.all_notifications import email_notification, twilio_sms, ticket_creation_call
-from src.models import TicketForm, LoginForm, TicketDB, AgentLoginDB, db, app
+from src.models import TicketForm, LoginForm, TicketDB, AgentLoginDB, CustomerDB, db, app
 
 from twilio.twiml.voice_response import VoiceResponse
 
@@ -31,6 +31,15 @@ def home():
         tix_recv_date = time.strftime('%D')
         tix_recv_time = time.strftime('%H%M')
 
+        # Query Customer DB to check if customer already exists
+        exist_cust = CustomerDB.query.filter_by(cust_email=cust_email).first()
+
+        # If customer does NOT exist
+        if exist_cust is None:
+            new_cust = CustomerDB(cust_name=cust_name, cust_email=cust_email, cust_phone=cust_phone)
+            db.session.add(new_cust)
+            db.session.commit()
+
         # Insert new completed ticket into TicketDB
         new_ticket = TicketDB(cust_name=cust_name, cust_email=cust_email, cust_phone=cust_phone,
                               tix_dept=tix_dept, tix_severity=tix_severity, tix_msg=tix_msg,
@@ -38,12 +47,12 @@ def home():
         db.session.add(new_ticket)
         db.session.commit()
 
-        # Query needed to notify ticker # by SMS
+        # Query needed to notify ticket # by SMS
         ticket = TicketDB.query.filter_by(cust_email=cust_email).first()
 
         # Send off both Email / SMS notifications
         email_notification(cust_name, cust_email, ticket.ticketID)
-        twilio_sms(cust_phone, cust_name, ticket.ticketID)
+        # twilio_sms(cust_phone, cust_name, ticket.ticketID)
 
         # Send call to agent if new ticket submit is of severity type 1
         if tix_severity == '1':
