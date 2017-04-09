@@ -23,12 +23,12 @@ while True:
     open_tix_counter = 0
     open_tix_found = False
     for ticket in tickets['objects']:
-        status = ticket['ticket_status']
-        severity = ticket['ticket_severity']
-        tix_time = ticket['ticket_time']
-        tix_date = ticket['ticket_date']
-        if severity == 1:
-            if status == "Open":
+        tix_status = ticket['tix_status']
+        tix_severity = ticket['tix_severity']
+        tix_time = ticket['tix_recv_time']
+        tix_date = ticket['tix_recv_date']
+        if tix_severity == 1:
+            if tix_status == "Open":
                 if date_now == tix_date:
                     if time_now - tix_time >= 60:
                         print('Ticket(s) found', ticket['ticketID'])
