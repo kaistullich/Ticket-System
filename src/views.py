@@ -43,7 +43,7 @@ def home():
             severity = form.severity.data
             message = form.message.data
             status = "Open"
-            tix_date = time.strftime('%a, %d %b %Y')
+            tix_date = time.strftime('%D')
             tix_time = time.strftime('%H%M')
 
             # Insert new completed ticket into TicketDB
@@ -76,7 +76,7 @@ def home():
             severity = form.severity.data
             message = form.message.data
             status = "Open"
-            tix_date = time.strftime('%a, %d %b %Y')
+            tix_date = time.strftime('%D')
             tix_time = time.strftime('%H%M')
 
             # Insert new completed ticket into TicketDB
@@ -123,7 +123,7 @@ def ticket_reminder_route():
     # TODO: Put name of dept and ticket number into voice
     resp = VoiceResponse()
     resp.say(
-        'There are {num_open_tix} open Priority 1 tickets. Please check your queue.'.format(num_open_tix=' 7 8 9 0'),
+        'There are {num_open_tix} open Priority 1 tickets. Please check your queue.'.format(num_open_tix='still'),
         loop=2, voice='man')
 
     return str(resp)
