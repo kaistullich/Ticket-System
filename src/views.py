@@ -5,7 +5,7 @@ from random import randrange
 
 from flask import flash, redirect, render_template, request, url_for
 
-from src.all_notifications import email_notification, twilio_sms, ticket_call
+from src.all_notifications import email_notification, twilio_sms, ticket_creation_call
 from src.models import TicketForm, LoginForm, TicketDB, AgentLoginDB, db, app
 
 from twilio.twiml.voice_response import VoiceResponse
@@ -60,6 +60,10 @@ def home():
             email_notification(name, email, rand_num)
             twilio_sms(number, name, ticket.ticketID)
 
+            # Send call to agent if new ticket submit is of severity type 1
+            if severity == '1':
+                ticket_creation_call(config_f['dept_num'])
+
             flash('Your tickets was successfully submitted!', 'success')
             return redirect(url_for('home'))
 
@@ -97,7 +101,6 @@ def home():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-
     form = LoginForm()
 
     if form.validate_on_submit() and request.method == 'POST':
@@ -116,11 +119,20 @@ def login():
 
 
 @app.route("/reminder", methods=['GET', 'POST'])
-def ticket_reminder():
-    """Respond to incoming requests."""
+def ticket_reminder_route():
     # TODO: Put name of dept and ticket number into voice
     resp = VoiceResponse()
-    resp.say('Reminder, there are one or more priority 1 tickets with a status of open that have not been acknowledged \
-             for 60 or more minutes.', loop=2, voice='woman')
+    resp.say(
+        'There are {num_open_tix} open Priority 1 tickets. Please check your queue.'.format(num_open_tix=' 7 8 9 0'),
+        loop=2, voice='man')
+
+    return str(resp)
+
+
+@app.route('/ticket_creation', methods=['GET', 'POST'])
+def ticket_creation():
+    # TODO: Put `tix_ID` with NEW ticket submission
+    resp = VoiceResponse()
+    resp.say('A new priority 1 ticket with ID {tix_ID} has been created'.format(tix_ID=''), loop=2, voice='man')
 
     return str(resp)
