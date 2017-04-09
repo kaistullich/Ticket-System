@@ -16,12 +16,12 @@ with open('src/config.json') as f:
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/home', methods=['GET', 'POST'])
 def home():
-
     form = TicketForm()
 
     if form.validate_on_submit() and request.method == 'POST':
         # Block will be executed if ticketID did NOT match random
         cust_name = form.name.data
+        global cust_email
         cust_email = form.email.data
         cust_phone = form.phone_number.data
         tix_dept = form.ticket_type.data
@@ -33,8 +33,8 @@ def home():
 
         # Insert new completed ticket into TicketDB
         new_ticket = TicketDB(cust_name=cust_name, cust_email=cust_email, cust_phone=cust_phone,
-                            tix_dept=tix_dept, tix_severity=tix_severity, tix_msg=tix_msg,
-                            tix_status=tix_status, tix_recv_date=tix_recv_date, tix_recv_time=tix_recv_time)
+                              tix_dept=tix_dept, tix_severity=tix_severity, tix_msg=tix_msg,
+                              tix_status=tix_status, tix_recv_date=tix_recv_date, tix_recv_time=tix_recv_time)
         db.session.add(new_ticket)
         db.session.commit()
 
@@ -43,10 +43,10 @@ def home():
 
         # Send off both Email / SMS notifications
         email_notification(cust_name, cust_email, ticket.ticketID)
-        twilio_sms(number, name, ticket.ticketID)
+        twilio_sms(cust_phone, cust_name, ticket.ticketID)
 
         # Send call to agent if new ticket submit is of severity type 1
-        if severity == '1':
+        if tix_severity == '1':
             ticket_creation_call(config_f['dept_num'])
 
         flash('Your tickets was successfully submitted!', 'success')
@@ -78,9 +78,9 @@ def login():
 def ticket_reminder_route():
     # TODO: Put name of dept and ticket number into voice
     resp = VoiceResponse()
-    resp.say(
-        'There are {num_open_tix} open Priority 1 tickets. Please check your queue.'.format(num_open_tix='still'),
-        loop=2, voice='man')
+    resp.say('There are {num_open_tix} open Priority 1 tickets. Please check your queue.'.format(num_open_tix='still'),
+             loop=2,
+             voice='man')
 
     return str(resp)
 
@@ -91,6 +91,8 @@ def ticket_creation():
 
     ticket = TicketDB.query.filter_by(cust_email=cust_email).first()
     resp = VoiceResponse()
-    resp.say('A new priority 1 ticket with ID {tix_ID} has been created'.format(tix_ID=ticket.ticketID), loop=2, voice='man')
+    resp.say('A new priority 1 ticket with ID {tix_ID} has been created'.format(tix_ID=ticket.ticketID),
+             loop=2,
+             voice='man')
 
     return str(resp)
