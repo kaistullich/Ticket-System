@@ -4,7 +4,6 @@ import time
 import requests
 
 from src.all_notifications import ticket_reminder_call
-# from src.views import ticket_reminder_route
 
 with open('src/config.json') as f:
     config_f = json.load(f)
@@ -40,6 +39,5 @@ while True:
                     open_tix_found = True
 
     if open_tix_found:
-        # ticket_reminder_route(open_tix_counter)  # views.py
         # TODO: Change number to cellphone when testing away from home
         ticket_reminder_call(config_f['dept_num'])  # Home number currently
