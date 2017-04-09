@@ -71,14 +71,15 @@ class TicketDB(db.Model):
     __tablename__ = 'Ticket'
 
     ticketID = db.Column(db.Integer, nullable=False, primary_key=True, autoincrement=True, unique=True)
-    name = db.Column(db.String(50), nullable=False)
-    email = db.Column(db.String(50), nullable=False)
-    ticket_group = db.Column(db.String(30), nullable=False)
-    ticket_severity = db.Column(db.Integer, nullable=False)
-    message = db.Column(db.String(500), nullable=False)
-    ticket_status = db.Column(db.String(10), nullable=False)
-    ticket_date = db.Column(db.String(20), nullable=False)
-    ticket_time = db.Column(db.Integer, nullable=False)
+    cust_name = db.Column(db.String(50), nullable=False)
+    cust_email = db.Column(db.String(50), nullable=False)
+    cust_phone = db.Column(db.Integer, nullable=False)
+    tix_dept = db.Column(db.String(30), nullable=False)
+    tix_severity = db.Column(db.Integer, nullable=False)
+    tix_msg = db.Column(db.String(500), nullable=False)
+    tix_status = db.Column(db.String(10), nullable=False)
+    tix_recv_date = db.Column(db.String(20), nullable=False)
+    tix_recv_time = db.Column(db.Integer, nullable=False)
 
 
 class DepartmentDB(db.Model):
