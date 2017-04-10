@@ -68,7 +68,7 @@ class LoginForm(FlaskForm):
 
 # All Database Models below:
 class TicketDB(db.Model):
-    __tablename__ = 'Ticket'
+    __tablename__ = 'tickets'
 
     ticketID = db.Column(db.Integer, nullable=False, primary_key=True, autoincrement=True, unique=True)
     cust_name = db.Column(db.String(50), nullable=False)
@@ -83,15 +83,16 @@ class TicketDB(db.Model):
 
 
 class DepartmentDB(db.Model):
-    __tablename__ = 'Department'
+    __tablename__ = 'department'
 
     deptID = db.Column(db.Integer, primary_key=True, autoincrement=True, unique=True)
-    deptName = db.Column(db.String(25), nullable=False)
-    agentID = db.Column(db.Integer, nullable=False)
+    dept_name = db.Column(db.String(40), nullable=False)
+    dept_empl = db.Column(db.String(40), nullable=False)
+    dept_empl_phone = db.Column(db.Integer, nullable=False)
 
 
 class CustomerDB(db.Model):
-    __tablename__ = 'Customers'
+    __tablename__ = 'customers'
 
     custID = db.Column(db.Integer, primary_key=True, autoincrement=True)
     cust_name = db.Column(db.String(50), nullable=False)
@@ -99,16 +100,8 @@ class CustomerDB(db.Model):
     cust_phone = db.Column(db.Integer, nullable=False)
 
 
-class AgentDB(db.Model):
-    __tablename__ = 'Agents'
-
-    agentID = db.Column(db.Integer, primary_key=True, autoincrement=True, unique=True)
-    agent_name = db.Column(db.String(45))
-    agent_phone = db.Column(db.Integer)
-
-
 class AgentLoginDB(db.Model):
-    __tablename__ = 'Login'
+    __tablename__ = 'login'
 
     username = db.Column(db.String(4), primary_key=True)
     password = db.Column(db.String(60))
@@ -139,7 +132,6 @@ class AgentsAdminView(ModelView):
 admin.add_view(TicketAdminView(TicketDB, db.session, menu_icon_type='glyph', menu_icon_value='glyphicon-home'))
 admin.add_view(DepartmentAdminView(DepartmentDB, db.session))
 admin.add_view(CustomersAdminView(CustomerDB, db.session))
-admin.add_view(AgentsAdminView(AgentDB, db.session))
 
 # API Manager
 manager = flask_restless.APIManager(app, flask_sqlalchemy_db=db)
