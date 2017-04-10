@@ -52,7 +52,7 @@ def home():
 
         # Send off both Email / SMS notifications
         email_notification(cust_name, cust_email, ticket.ticketID)
-        # twilio_sms(cust_phone, cust_name, ticket.ticketID)
+        twilio_sms(cust_phone, cust_name, ticket.ticketID)
 
         # Send call to agent if new ticket submit is of severity type 1
         if tix_severity == '1':

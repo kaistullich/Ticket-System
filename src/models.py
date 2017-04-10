@@ -53,7 +53,7 @@ class TicketForm(FlaskForm):
     severity = SelectField('Business Impact:', [InputRequired()],
                            choices=[('3', 'P3 - General'),
                                     ('2', 'P2 - Degraded'),
-                                    ('1', 'P1 - Critical Outgae')
+                                    ('1', 'P1 - Critical Outage')
                                     ])
     message = TextAreaField('Message:', [InputRequired()])
 

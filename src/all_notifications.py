@@ -79,7 +79,7 @@ def ticket_reminder_call(dept_number):
     call = client.api.account.calls.create(to=dept_number,
                                            from_=config_f['from_'],
                                            # TODO: change URL to new HTTPS ngrok url WITH /reminder
-                                           url="https://27d3f05a.ngrok.io/reminder",
+                                           url="https://2ec1da49.ngrok.io/reminder",
                                            )
     print(call.sid)
 
@@ -93,6 +93,6 @@ def ticket_creation_call(dept_number):
     call = client.api.account.calls.create(to=dept_number,
                                            from_=config_f['from_'],
                                            # TODO: change URL to new HTTPS ngrok url WITH /ticket_creation
-                                           url="https://27d3f05a.ngrok.io/ticket_creation",
+                                           url="https://2ec1da49.ngrok.io/ticket_creation",
                                            )
     print(call.sid)
