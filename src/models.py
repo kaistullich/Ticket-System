@@ -66,8 +66,8 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', [InputRequired()])
 
 
-# All Database Models below:
-class TicketDB(db.Model):
+# Ticket Table
+class TicketTable(db.Model):
     __tablename__ = 'tickets'
 
     ticketID = db.Column(db.Integer, nullable=False, primary_key=True, autoincrement=True, unique=True)
@@ -82,7 +82,8 @@ class TicketDB(db.Model):
     tix_recv_time = db.Column(db.Integer, nullable=False)
 
 
-class DepartmentDB(db.Model):
+# Department Table
+class DepartmentTable(db.Model):
     __tablename__ = 'department'
 
     deptID = db.Column(db.Integer, primary_key=True, autoincrement=True, unique=True)
@@ -91,7 +92,8 @@ class DepartmentDB(db.Model):
     dept_empl_phone = db.Column(db.Integer, nullable=False)
 
 
-class CustomerDB(db.Model):
+# Customer Table
+class CustomerTable(db.Model):
     __tablename__ = 'customers'
 
     custID = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -100,7 +102,8 @@ class CustomerDB(db.Model):
     cust_phone = db.Column(db.Integer, nullable=False)
 
 
-class AgentLoginDB(db.Model):
+# Agent Login Table
+class AgentLoginTable(db.Model):
     __tablename__ = 'login'
 
     username = db.Column(db.String(4), primary_key=True)
@@ -129,12 +132,12 @@ class AgentsAdminView(ModelView):
 
 
 # All Admin Views for DB's below:
-admin.add_view(TicketAdminView(TicketDB, db.session, menu_icon_type='glyph', menu_icon_value='glyphicon-home'))
-admin.add_view(DepartmentAdminView(DepartmentDB, db.session))
-admin.add_view(CustomersAdminView(CustomerDB, db.session))
+admin.add_view(TicketAdminView(TicketTable, db.session, menu_icon_type='glyph', menu_icon_value='glyphicon-home'))
+admin.add_view(DepartmentAdminView(DepartmentTable, db.session))
+admin.add_view(CustomersAdminView(CustomerTable, db.session))
 
 # API Manager
 manager = flask_restless.APIManager(app, flask_sqlalchemy_db=db)
-manager.create_api(TicketDB,
+manager.create_api(TicketTable,
                    methods=['GET', 'POST']
                    )
