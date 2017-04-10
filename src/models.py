@@ -67,23 +67,27 @@ class LoginForm(FlaskForm):
 
 
 # Ticket Table
-class TicketTable(db.Model):
+class Tickets(db.Model):
     __tablename__ = 'tickets'
 
     ticketID = db.Column(db.Integer, nullable=False, primary_key=True, autoincrement=True, unique=True)
     cust_name = db.Column(db.String(50), nullable=False)
     cust_email = db.Column(db.String(50), nullable=False)
     cust_phone = db.Column(db.Integer, nullable=False)
-    tix_dept = db.Column(db.String(30), nullable=False)
+    # tix_dept = db.Column(db.String(30), nullable=False)
+    tix_dept = db.Column(db.Integer, db.ForeignKey('department.deptID'))
     tix_severity = db.Column(db.Integer, nullable=False)
     tix_msg = db.Column(db.String(500), nullable=False)
     tix_status = db.Column(db.String(10), nullable=False)
     tix_recv_date = db.Column(db.String(20), nullable=False)
     tix_recv_time = db.Column(db.Integer, nullable=False)
 
+    # define relationship
+    department = db.relationship('Departments')
+
 
 # Department Table
-class DepartmentTable(db.Model):
+class Departments(db.Model):
     __tablename__ = 'department'
 
     deptID = db.Column(db.Integer, primary_key=True, autoincrement=True, unique=True)
@@ -93,7 +97,7 @@ class DepartmentTable(db.Model):
 
 
 # Customer Table
-class CustomerTable(db.Model):
+class Customers(db.Model):
     __tablename__ = 'customers'
 
     custID = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -103,7 +107,7 @@ class CustomerTable(db.Model):
 
 
 # Agent Login Table
-class AgentLoginTable(db.Model):
+class AgentLogin(db.Model):
     __tablename__ = 'login'
 
     username = db.Column(db.String(4), primary_key=True)
@@ -132,12 +136,12 @@ class AgentsAdminView(ModelView):
 
 
 # All Admin Views for DB's below:
-admin.add_view(TicketAdminView(TicketTable, db.session, menu_icon_type='glyph', menu_icon_value='glyphicon-home'))
-admin.add_view(DepartmentAdminView(DepartmentTable, db.session))
-admin.add_view(CustomersAdminView(CustomerTable, db.session))
+admin.add_view(TicketAdminView(Tickets, db.session, menu_icon_type='glyph', menu_icon_value='glyphicon-home'))
+admin.add_view(DepartmentAdminView(Departments, db.session))
+admin.add_view(CustomersAdminView(Customers, db.session))
 
 # API Manager
 manager = flask_restless.APIManager(app, flask_sqlalchemy_db=db)
-manager.create_api(TicketTable,
+manager.create_api(Tickets,
                    methods=['GET', 'POST']
                    )
