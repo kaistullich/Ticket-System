@@ -1,7 +1,7 @@
 import bcrypt
 import json
 import time
-import twilio
+
 from flask import flash, redirect, render_template, request, url_for
 
 from src.all_notifications import email_notification, twilio_sms, ticket_creation_call
