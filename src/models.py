@@ -74,7 +74,6 @@ class Tickets(db.Model):
     cust_name = db.Column(db.String(50), nullable=False)
     cust_email = db.Column(db.String(50), nullable=False)
     cust_phone = db.Column(db.Integer, nullable=False)
-    # tix_dept = db.Column(db.String(30), nullable=False)
     tix_dept = db.Column(db.Integer, db.ForeignKey('department.deptID'))
     tix_severity = db.Column(db.Integer, nullable=False)
     tix_msg = db.Column(db.String(500), nullable=False)
@@ -94,6 +93,9 @@ class Departments(db.Model):
     dept_name = db.Column(db.String(40), nullable=False)
     dept_empl = db.Column(db.String(40), nullable=False)
     dept_empl_phone = db.Column(db.Integer, nullable=False)
+
+    def __str__(self):
+        return self.dept_name
 
 
 # Customer Table
@@ -116,6 +118,9 @@ class AgentLogin(db.Model):
 
 # All Admin Views for each table
 class TicketAdminView(ModelView):
+    column_display_pk = True
+    # column_list = ['ticketID', 'cust_name', 'cust_email', 'cust_phone',
+    #                'Department', 'tix_severity', 'tix_msg', 'tix_recv_date', 'tix_recv_time']
     create_template = 'create.html'
     edit_template = 'edit.html'
 
