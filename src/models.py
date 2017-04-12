@@ -119,16 +119,6 @@ class AgentLogin(db.Model):
 # All Admin Views for each table
 class TicketAdminView(ModelView):
     column_display_pk = True
-    # ticketID = db.Column(db.Integer, nullable=False, primary_key=True, autoincrement=True, unique=True)
-    # cust_name = db.Column(db.String(50), nullable=False)
-    # cust_email = db.Column(db.String(50), nullable=False)
-    # cust_phone = db.Column(db.Integer, nullable=False)
-    # tix_dept = db.Column(db.Integer, db.ForeignKey('department.deptID'))
-    # tix_severity = db.Column(db.Integer, nullable=False)
-    # tix_msg = db.Column(db.String(500), nullable=False)
-    # tix_status = db.Column(db.String(10), nullable=False)
-    # tix_recv_date = db.Column(db.String(20), nullable=False)
-    # tix_recv_time = db.Column(db.Integer, nullable=False)
     create_template = 'create.html'
     edit_template = 'edit.html'
     form_widget_args = {
