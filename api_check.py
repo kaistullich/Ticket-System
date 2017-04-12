@@ -9,7 +9,7 @@ with open('src/config.json') as f:
     config_f = json.load(f)
 
 # TODO: change url to NEW ngrok url
-r = requests.get('https://2ec1da49.ngrok.io/api/Ticket')
+r = requests.get(config_f['api_url'])
 print('Request status: ' + str(r.status_code))
 api_objs = r.text
 tickets = json.loads(api_objs)
@@ -30,14 +30,13 @@ while True:
             if tix_status == "Open":
                 if date_now == tix_date:
                     if time_now - tix_time >= 60:
-                        print('Ticket(s) found', ticket['ticketID'])
                         open_tix_counter += 1
                         open_tix_found = True
                 elif date_now != tix_date:
-                    print('Ticket(s) found', ticket['ticketID'])
                     open_tix_counter += 1
                     open_tix_found = True
 
+    print('Ticket(s) found', open_tix_counter)
     if open_tix_found:
         # TODO: Change number to cellphone when testing away from home
         ticket_reminder_call(config_f['dept_num'])  # Home number currently
