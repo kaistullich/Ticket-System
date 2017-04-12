@@ -1,5 +1,6 @@
 import bcrypt
 import json
+import requests
 import time
 
 from flask import flash, redirect, render_template, request, url_for
@@ -52,7 +53,7 @@ def home():
 
         # Send off both Email / SMS notifications
         email_notification(cust_name, cust_email, ticket.ticketID)
-        twilio_sms(cust_phone, cust_name, ticket.ticketID)
+        # twilio_sms(cust_phone, cust_name, ticket.ticketID)
 
         # Send call to agent if new ticket submit is of severity type 1
         if tix_severity == '1':
@@ -91,8 +92,22 @@ def login():
 @app.route("/reminder", methods=['GET', 'POST'])
 def ticket_reminder_route():
     # TODO: Put name of dept and ticket number into voice
+
+    open_tix = ticket_counter()
+    print('OPEN TICKETS: ', open_tix)
+    print('OPEN TICKETS: ', open_tix)
+    print('OPEN TICKETS: ', open_tix)
+    print('OPEN TICKETS: ', open_tix)
+    print('OPEN TICKETS: ', open_tix)
+    print('OPEN TICKETS: ', open_tix)
+    print('OPEN TICKETS: ', open_tix)
+    print('OPEN TICKETS: ', open_tix)
+    print('OPEN TICKETS: ', open_tix)
+    print('OPEN TICKETS: ', open_tix)
+    print('OPEN TICKETS: ', open_tix)
+
     resp = VoiceResponse()
-    resp.say('There are {num_open_tix} open Priority 1 tickets. Please check your queue.'.format(num_open_tix='still'),
+    resp.say('There are {num_open_tix} open Priority 1 tickets. Please check your queue.'.format(num_open_tix=open_tix),
              loop=2,
              voice='man')
 
@@ -110,3 +125,28 @@ def ticket_creation():
              voice='man')
 
     return str(resp)
+
+
+def ticket_counter():
+    r = requests.get(config_f['api_url'])
+    print('Request status: ' + str(r.status_code))
+    api_objs = r.text
+    tickets = json.loads(api_objs)
+    time_now = int(time.strftime('%H%M'))
+    date_now = time.strftime('%a, %d %b %Y')
+    open_tix_counter = 0
+    for ticket in tickets['objects']:
+        tix_status = ticket['tix_status']
+        tix_severity = ticket['tix_severity']
+        tix_time = ticket['tix_recv_time']
+        tix_date = ticket['tix_recv_date']
+        if tix_severity == 1:
+            if tix_status == "Open":
+                if date_now == tix_date:
+                    if time_now - tix_time >= 60:
+                        open_tix_counter += 1
+                elif date_now != tix_date:
+                    open_tix_counter += 1
+
+    print('Ticket(s) found', open_tix_counter)
+    return open_tix_counter
