@@ -19,7 +19,7 @@ def home():
     """
         - This is the main ticket submission form handled on two 
           routes (`/` & `/home`), the form can be accessed from
-          either routes.
+          either route.
     
         - On submit of the form all the form data is accessed and 
           stored immediately inside of the `tickets` table. Further,
@@ -76,11 +76,14 @@ def home():
         db.session.commit()
 
         # Query needed to notify ticket # by SMS
-        ticket = Tickets.query.filter_by(cust_email=cust_email).first()
+        tickets = Tickets.query.filter_by(cust_email=cust_email).all()
+        last_tix_id = None
+        for t in tickets:
+            last_tix_id = t.ticketID
 
         # Send off both Email / SMS notifications
-        email_notification(cust_name, cust_email, ticket.ticketID)
-        twilio_sms(cust_phone, cust_name, ticket.ticketID)
+        email_notification(cust_name, cust_email, last_tix_id)
+        twilio_sms(cust_phone, cust_name, last_tix_id)
 
         # Send call to agent if new ticket submit is of severity type 1
         if tix_severity == '1':
