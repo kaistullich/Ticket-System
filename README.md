@@ -1,7 +1,9 @@
 # Lightweight Ticket System
-[![Build Status](https://travis-ci.org/kaistullich/Ticket-System.svg?branch=master)](https://travis-ci.org/kaistullich/Ticket-System)
 
-This project was the final for BUS4-92 at San Jose State University. Here are a few instructions:
+**_Please be aware that the README is not fully updated, and some instructions are missing_**
+
+This project was the final for the BUS4-92 course at San Jose State University. Here are a few instructions if you would
+like to test the system out:
  
 * Have Python 3.x installed on your system: [Download](https://www.python.org/downloads/)   
  * Create a free Twilio Developer Account: [Twilio Developer Sign-up](https://www.twilio.com/try-twilio)
