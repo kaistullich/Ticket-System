@@ -79,7 +79,7 @@ class Departments(db.Model):
 
     def __str__(self):
         """
-        method is used to display the dept_name instead of
+        method is used to display the `dept_name` instead of
         the actual object memory location
         
         :return: dept_name
@@ -90,7 +90,7 @@ class Departments(db.Model):
 def dept_choice():
     """
     Queries the `department` table and pulls the `dept_name`
-    and the `depID`. It will the loop through the entire
+    and the `deptID`. It will then loop through the entire
     `department` table and append `deptID` & `dept_names` to
     lists.
     
@@ -130,7 +130,7 @@ class TicketForm(FlaskForm):
 
 class Customers(db.Model):
     """
-    `customer` table creation
+    `customers` table creation
     """
     __tablename__ = 'customers'
 
@@ -142,8 +142,9 @@ class Customers(db.Model):
 
 class AgentLogin(db.Model):
     """
-    `agent` login table creation. This table will only hold
+    agent `login` table creation. This table will only hold
     the username & password for logging into Flask-Admin views
+    for employees
     """
     __tablename__ = 'login'
 
@@ -154,7 +155,8 @@ class AgentLogin(db.Model):
 class TicketAdminView(ModelView):
     """
     Creates the `tickets` admin view in Flask-Admin. It also 
-    sets "readonly" methods on certain fields
+    sets "readonly" methods on certain fields with the 
+    `form_widget_args` argument
     """
     column_display_pk = True
     create_template = 'create.html'
@@ -204,7 +206,7 @@ class CustomersAdminView(ModelView):
     edit_template = 'edit.html'
 
 
-# All Admin Views for DB's below:
+# All Admin Views
 admin.add_view(TicketAdminView(Tickets, db.session, menu_icon_type='glyph', menu_icon_value='glyphicon-home'))
 admin.add_view(DepartmentAdminView(Departments, db.session))
 admin.add_view(CustomersAdminView(Customers, db.session))
