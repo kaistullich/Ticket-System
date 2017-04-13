@@ -2,7 +2,8 @@
 
 ****!!!! NOTE: _Please be aware that the README is not fully updated, and some instructions are missing. With the
 information provided you will NOT be able to run the system, unless you have a intermediate background with
-Python and/or Twilio and are willing to work out all the errors that will occur._ !!!!****
+Python and/or Twilio and/or Flask and are willing to work out all the errors that will occur. I hope to update the
+README to full completion in the near future. Thank you for your understanding._ !!!!****
 
 
 **~~ LAST UPDATE: 04/12/2017 ~~**
