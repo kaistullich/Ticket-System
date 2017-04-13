@@ -1,6 +1,6 @@
 # Lightweight Ticket System
 
-****!!!!_Please be aware that the README is not fully updated, and some instructions are missing_!!!!****
+****!!!! _Please be aware that the README is not fully updated, and some instructions are missing_ !!!!****
 
 This project was the final for the BUS4-110A course at San Jose State University. Here are a few instructions if you would
 like to test the system out:
