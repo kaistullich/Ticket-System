@@ -9,6 +9,7 @@ README to full completion in the near future. Thank you for your understanding._
 **~~ LAST UPDATE: 04/12/2017 ~~**
 
 
+***
 This project was the final for the BUS4-110A course at San Jose State University. Here are a few instructions if you would
 like to test the system out:
  
