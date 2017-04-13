@@ -62,6 +62,8 @@ def home():
 
         flash('Your tickets was successfully submitted!', 'success')
         return redirect(url_for('home'))
+    else:
+        flash('There was an error submitting your ticket, please try again!', 'danger')
 
     return render_template('home.html', form=form)
 
@@ -80,10 +82,10 @@ def login():
             if psw_hash:
                 return redirect(url_for('admin.index'))
             else:
-                flash(u'That username or password does not match, try again', 'warning')
+                flash(u'That username or password does not match, try again', 'danger')
                 return redirect(url_for('login'))
         else:
-            flash(u'That username or password does not match, try again', 'warning')
+            flash(u'That username or password does not match, try again', 'danger')
             return redirect(url_for('login'))
 
     return render_template('login.html', form=form)
@@ -93,41 +95,6 @@ def login():
 def ticket_reminder_route():
     # TODO: Put name of dept and ticket number into voice
 
-    open_tix = ticket_counter()
-    print('OPEN TICKETS: ', open_tix)
-    print('OPEN TICKETS: ', open_tix)
-    print('OPEN TICKETS: ', open_tix)
-    print('OPEN TICKETS: ', open_tix)
-    print('OPEN TICKETS: ', open_tix)
-    print('OPEN TICKETS: ', open_tix)
-    print('OPEN TICKETS: ', open_tix)
-    print('OPEN TICKETS: ', open_tix)
-    print('OPEN TICKETS: ', open_tix)
-    print('OPEN TICKETS: ', open_tix)
-    print('OPEN TICKETS: ', open_tix)
-
-    resp = VoiceResponse()
-    resp.say('There are {num_open_tix} open Priority 1 tickets. Please check your queue.'.format(num_open_tix=open_tix),
-             loop=2,
-             voice='man')
-
-    return str(resp)
-
-
-@app.route('/ticket_creation', methods=['GET', 'POST'])
-def ticket_creation():
-    # TODO: Put `tix_ID` with NEW ticket submission
-
-    ticket = Tickets.query.filter_by(cust_email=cust_email).first()
-    resp = VoiceResponse()
-    resp.say('A new priority 1 ticket with ID {tix_ID} has been created'.format(tix_ID=ticket.ticketID),
-             loop=2,
-             voice='man')
-
-    return str(resp)
-
-
-def ticket_counter():
     r = requests.get(config_f['api_url'])
     print('Request status: ' + str(r.status_code))
     api_objs = r.text
@@ -149,4 +116,26 @@ def ticket_counter():
                     open_tix_counter += 1
 
     print('Ticket(s) found', open_tix_counter)
-    return open_tix_counter
+
+    # while True:
+    #     time.sleep(5)
+    #     break
+    resp = VoiceResponse()
+    resp.say('There are {num_open_tix} open Priority 1 tickets. Please check your queue.'.format(num_open_tix=open_tix_counter),
+             loop=2,
+             voice='man')
+
+    return str(resp)
+
+
+@app.route('/ticket_creation', methods=['GET', 'POST'])
+def ticket_creation():
+    # TODO: Put `tix_ID` with NEW ticket submission
+
+    ticket = Tickets.query.filter_by(cust_email=cust_email).first()
+    resp = VoiceResponse()
+    resp.say('A new priority 1 ticket with ID {tix_ID} has been created'.format(tix_ID=ticket.ticketID),
+             loop=2,
+             voice='man')
+
+    return str(resp)
