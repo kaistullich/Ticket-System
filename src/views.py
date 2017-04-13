@@ -134,10 +134,10 @@ def ticket_reminder_route():
         1. If Ticket Severity == 1
         2. If Ticket Status == "Open"
         3. If Ticket Received Date == Today's Date
-            3a. Ticket Received Time - Time Now is >= 60
-            3b. Append the TicketID to a list
+            3a. If Ticket Received Time - Time Now is >= 60
+            3b. Then append the TicketID to a list
         4. Else If Ticket Received Date NOT = Today's Date
-            4a. Append the TicketID to a list
+            4a. Then append the TicketID to a list
             
     :return: the response telling user the number of open tickets
     """
