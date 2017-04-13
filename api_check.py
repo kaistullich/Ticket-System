@@ -14,12 +14,11 @@ print('Request status: ' + str(r.status_code))
 api_objs = r.text
 tickets = json.loads(api_objs)
 time_now = int(time.strftime('%H%M'))
-date_now = time.strftime('%a, %d %b %Y')
+date_now = time.strftime('%D')
 
 while True:
     time.sleep(10)
     print('** CHECKING API FOR NEW TICKETS! **')
-    open_tix_counter = 0
     open_tix_found = False
     for ticket in tickets['objects']:
         tix_status = ticket['tix_status']
@@ -29,14 +28,11 @@ while True:
         if tix_severity == 1:
             if tix_status == "Open":
                 if date_now == tix_date:
-                    if time_now - tix_time >= 60:
-                        open_tix_counter += 1
+                    if time_now - tix_time >= 5:
                         open_tix_found = True
                 elif date_now != tix_date:
-                    open_tix_counter += 1
                     open_tix_found = True
-
-    print('Ticket(s) found', open_tix_counter)
     if open_tix_found:
+        print('~~~ FOUND OPEN P1 TICKETS ~~~')
         # TODO: Change number to cellphone when testing away from home
         ticket_reminder_call(config_f['dept_num'])  # Home number currently
