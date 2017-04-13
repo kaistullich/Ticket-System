@@ -1,5 +1,5 @@
 # Lightweight Ticket System
-
+[![Build Status](https://travis-ci.org/kaistullich/Ticket-System.svg?branch=master)](https://travis-ci.org/kaistullich/Ticket-System)
 This project was the final for BUS4-92 at San Jose State University. Here are a few instructions:
  
 * Have Python 3.x installed on your system: [Download](https://www.python.org/downloads/)   
