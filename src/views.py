@@ -93,10 +93,26 @@ def login():
 @app.route("/reminder", methods=['GET', 'POST'])
 def ticket_reminder_route():
     # TODO: Put name of dept and ticket number into voice
+    date_now = time.strftime('%D')
+    time_now = int(time.strftime('%H%M'))
+
+    open_p1_tix = Tickets.query.all()
+
+    open_p1_list = []
+    for t in open_p1_tix:
+        if t.tix_severity == 1:
+            if t.tix_status == 'Open':
+                if date_now == t.tix_recv_date:
+                    if time_now - t.tix_recv_time >= 5:
+                        open_p1_list.append(t.ticketID)
+                elif date_now != t.tix_recv_date:
+                    open_p1_list.append(t.ticketID)
+
     resp = VoiceResponse()
-    resp.say('There are {num_open_tix} open Priority 1 tickets. Please check your queue.'.format(num_open_tix='still'),
-             loop=2,
-             voice='man')
+    resp.say('There are {num_open_tix} open Priority 1 tickets. Please check your queue.'.format(
+                                                                                        num_open_tix=len(open_p1_list)),
+                                                                                        loop=2,
+                                                                                        voice='man')
 
     return str(resp)
 
