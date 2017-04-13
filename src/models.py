@@ -34,33 +34,9 @@ mail = Mail(app)
 admin = Admin(app, template_mode='bootstrap3')
 
 
-# All Forms below:
-class TicketForm(FlaskForm):
-    name = StringField('Name:', [InputRequired()])
-    email = StringField('Email:', [InputRequired(), Email('Invalid Email!')])
-    phone_number = StringField('Phone Number:', [InputRequired(),
-                                                 Length(min=10,
-                                                        max=10,
-                                                        message='Phone number must be 10 digits!')
-                                                 ])
-    ticket_type = SelectField('Select an issue:', [InputRequired()], choices=[('subscription', 'Subscriptions'),
-                                                                              ('maps', 'Google Maps'),
-                                                                              ('profile', 'Personal Profile'),
-                                                                              ('shipping', 'Shipping'),
-                                                                              ('apparel', 'Apparel'),
-                                                                              ('other', 'other')
-                                                                              ])
-    severity = SelectField('Business Impact:', [InputRequired()],
-                           choices=[('3', 'P3 - General'),
-                                    ('2', 'P2 - Degraded'),
-                                    ('1', 'P1 - Critical Outage')
-                                    ])
-    message = TextAreaField('Message:', [InputRequired()])
-
-
 class LoginForm(FlaskForm):
     """
-    Agent Login Form to access the Database
+    Agent Login Form to access Flask-Admin views
     """
     username = StringField('Username:', [InputRequired()])
     password = PasswordField('Password', [InputRequired()])
@@ -98,7 +74,35 @@ class Departments(db.Model):
         return self.dept_name
 
 
-# Customer Table
+def dept_choice():
+    dept = Departments.query.all()
+    dept_names = []
+    dept_ids = []
+    for d in dept:
+        dept_names.append(str(d.dept_name))
+        dept_ids.append(str(d.deptID))
+
+    zipped = list(zip(dept_ids, dept_names))
+    return zipped
+
+
+class TicketForm(FlaskForm):
+    name = StringField('Name:', [InputRequired()])
+    email = StringField('Email:', [InputRequired(), Email('Invalid Email!')])
+    phone_number = StringField('Phone Number:', [InputRequired(),
+                                                 Length(min=10,
+                                                        max=10,
+                                                        message='Phone number must be 10 digits!')
+                                                 ])
+    ticket_type = SelectField('Select an issue:', [InputRequired()], choices=dept_choice())
+    severity = SelectField('Business Impact:', [InputRequired()],
+                           choices=[('3', 'P3 - General'),
+                                    ('2', 'P2 - Degraded'),
+                                    ('1', 'P1 - Critical Outage')
+                                    ])
+    message = TextAreaField('Message:', [InputRequired()])
+
+
 class Customers(db.Model):
     __tablename__ = 'customers'
 
@@ -108,7 +112,6 @@ class Customers(db.Model):
     cust_phone = db.Column(db.Integer, nullable=False)
 
 
-# Agent Login Table
 class AgentLogin(db.Model):
     __tablename__ = 'login'
 
@@ -116,7 +119,6 @@ class AgentLogin(db.Model):
     password = db.Column(db.String(60))
 
 
-# All Admin Views for each table
 class TicketAdminView(ModelView):
     column_display_pk = True
     create_template = 'create.html'
