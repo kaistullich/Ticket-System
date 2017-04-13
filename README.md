@@ -2,6 +2,10 @@
 
 ****!!!! _Please be aware that the README is not fully updated, and some instructions are missing_ !!!!****
 
+
+**~~ LAST UPDATE: 04/12/2017 ~~**
+
+
 This project was the final for the BUS4-110A course at San Jose State University. Here are a few instructions if you would
 like to test the system out:
  
@@ -37,11 +41,13 @@ Ticket-System\
         static\
         templates\
     __init__.py
+    all_notifications.py
+    config.json
     decorators.py
     models.py
     views.py
-    config.json
 .gitignore
+api_check.py
 config_instructions.txt
 README.md
 run.py
@@ -58,7 +64,6 @@ Open the `config.json` file you just created, and paste in the following JSON:
 ```json
 {
   "DATABASE_FILE": "ticket_system.sqlite",
-  "SQLALCHEMY_DATABASE_URI": "sqlite://///",
   "SQLALCHEMY_ECHO": true,
   "SQLALCHEMY_TRACK_MODIFICATIONS": true,
   "MAIL_SERVER": "smtp.gmail.com",
@@ -69,7 +74,11 @@ Open the `config.json` file you just created, and paste in the following JSON:
   "MAIL_USE_SSL": true,
   "account_sid": "",
   "auth_token": "",
-  "from_": ""
+  "from_": "",
+  "dept_num": "",
+  "reminder": "",
+  "ticket_creation": "",
+  "api_url": ""
 }
 ```
 
