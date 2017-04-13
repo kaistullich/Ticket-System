@@ -19,17 +19,28 @@ client = Client(account_sid, auth_token)
 # Decorator is utilized for Asynchronous tasks
 @async_
 def send_async_email(app, msg):
+    """
+    This function take email from `send_email()` and send it
+    asynchronously, using threading. The `@async_` comes
+    from `decorators.py`.
+    
+    :param app: Flask app
+    :param msg: The HTML email (`ticket_email.html`)
+    
+    :return: send the email
+    """
     with app.app_context():
         mail.send(msg)
 
 
 def send_email(subject, sender, recipients, html_body):
     """
-
+    This functions actually sends the email
+    
     :param subject: the subject in the email    
     :param sender: the email sender
     :param recipients: `list` of email addresses
-    :param html_body: the body for HTML, alternative :param: text_body
+    :param html_body: the body for HTML, alternative
     :return: sends the task to the new Thread
     """
     msg = Message(subject, sender=sender, recipients=recipients)
@@ -39,7 +50,10 @@ def send_email(subject, sender, recipients, html_body):
 
 def email_notification(cust_name, cust_email, tix):
     """
-
+    Prepping all the information needed to put the
+    email together. It will then pass all the information
+    to the `send_email()`
+    
     :param cust_name: customer name comes from form submission
     :param cust_email: customer email comes from form submission
     :param tix: this is the ticket num, randomly generated
@@ -53,7 +67,10 @@ def email_notification(cust_name, cust_email, tix):
 
 def twilio_sms(cust_to, cust_name, tix_num):
     """
-
+    Sending the SMS regarding customer new ticket
+    creation. It will mention their name and the
+    ticket ID for their reference.
+    
     :param cust_to: phone number, comes from form submission
     :param cust_name: customer name comes from form submission
     :param tix_num: this is the ticket num, randomly generated
@@ -72,13 +89,16 @@ def twilio_sms(cust_to, cust_name, tix_num):
 
 def ticket_reminder_call(dept_number):
     """
-
-    :param dept_number: the number being pulled from the DB to contact employee
-    :return: initiate the call
+    Initiates the call for any tickets meeting the 
+    4 requirements set out in the `/reminder` route
+    in views.py.
+    
+    :param dept_number: the number coming from `config.json`
+    
+    :return: initiate the reminder call
     """
     call = client.api.account.calls.create(to=dept_number,
                                            from_=config_f['from_'],
-                                           # TODO: change URL to new HTTPS ngrok url WITH /reminder
                                            url=config_f['reminder'],
                                            )
     print(call.sid)
@@ -86,13 +106,16 @@ def ticket_reminder_call(dept_number):
 
 def ticket_creation_call(dept_number):
     """
-
-    :param dept_number: the number being pulled from the DB to contact employee
-    :return: initiate the call
+    Initiates the call for any new ticket submission
+    where the ticket severity == 1. Take a look at the 
+    `/ticket_creation` route in views.py.
+    
+    :param dept_number: the number coming from `config.json`
+    
+    :return: initiate the ticket creation call
     """
     call = client.api.account.calls.create(to=dept_number,
                                            from_=config_f['from_'],
-                                           # TODO: change URL to new HTTPS ngrok url WITH /ticket_creation
                                            url=config_f['ticket_creation'],
                                            )
     print(call.sid)
