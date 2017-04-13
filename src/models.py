@@ -42,8 +42,13 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', [InputRequired()])
 
 
-# Ticket Table
 class Tickets(db.Model):
+    """
+    `tickets` table creation with a relationship btwn `department`.
+    Creating a one-to-one relationship on `tix_dept` inside of
+    the `tickets` table and `deptID` inside of the `department`
+    table
+    """
     __tablename__ = 'tickets'
 
     ticketID = db.Column(db.Integer, nullable=False, primary_key=True, autoincrement=True, unique=True)
@@ -61,8 +66,10 @@ class Tickets(db.Model):
     department = db.relationship('Departments')
 
 
-# Department Table
 class Departments(db.Model):
+    """
+    `department` table creation
+    """
     __tablename__ = 'department'
 
     deptID = db.Column(db.Integer, primary_key=True, autoincrement=True, unique=True)
@@ -71,10 +78,24 @@ class Departments(db.Model):
     dept_empl_phone = db.Column(db.Integer, nullable=False)
 
     def __str__(self):
+        """
+        method is used to display the dept_name instead of
+        the actual object memory location
+        
+        :return: dept_name
+        """
         return self.dept_name
 
 
 def dept_choice():
+    """
+    Queries the `department` table and pulls the `dept_name`
+    and the `depID`. It will the loop through the entire
+    `department` table and append `deptID` & `dept_names` to
+    lists.
+    
+    :return: zip of `deptID` & `dept_name`
+    """
     dept = Departments.query.all()
     dept_names = []
     dept_ids = []
@@ -87,6 +108,10 @@ def dept_choice():
 
 
 class TicketForm(FlaskForm):
+    """
+    Ticket form found on URL route `/` & `/home`. Includes
+    certain validators for form submission
+    """
     name = StringField('Name:', [InputRequired()])
     email = StringField('Email:', [InputRequired(), Email('Invalid Email!')])
     phone_number = StringField('Phone Number:', [InputRequired(),
@@ -104,6 +129,9 @@ class TicketForm(FlaskForm):
 
 
 class Customers(db.Model):
+    """
+    `customer` table creation
+    """
     __tablename__ = 'customers'
 
     custID = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -113,6 +141,10 @@ class Customers(db.Model):
 
 
 class AgentLogin(db.Model):
+    """
+    `agent` login table creation. This table will only hold
+    the username & password for logging into Flask-Admin views
+    """
     __tablename__ = 'login'
 
     username = db.Column(db.String(4), primary_key=True)
@@ -120,6 +152,10 @@ class AgentLogin(db.Model):
 
 
 class TicketAdminView(ModelView):
+    """
+    Creates the `tickets` admin view in Flask-Admin. It also 
+    sets "readonly" methods on certain fields
+    """
     column_display_pk = True
     create_template = 'create.html'
     edit_template = 'edit.html'
@@ -152,16 +188,18 @@ class TicketAdminView(ModelView):
 
 
 class DepartmentAdminView(ModelView):
+    """
+    Creates the `department` admin view in Flask-Admin
+    """
     create_template = 'create.html'
     edit_template = 'edit.html'
 
 
 class CustomersAdminView(ModelView):
-    create_template = 'create.html'
-    edit_template = 'edit.html'
+    """
+    Creates the `customer` admin view in Flask-Admin
+    """
 
-
-class AgentsAdminView(ModelView):
     create_template = 'create.html'
     edit_template = 'edit.html'
 
