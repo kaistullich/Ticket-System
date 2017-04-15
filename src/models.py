@@ -81,7 +81,7 @@ class Departments(db.Model):
         """
         method is used to display the `dept_name` instead of
         the actual object memory location
-        
+
         :return: dept_name
         """
         return self.dept_name
@@ -112,7 +112,8 @@ class TicketForm(FlaskForm):
     Ticket form found on URL route `/` & `/home`. Includes
     certain validators for form submission
     """
-    name = StringField('Name:', [InputRequired()])
+    f_name = StringField('First Name:', [InputRequired()])
+    l_name = StringField('Last Name:', [InputRequired()])
     email = StringField('Email:', [InputRequired(), Email('Invalid Email!')])
     phone_number = StringField('Phone Number:', [InputRequired(),
                                                  Length(min=10,
@@ -135,7 +136,8 @@ class Customers(db.Model):
     __tablename__ = 'customers'
 
     custID = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    cust_name = db.Column(db.String(50), nullable=False)
+    cust_f_name = db.Column(db.String(30), nullable=False)
+    cust_l_name = db.Column(db.String(30), nullable=False)
     cust_email = db.Column(db.String(60), nullable=False)
     cust_phone = db.Column(db.Integer, nullable=False)
 
