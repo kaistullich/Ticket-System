@@ -3,4 +3,5 @@
 *__pycache__*
 config.json
 ticket_system.sqlite
+venv/
 .DS_Store
