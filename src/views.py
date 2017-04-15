@@ -48,7 +48,8 @@ def home():
 
     if form.validate_on_submit() and request.method == 'POST':
         # Block will be executed if ticketID did NOT match random
-        cust_name = form.name.data
+        cust_f_name = form.f_name.data
+        cust_l_name = form.l_name.data
         global cust_email
         cust_email = form.email.data
         cust_phone = form.phone_number.data
@@ -59,19 +60,32 @@ def home():
         tix_recv_date = time.strftime('%D')
         tix_recv_time = time.strftime('%H%M')
 
+        cust_full_name = cust_f_name + ' ' + cust_l_name
+
         # Query Customer DB to check if customer already exists
         exist_cust = Customers.query.filter_by(cust_email=cust_email).first()
 
         # If customer does NOT exist
         if exist_cust is None:
-            new_cust = Customers(cust_name=cust_name, cust_email=cust_email, cust_phone=cust_phone)
+            new_cust = Customers(cust_f_name=cust_f_name,
+                                 cust_l_name=cust_l_name,
+                                 cust_email=cust_email,
+                                 cust_phone=cust_phone
+                                 )
             db.session.add(new_cust)
             db.session.commit()
 
         # Insert new completed ticket into TicketDB
-        new_ticket = Tickets(cust_name=cust_name, cust_email=cust_email, cust_phone=cust_phone,
-                              tix_dept=tix_dept, tix_severity=tix_severity, tix_msg=tix_msg,
-                              tix_status=tix_status, tix_recv_date=tix_recv_date, tix_recv_time=tix_recv_time)
+        new_ticket = Tickets(cust_name=cust_full_name,
+                             cust_email=cust_email,
+                             cust_phone=cust_phone,
+                             tix_dept=tix_dept,
+                             tix_severity=tix_severity,
+                             tix_msg=tix_msg,
+                             tix_status=tix_status,
+                             tix_recv_date=tix_recv_date,
+                             tix_recv_time=tix_recv_time
+                             )
         db.session.add(new_ticket)
         db.session.commit()
 
@@ -82,8 +96,8 @@ def home():
             last_tix_id = t.ticketID
 
         # Send off both Email / SMS notifications
-        email_notification(cust_name, cust_email, last_tix_id)
-        twilio_sms(cust_phone, cust_name, last_tix_id)
+        email_notification(cust_f_name, cust_email, last_tix_id)
+        twilio_sms(cust_phone, cust_f_name, last_tix_id)
 
         # Send call to agent if new ticket submit is of severity type 1
         if tix_severity == '1':
