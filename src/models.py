@@ -52,9 +52,7 @@ class Tickets(db.Model):
     __tablename__ = 'tickets'
 
     ticketID = db.Column(db.Integer, nullable=False, primary_key=True, autoincrement=True, unique=True)
-    cust_name = db.Column(db.String(50), nullable=False)
-    cust_email = db.Column(db.String(50), nullable=False)
-    cust_phone = db.Column(db.Integer, nullable=False)
+    custID = db.Column(db.Integer,  db.ForeignKey('customers.custID'))
     tix_dept = db.Column(db.Integer, db.ForeignKey('department.deptID'))
     tix_severity = db.Column(db.Integer, nullable=False)
     tix_msg = db.Column(db.String(500), nullable=False)
@@ -64,6 +62,8 @@ class Tickets(db.Model):
 
     # define relationship
     department = db.relationship('Departments')
+    customer = db.relationship('Customers')
+
 
 
 class Departments(db.Model):
@@ -85,6 +85,27 @@ class Departments(db.Model):
         :return: dept_name
         """
         return self.dept_name
+
+class Customers(db.Model):
+    """
+    `customers` table creation
+    """
+    __tablename__ = 'customers'
+
+    custID = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    cust_f_name = db.Column(db.String(30), nullable=False)
+    cust_l_name = db.Column(db.String(30), nullable=False)
+    cust_email = db.Column(db.String(60), nullable=False)
+    cust_phone = db.Column(db.Integer, nullable=False)
+
+    def __str__(self):
+        """
+        method is used to display the `cust_name` instead of
+        the actual object memory location
+
+        :return: cust_name
+        """
+        return self.cust_f_name
 
 
 def dept_choice():
@@ -129,17 +150,28 @@ class TicketForm(FlaskForm):
     message = TextAreaField('Message:', [InputRequired()])
 
 
-class Customers(db.Model):
-    """
-    `customers` table creation
-    """
-    __tablename__ = 'customers'
-
-    custID = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    cust_f_name = db.Column(db.String(30), nullable=False)
-    cust_l_name = db.Column(db.String(30), nullable=False)
-    cust_email = db.Column(db.String(60), nullable=False)
-    cust_phone = db.Column(db.Integer, nullable=False)
+# class Customers(db.Model):
+#     """
+#     `customers` table creation
+#     """
+#     __tablename__ = 'customers'
+#
+#     custID = db.Column(db.Integer, primary_key=True, autoincrement=True)
+#     cust_f_name = db.Column(db.String(30), nullable=False)
+#     cust_l_name = db.Column(db.String(30), nullable=False)
+#     cust_email = db.Column(db.String(60), nullable=False)
+#     cust_phone = db.Column(db.Integer, nullable=False)
+#
+#     # cust_full_name = cust_f_name + cust_l_name
+#
+#     # def __str__(self):
+#     #     """
+#     #     method is used to display the `cust_name` instead of
+#     #     the actual object memory location
+#     #
+#     #     :return: cust_name
+#     #     """
+#     #     return self.cust_f_name
 
 
 class AgentLogin(db.Model):
@@ -203,7 +235,7 @@ class CustomersAdminView(ModelView):
     """
     Creates the `customer` admin view in Flask-Admin
     """
-
+    column_display_pk = True
     create_template = 'create.html'
     edit_template = 'edit.html'
 
