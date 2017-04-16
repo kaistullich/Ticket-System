@@ -87,6 +87,7 @@ def home():
             db.session.add(new_ticket)
             db.session.commit()
 
+            # Query Tickets table to retrieve the ticketID for customer
             tickets = Tickets.query.filter_by(custID=new_cust_ID).first()
             tix_num = tickets.ticketID
 
@@ -94,6 +95,7 @@ def home():
             email_notification(cust_f_name, cust_email, tix_num)
             twilio_sms(cust_phone, cust_f_name, tix_num)
 
+        # If customer already exists
         else:
             exist_cust = Customers.query.filter_by(cust_email=cust_email).first()
             exist_cust_ID = exist_cust.custID
@@ -110,8 +112,11 @@ def home():
             db.session.add(new_ticket)
             db.session.commit()
 
+            # Query Tickets table to retrieve the ticketID for customer
             tickets = Tickets.query.filter_by(custID=13).order_by('custID').all()
+            # Loop through all tickets
             ticketIDs = [t.ticketID for t in tickets]
+            # Assign last ticketID to `tix_num`
             tix_num = ticketIDs[-1]
 
             # Send off both Email / SMS notifications
