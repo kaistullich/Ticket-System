@@ -86,6 +86,7 @@ class Departments(db.Model):
         """
         return self.dept_name
 
+
 class Customers(db.Model):
     """
     `customers` table creation
@@ -100,10 +101,10 @@ class Customers(db.Model):
 
     def __str__(self):
         """
-        method is used to display the `cust_name` instead of
+        method is used to display the `cust_f_name` instead of
         the actual object memory location
 
-        :return: cust_name
+        :return: cust_f_name
         """
         return self.cust_f_name
 
@@ -148,30 +149,6 @@ class TicketForm(FlaskForm):
                                     ('1', 'P1 - Critical Outage')
                                     ])
     message = TextAreaField('Message:', [InputRequired()])
-
-
-# class Customers(db.Model):
-#     """
-#     `customers` table creation
-#     """
-#     __tablename__ = 'customers'
-#
-#     custID = db.Column(db.Integer, primary_key=True, autoincrement=True)
-#     cust_f_name = db.Column(db.String(30), nullable=False)
-#     cust_l_name = db.Column(db.String(30), nullable=False)
-#     cust_email = db.Column(db.String(60), nullable=False)
-#     cust_phone = db.Column(db.Integer, nullable=False)
-#
-#     # cust_full_name = cust_f_name + cust_l_name
-#
-#     # def __str__(self):
-#     #     """
-#     #     method is used to display the `cust_name` instead of
-#     #     the actual object memory location
-#     #
-#     #     :return: cust_name
-#     #     """
-#     #     return self.cust_f_name
 
 
 class AgentLogin(db.Model):
