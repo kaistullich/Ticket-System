@@ -60,8 +60,6 @@ def home():
         tix_recv_date = time.strftime('%D')
         tix_recv_time = time.strftime('%H%M')
 
-        cust_full_name = cust_f_name + ' ' + cust_l_name
-
         # Query Customer DB to check if customer already exists
         exist_cust = Customers.query.filter_by(cust_email=cust_email).first()
 
@@ -75,29 +73,43 @@ def home():
             db.session.add(new_cust)
             db.session.commit()
 
-        # Insert new completed ticket into TicketDB
-        new_ticket = Tickets(cust_name=cust_full_name,
-                             cust_email=cust_email,
-                             cust_phone=cust_phone,
-                             tix_dept=tix_dept,
-                             tix_severity=tix_severity,
-                             tix_msg=tix_msg,
-                             tix_status=tix_status,
-                             tix_recv_date=tix_recv_date,
-                             tix_recv_time=tix_recv_time
-                             )
-        db.session.add(new_ticket)
-        db.session.commit()
+            cust_ID = new_cust.custID
 
-        # Query needed to notify ticket # by SMS
-        tickets = Tickets.query.filter_by(cust_email=cust_email).all()
-        last_tix_id = None
-        for t in tickets:
-            last_tix_id = t.ticketID
+            # Insert ticket into Tickets for new customer
+            new_ticket = Tickets(custID=cust_ID,
+                                 tix_dept=tix_dept,
+                                 tix_severity=tix_severity,
+                                 tix_msg=tix_msg,
+                                 tix_status=tix_status,
+                                 tix_recv_date=tix_recv_date,
+                                 tix_recv_time=tix_recv_time
+                                 )
+            db.session.add(new_ticket)
+            db.session.commit()
 
-        # Send off both Email / SMS notifications
-        email_notification(cust_f_name, cust_email, last_tix_id)
-        twilio_sms(cust_phone, cust_f_name, last_tix_id)
+        else:
+            exist_cust = Customers.query.filter_by(cust_email=cust_email).order_by('-custID').first()
+            # Insert ticket in to Tickets for existing customer
+            new_ticket = Tickets(custID=exist_cust.custID,
+                                 tix_dept=tix_dept,
+                                 tix_severity=tix_severity,
+                                 tix_msg=tix_msg,
+                                 tix_status=tix_status,
+                                 tix_recv_date=tix_recv_date,
+                                 tix_recv_time=tix_recv_time
+                                 )
+            db.session.add(new_ticket)
+            db.session.commit()
+
+        # Query needed to notify ticket # by SMS/Email
+        # tickets = Tickets.query.filter_by(cust_email=cust_email).all()
+        # last_tix_id = None
+        # for t in tickets:
+        #     last_tix_id = t.ticketID
+        #
+        # # Send off both Email / SMS notifications
+        # email_notification(cust_f_name, cust_email, last_tix_id)
+        # twilio_sms(cust_phone, cust_f_name, last_tix_id)
 
         # Send call to agent if new ticket submit is of severity type 1
         if tix_severity == '1':
