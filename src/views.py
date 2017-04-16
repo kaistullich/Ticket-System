@@ -97,7 +97,7 @@ def home():
 
         # If customer already exists
         else:
-            exist_cust = Customers.query.filter_by(cust_email=cust_email).first()
+            # Assigns existing custID to `exist_cust_ID`
             exist_cust_ID = exist_cust.custID
 
             # Insert ticket in to Tickets for existing customer
