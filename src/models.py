@@ -13,9 +13,11 @@ from wtforms.validators import InputRequired, Email, Length
 
 from src import app
 
+# JSON config file
 with open('src/config.json') as f:
     config_f = json.load(f)
 
+# All configuration needed for Flask
 app.secret_key = os.urandom(24)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////' + os.getcwd() + '/ticket_system.sqlite'
 app.config['DATABASE_FILE'] = config_f['DATABASE_FILE']
@@ -28,6 +30,7 @@ app.config['MAIL_PASSWORD'] = config_f['MAIL_PASSWORD']
 app.config['MAIL_USE_TLS'] = config_f['MAIL_USE_TLS']
 app.config['MAIL_USE_SSL'] = config_f['MAIL_USE_SSL']
 
+# Create multiple objects for different libraries
 Bootstrap(app)
 db = SQLAlchemy(app)
 mail = Mail(app)
@@ -172,6 +175,8 @@ class TicketAdminView(ModelView):
     column_display_pk = True
     create_template = 'create.html'
     edit_template = 'edit.html'
+    # Creates read only fields inside of `tickets` Flask-Admin view
+    # TODO: Change this to create the read only fields dynamically
     form_widget_args = {
         'ticketID': {
             'readonly': True
@@ -217,12 +222,16 @@ class CustomersAdminView(ModelView):
     edit_template = 'edit.html'
 
 
-# All Admin Views
+# All Flask-Admin Views
 admin.add_view(TicketAdminView(Tickets, db.session, menu_icon_type='glyph', menu_icon_value='glyphicon-home'))
 admin.add_view(DepartmentAdminView(Departments, db.session))
 admin.add_view(CustomersAdminView(Customers, db.session))
 
-# API Manager
+"""
+ Creates the API Manager
+ 
+ :route: 127.0.0.1:5000/api/tickets
+"""
 manager = flask_restless.APIManager(app, flask_sqlalchemy_db=db)
 manager.create_api(Tickets,
                    methods=['GET', 'POST']

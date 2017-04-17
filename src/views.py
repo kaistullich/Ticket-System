@@ -9,6 +9,7 @@ from src.models import TicketForm, LoginForm, Tickets, AgentLogin, Customers, db
 
 from twilio.twiml.voice_response import VoiceResponse
 
+# JSON config file
 with open('src/config.json') as f:
     config_f = json.load(f)
 
