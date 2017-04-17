@@ -113,7 +113,7 @@ def home():
             db.session.commit()
 
             # Query Tickets table to retrieve the ticketID for customer
-            tickets = Tickets.query.filter_by(custID=13).order_by('custID').all()
+            tickets = Tickets.query.filter_by(custID=exist_cust_ID).order_by('custID').all()
             # Loop through all tickets
             ticketIDs = [t.ticketID for t in tickets]
             # Assign last ticketID to `tix_num`
