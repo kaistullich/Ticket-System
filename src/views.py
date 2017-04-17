@@ -25,8 +25,8 @@ def home():
           stored  inside of the `tickets` table. Further, a new customer 
           is created in the `customers` table. But before
           a new customer is created the table will be queried to 
-          check whether or not the customer already exists in the table
-          to check if a a customer already exists we will use their email
+          check whether or not the customer already exists in the table.
+          To check if a a customer already exists we will use their email
           address as a unique identifier, given that usually an email address
           can only be assigned to a single person.
           
@@ -74,8 +74,9 @@ def home():
                                  cust_phone=cust_phone
                                  )
             db.session.add(new_cust)
+            # Submit new customer to `customers` table
             db.session.commit()
-
+            # Get new customer ID
             new_cust_ID = new_cust.custID
 
             # Insert ticket into Tickets for new customer
@@ -88,6 +89,7 @@ def home():
                                  tix_recv_time=tix_recv_time
                                  )
             db.session.add(new_ticket)
+            # Submit new ticket into `tickets` table with new customer
             db.session.commit()
 
             # Query Tickets table to retrieve the ticketID for customer
@@ -113,6 +115,7 @@ def home():
                                  tix_recv_time=tix_recv_time
                                  )
             db.session.add(new_ticket)
+            # Submit new ticket with existing customer into `tickets` table
             db.session.commit()
 
             # Query Tickets table to retrieve the ticketID for customer
@@ -186,12 +189,13 @@ def ticket_reminder_route():
             
     :return: the response telling user the number of open tickets
     """
-
+    # Create today's date
     date_now = time.strftime('%D')
+    # Create current local time
     time_now = int(time.strftime('%H%M'))
-
+    # Query `tickets` table for all tickets
     open_p1_tix = Tickets.query.all()
-
+    # List that will append all matching requirement tickets
     open_p1_list = []
     # Loop through the tickets and check for the given requirements
     for t in open_p1_tix:
@@ -205,13 +209,17 @@ def ticket_reminder_route():
 
     # If there is only 1 matching P1 ticket
     if len(open_p1_list) == 1:
+        # Create VoiceResponse object from Twilio
         resp = VoiceResponse()
         resp.say('There is 1 open Priority 1 tickets. Please check your queue.'.format(loop=2, voice='man'))
+        # Command given to TwiML XML
         return str(resp)
     # If there are more than 1 matching P1 tickets
     else:
         open_p1_list = len(open_p1_list)
+        # Create VoiceResponse object from Twilio
         resp = VoiceResponse()
+        # Command given to TwiML XML
         resp.say('There are {num_tix} open Priority 1 tickets. Please check your queue.'.format(num_tix=open_p1_list,
                                                                                                 loop=2,
                                                                                                 voice='man'))
@@ -239,8 +247,9 @@ def ticket_creation():
     all_tickets = [t.ticketID for t in tickets]
     # Assign last P1 ticket to `last_p1_ticket`
     last_p1_ticket = all_tickets[-1]
-
+    # Create VoiceResponse object from Twilio
     resp = VoiceResponse()
+    # Command given to TwiML XML
     resp.say('A new priority 1 ticket with ID {tix_ID} has been created'.format(tix_ID=last_p1_ticket),
              loop=2,
              voice='man')
