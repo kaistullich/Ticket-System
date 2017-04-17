@@ -39,7 +39,7 @@ Then install all dependencies:
 `$ pip install -r requirements.txt` (Windows)
 
 
-Now, open up a `Ticket-System` in a text editor. Create a new file called `config.json` inside the `src` folder. 
+Now, open up `Ticket-System` in a text editor. Create a new file called `config.json` inside the `src` folder. 
 The folder structure will look like this:
 
 ```
@@ -57,8 +57,8 @@ Ticket-System\
 api_check.py
 config_instructions.txt
 README.md
+requirements.txt
 run.py
-ticket_system.sqlite
 
 ```
 
@@ -93,7 +93,7 @@ Follow the instructions inside of the `config_instructions.txt` file to fill in 
 
 ### Part 3:
 Create the SQLite DB. To do this, open your _Terminal_ or _CMD_ and navigate to the top level of the folder 
-structure. From there type in `python3` or `python`  and execute the following commands:
+structure. From there type in `python3` (MaxOSx) or `python` (Windows) and execute the following commands:
 
 ```
 $ ~/Ticket-System python3
