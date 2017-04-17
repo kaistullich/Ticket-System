@@ -47,10 +47,16 @@ class LoginForm(FlaskForm):
 
 class Tickets(db.Model):
     """
-    `tickets` table creation with a relationship btwn `department`.
-    Creating a one-to-one relationship on `tix_dept` inside of
-    the `tickets` table and `deptID` inside of the `department`
-    table
+    `tickets` table creation with a relationship between
+    `department` and `customers` tables:
+     
+    -   Create a one-to-one relationship on `tix_dept` inside of
+        the `tickets` table and `deptID` inside of the `department`
+        table
+        
+    -   Create a one-to-many relationship on `custID` in the `tickets`
+        table and the `customers` table.
+
     """
     __tablename__ = 'tickets'
 
@@ -122,13 +128,13 @@ def dept_choice():
     :return: zip of `deptID` & `dept_name`
     """
     dept = Departments.query.all()
-    dept_names = []
-    dept_ids = []
-    for d in dept:
-        dept_names.append(str(d.dept_name))
-        dept_ids.append(str(d.deptID))
-
+    # Names of all departments
+    dept_names = [d.dept_name for d in dept]
+    # ID's for all departments
+    dept_ids = [d.deptID for d in dept]
+    # zip together `dept_ids` & `dept_names`
     zipped = list(zip(dept_ids, dept_names))
+
     return zipped
 
 
