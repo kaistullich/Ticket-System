@@ -6,7 +6,7 @@ Python and/or Twilio and/or Flask and are willing to work out all the errors tha
 README to full completion in the near future. Thank you for your understanding._ !!!!****
 
 
-**~~ LAST UPDATE: 04/12/2017 ~~**
+**~~ LAST UPDATE: 04/17/2017 ~~**
 
 
 ***
@@ -37,11 +37,6 @@ Then install all dependencies:
 
 `$ pip install -r requirements.txt` (Windows)
 
-After that run `setup.py`:
-
-`$ python3 setup.py`  (MacOSX)
-
-`$ python setup.py`  (Windows)
 
 Now, open up a `Ticket-System` in a text editor. Create a new file called `config.json` inside the `src` folder. 
 The folder structure will look like this:
