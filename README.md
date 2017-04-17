@@ -17,6 +17,8 @@ like to test the system out:
  * Create a free Twilio Developer Account: [Twilio Developer Sign-up](https://www.twilio.com/try-twilio)
  * Have Git installed on your system: [Download](https://git-scm.com/downloads) and instructions for setup [Here](https://git-scm.com/book/en/v2)
  * Sign-up for a free Gmail email account if you do not already have one: [Gmail Sign-up](https://accounts.google.com/SignUp?hl=en-GB)
+ * Head to [ngrok](https://ngrok.com/download) and download the free HTTPS relayer. Follow the simple setup provided by `ngrok`.
+    * _Make sure to download and unzip `ngrok` in a folder that you are able to access (i.e. Downloads, Documents etc.)_
 
 
 ***
@@ -35,6 +37,11 @@ Then install all dependencies:
 
 `$ pip install -r requirements.txt` (Windows)
 
+After that run `setup.py`:
+
+`$ python3 setup.py`  (MacOSX)
+
+`$ python setup.py`  (Windows)
 
 Now, open up a `Ticket-System` in a text editor. Create a new file called `config.json` inside the `src` folder. 
 The folder structure will look like this:
