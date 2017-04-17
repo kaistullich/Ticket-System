@@ -41,4 +41,11 @@ After completing the previous steps fill in the blanks with the following inform
     8.  "ticket_creation" = the `ngrok` HTTPS url with the /ticket_creation route on PORT 5000 (i.e. https://7221d98b.ngrok.io/ticket_creation)
     9.  "api_url" = the `ngrok` HTTPS url with the /api/tickets route on PORT 5000 (i.e. https://7221d98b.ngrok.io/api/tickets)
 
+
+After filling all the blanks, go to your Twilio Phone Number dashboard and edit your current phone number. Under the
+"Voice & Fax" section there is a box named "A CALL COMES IN". Inside of that form field paste in your `ngrok` HTTPS
+url followed with /reminder (i.e. https://7221d98b.ngrok.io/reminder). This will be the route that Twilio will contact
+to retrieve the message it is supposed to say in the phone call.
+
+
 With all those values set, the `config.json` file is complete.

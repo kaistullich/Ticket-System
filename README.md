@@ -112,12 +112,15 @@ it.
 
 ## Launch App
 
-We are not ready to launch the system. Head into your Terminal (MacOSX) or CMD (Windows).
-From within your CLI enter:
+We are now ready to start-up the system. Head into your Terminal or CMD.
+Enter the following command:
 
 `$ pip3 run.py` (MacOSX)
 
 `$ pip run.py` (Windows)
 
-By running this command you can open up any web browser and navigate to `localhost:5000`
-or `127.0.0.1:5000`
+By running this command you can open up any web browser and navigate to the HTTPS Forwarding that `ngrok` displays
+`(i.e. https://bcd848e3.ngrok.io)`. 
+
+Likewise you could also just go to `localhost:5000` or `127.0.0.1:5000`. But I would recommend using the `ngrok` url to 
+make sure that everything is working properly. 
