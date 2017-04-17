@@ -15,7 +15,8 @@ like to test the system out:
  
 * Have Python 3.x installed on your system: [Download](https://www.python.org/downloads/)   
  * Create a free Twilio Developer Account: [Twilio Developer Sign-up](https://www.twilio.com/try-twilio)
- * Have Git installed on your system: [Download](https://git-scm.com/downloads) and instructions for setup [Here](https://git-scm.com/book/en/v2)
+ * Have Git installed on your system: [Download](https://git-scm.com/downloads) and instructions for setup [here](https://www.atlassian.com/git/tutorials/install-git#windows)
+    * _Follow the instructions for your given Operating System_
  * Sign-up for a free Gmail email account if you do not already have one: [Gmail Sign-up](https://accounts.google.com/SignUp?hl=en-GB)
  * Head to [ngrok](https://ngrok.com/download) and download the free HTTPS relayer. Follow the simple setup provided by `ngrok`.
     * _Make sure to download and unzip `ngrok` in a folder that you are able to access (i.e. Downloads, Documents etc.)_
