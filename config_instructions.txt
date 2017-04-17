@@ -1,0 +1,44 @@
+{
+  "DATABASE_FILE": "ticket_system.sqlite",
+  "SQLALCHEMY_ECHO": true,
+  "SQLALCHEMY_TRACK_MODIFICATIONS": true,
+  "MAIL_SERVER": "smtp.gmail.com",
+  "MAIL_PORT": "465",
+  "MAIL_USERNAME": "",
+  "MAIL_PASSWORD": "",
+  "MAIL_USE_TLS": false,
+  "MAIL_USE_SSL": true,
+  "account_sid": "",
+  "auth_token": "",
+  "from_": "",
+  "dept_num": "",
+  "reminder": "",
+  "ticket_creation": "",
+  "api_url": ""
+}
+
+Before filling out the information you will need to start up the `ngrok` HTTPS forwarder. To do this
+go into the folder where you installed `ngrok` inside and *UNZIPPED* it. You need to use your Terminal (MacOSX) or
+CMD (Windows) to do this.
+
+From within that directory use the following commands to start `ngrok` on PORT 5000
+
+    $ ./ngrok http 5000
+
+This will start a new screen. Inside of the screen you should see 2 "Forwarding" urls, we will be using the HTTPS
+url.
+
+
+After completing the previous steps fill in the blanks with the following information:
+
+    1.  "MAIL_USERNAME" = the Gmail address that you created or any Gmail address you have permission to
+    2.  "MAIL_PASSWORD" = the password to that Gmail account
+    3.  "account_sid" = the account SID from Twilio. It is inside of your Developer Console home page
+    4.  "auth_token" = the account auth token from Twilio. It is inside of your Developer Console home page
+    5.  "from_" = the Twilio phone number assigned to your account. You will have to create this (https://www.twilio.com/console/phone-numbers/incoming)
+    6.  "dept_num" = any phone number that you are able to receive incoming calls from (i.e. cellphone, home phone, work phone etc.)
+    7.  "reminder" = the `ngrok` HTTPS url with the /reminder route on PORT 5000 (i.e. https://7221d98b.ngrok.io/reminder)
+    8.  "ticket_creation" = the `ngrok` HTTPS url with the /ticket_creation route on PORT 5000 (i.e. https://7221d98b.ngrok.io/ticket_creation)
+    9.  "api_url" = the `ngrok` HTTPS url with the /api/tickets route on PORT 5000 (i.e. https://7221d98b.ngrok.io/api/tickets)
+
+With all those values set, the `config.json` file is complete.
