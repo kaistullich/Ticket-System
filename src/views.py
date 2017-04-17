@@ -223,14 +223,15 @@ def ticket_creation():
     
     :return: response telling agent the P1 `ticketID`
     """
-
-    ticket = Tickets.query.filter_by(cust_email=cust_email).all()
-    last_open_tix = None
-    for t in ticket:
-        last_open_tix = t.ticketID
+    # Query Tickets table to pull `ticketID` by `cust_email`
+    tickets = Tickets.query.filter_by(cust_email=cust_email).all()
+    # Loop through all tickets by given `cust_email`
+    all_tickets = [t.ticketID for t in tickets]
+    # Assign last P1 ticket to `last_p1_ticket`
+    last_p1_ticket = all_tickets[-1]
 
     resp = VoiceResponse()
-    resp.say('A new priority 1 ticket with ID {tix_ID} has been created'.format(tix_ID=last_open_tix),
+    resp.say('A new priority 1 ticket with ID {tix_ID} has been created'.format(tix_ID=last_p1_ticket),
              loop=2,
              voice='man')
 
