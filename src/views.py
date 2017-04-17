@@ -22,21 +22,24 @@ def home():
           either route.
     
         - On submit of the form all the form data is accessed and 
-          stored immediately inside of the `tickets` table. Further,
-          a new customer is created in the `customers` table. But before
+          stored  inside of the `tickets` table. Further, a new customer 
+          is created in the `customers` table. But before
           a new customer is created the table will be queried to 
-          check whether or not the customer already exists in the table.
+          check whether or not the customer already exists in the table
+          to check if a a customer already exists we will use their email
+          address as a unique identifier, given that usually an email address
+          can only be assigned to a single person.
           
-            - If customer already exists, the data entry will not occur.
+            - If customer already exists, no new customer entry will occur.
     
         - After entry into both (or one) table, the customer will be 
-          contacted via SMS and Email, utilizing Twilio's API.
+          contacted via SMS and Email, utilizing Twilio's API for SMS.
     
         - If the customer submitted a P1 ticket, regardless of the 
           department, the agent of that department will receive a call
           letting them know that a new P1 ticket has been created
           along with the `ticketID`. 
-            ** See /reminder route
+            ** See `/ticket_creation` route
             
     :return: - new ticket creation 
              - new customer (if not exists) 
@@ -47,7 +50,7 @@ def home():
     form = TicketForm()
 
     if form.validate_on_submit() and request.method == 'POST':
-        # Block will be executed if ticketID did NOT match random
+        # All customer entered data from the form fields
         cust_f_name = form.f_name.data
         cust_l_name = form.l_name.data
         global cust_email
@@ -123,7 +126,7 @@ def home():
             email_notification(cust_f_name, cust_email, tix_num)
             twilio_sms(cust_phone, cust_f_name, tix_num)
 
-
+        # If the `tix_severity` was selected as P1, call agent.
         if tix_severity == '1':
             ticket_creation_call(config_f['dept_num'])
 
@@ -149,13 +152,17 @@ def login():
         password = form.password.data
         agent = AgentLogin.query.filter_by(username=username).first()
 
+        # If username matches
         if agent:
             psw_hash = bcrypt.checkpw(password.encode('utf-8'), agent.password.encode('utf-8'))
+            # If password matches hash
             if psw_hash:
                 return redirect(url_for('admin.index'))
+            # If password does not match flash message
             else:
                 flash(u'That username or password does not match, try again', 'danger')
                 return redirect(url_for('login'))
+        # If username does not match flash message.
         else:
             flash(u'That username or password does not match, try again', 'danger')
             return redirect(url_for('login'))
@@ -186,6 +193,7 @@ def ticket_reminder_route():
     open_p1_tix = Tickets.query.all()
 
     open_p1_list = []
+    # Loop through the tickets and check for the given requirements
     for t in open_p1_tix:
         if t.tix_severity == 1:
             if t.tix_status == 'Open':
@@ -195,10 +203,12 @@ def ticket_reminder_route():
                 elif date_now != t.tix_recv_date:
                     open_p1_list.append(t.ticketID)
 
+    # If there is only 1 matching P1 ticket
     if len(open_p1_list) == 1:
         resp = VoiceResponse()
         resp.say('There is 1 open Priority 1 tickets. Please check your queue.'.format(loop=2, voice='man'))
         return str(resp)
+    # If there are more than 1 matching P1 tickets
     else:
         open_p1_list = len(open_p1_list)
         resp = VoiceResponse()
