@@ -128,10 +128,16 @@ def dept_choice():
     :return: zip of `deptID` & `dept_name`
     """
     dept = Departments.query.all()
+
     # Names of all departments
-    dept_names = [d.dept_name for d in dept]
+    dept_names = []
     # ID's for all departments
-    dept_ids = [d.deptID for d in dept]
+    dept_ids = []
+
+    for d in dept:
+        dept_names.append(str(d.dept_name))
+        dept_ids.append(str(d.deptID))
+
     # zip together `dept_ids` & `dept_names`
     zipped = list(zip(dept_ids, dept_names))
 
