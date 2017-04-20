@@ -63,7 +63,7 @@ class Tickets(db.Model):
     ticketID = db.Column(db.Integer, nullable=False, primary_key=True, autoincrement=True, unique=True)
     custID = db.Column(db.Integer,  db.ForeignKey('customers.custID'))
     tix_dept = db.Column(db.Integer, db.ForeignKey('department.deptID'))
-    tix_severity = db.Column(db.Integer, nullable=False)
+    tix_severity = db.Column(db.String(2), nullable=False)
     tix_msg = db.Column(db.String(500), nullable=False)
     tix_status = db.Column(db.String(10), nullable=False)
     tix_recv_date = db.Column(db.String(20), nullable=False)
@@ -216,6 +216,13 @@ class TicketAdminView(ModelView):
         }
     }
 
+    def _message_formatter(view, context, model, name):
+        # Reduce the amount of the message shown inside of Flask-Admin (19 characters)
+        return model.tix_msg[:20]
+
+    column_formatters = {
+        'tix_msg': _message_formatter,
+    }
 
 class DepartmentAdminView(ModelView):
     """
