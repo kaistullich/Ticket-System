@@ -231,7 +231,8 @@ class TicketAdminView(ModelView):
                               Customers.cust_f_name,
                               Customers.cust_l_name,
                               Customers.cust_email,
-                              Customers.cust_phone)
+                              Customers.cust_phone,
+                              Departments.dept_name)
 
     def _message_formatter(view, context, model, name):
         # Reduce the amount of the message shown inside of Flask-Admin (19 characters)
