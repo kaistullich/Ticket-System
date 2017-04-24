@@ -215,6 +215,11 @@ class TicketAdminView(ModelView):
             'readonly': True
         }
     }
+    column_searchable_list = ('ticketID',
+                              Customers.cust_f_name,
+                              Customers.cust_l_name,
+                              Customers.cust_email,
+                              Customers.cust_phone)
 
     def _message_formatter(view, context, model, name):
         # Reduce the amount of the message shown inside of Flask-Admin (19 characters)
