@@ -215,7 +215,19 @@ class TicketAdminView(ModelView):
             'readonly': True
         }
     }
+
+    # `Tickets` column names
+    column_labels = dict(ticketID='Ticket ID',
+                         tix_severity='Ticket Severity',
+                         tix_msg='Ticket Description',
+                         tix_status='Ticket Status',
+                         tix_recv_date='Received Date',
+                         tix_recv_time='Received Time')
+
+    # Search on following columns
     column_searchable_list = ('ticketID',
+                              'tix_severity',
+                              'tix_status',
                               Customers.cust_f_name,
                               Customers.cust_l_name,
                               Customers.cust_email,
@@ -236,6 +248,12 @@ class DepartmentAdminView(ModelView):
     create_template = 'create.html'
     edit_template = 'edit.html'
 
+    # `Department` column names
+    column_labels = dict(dept_name='Department',
+                         dept_empl='Department Employee',
+                         dept_empl_phone='Employee Phone Number'
+                         )
+
 
 class CustomersAdminView(ModelView):
     """
@@ -245,6 +263,13 @@ class CustomersAdminView(ModelView):
     create_template = 'create.html'
     edit_template = 'edit.html'
 
+    # `Customers` column names
+    column_labels = dict(custID='Customer ID',
+                         cust_f_name='First Name',
+                         cust_l_name='Last Name',
+                         cust_email='Email',
+                         cust_phone='Phone Number',
+                         )
 
 # All Flask-Admin Views
 admin.add_view(TicketAdminView(Tickets, db.session, menu_icon_type='glyph', menu_icon_value='glyphicon-home'))
