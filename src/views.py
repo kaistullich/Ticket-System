@@ -5,7 +5,7 @@ import time
 from flask import flash, redirect, render_template, request, url_for
 
 from src.all_notifications import email_notification, twilio_sms, ticket_creation_call
-from src.models import TicketForm, LoginForm, Tickets, AgentLogin, Customers, db, app
+from src.models import TicketForm, LoginForm, Tickets, EmployeeLogin, Customers, db, app
 
 from twilio.twiml.voice_response import VoiceResponse
 
@@ -154,7 +154,7 @@ def login():
     if form.validate_on_submit() and request.method == 'POST':
         username = form.username.data
         password = form.password.data
-        agent = AgentLogin.query.filter_by(username=username).first()
+        agent = EmployeeLogin.query.filter_by(username=username).first()
 
         # If username matches
         if agent:

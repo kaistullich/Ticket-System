@@ -166,7 +166,7 @@ class TicketForm(FlaskForm):
     message = TextAreaField('Message:', [InputRequired()])
 
 
-class AgentLogin(db.Model):
+class EmployeeLogin(db.Model):
     """
     agent `login` table creation. This table will only hold
     the username & password for logging into Flask-Admin views
@@ -191,15 +191,6 @@ class TicketAdminView(ModelView):
     # TODO: Change this to create the read only fields dynamically
     form_widget_args = {
         'ticketID': {
-            'readonly': True
-        },
-        'cust_name': {
-            'readonly': True
-        },
-        'cust_email': {
-            'readonly': True
-        },
-        'cust_phone': {
             'readonly': True
         },
         'tix_severity': {

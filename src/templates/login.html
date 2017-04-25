@@ -8,15 +8,17 @@
 </head>
 <body>
 <div class="container">
-    <div class="row">
-        <div class="col-xs-4 col-md-offset-4 register-box">
-            <form action="" role="form" method="POST" class="text-center">
-                <h2>Sign in</h2>
-                {{ form.hidden_tag() }}
-                {{ wtf.form_field(form.username) }}
-                {{ wtf.form_field(form.password) }}
-                <input class="btn btn-success" type="submit" value="Login">
-            </form>
+    <div class="well">
+        <div class="row">
+            <div class="col-xs-4 col-md-offset-4 register-box">
+                <form action="" role="form" method="POST" class="text-center">
+                    <h2>Sign in</h2>
+                    {{ form.hidden_tag() }}
+                    {{ wtf.form_field(form.username) }}
+                    {{ wtf.form_field(form.password) }}
+                    <input class="btn btn-primary" type="submit" value="Login">
+                </form>
+            </div>
         </div>
     </div>
 </div>
