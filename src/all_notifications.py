@@ -5,7 +5,7 @@ from flask_mail import Message
 from twilio.rest import Client
 
 from src import app
-from src.models import mail
+from src._app_config import mail
 from .decorators import async_
 
 with open('src/config.json') as f:
