@@ -7,7 +7,7 @@ from flask_admin.contrib.sqla import ModelView
 from flask_bootstrap import Bootstrap
 from flask_mail import Mail
 from flask_sqlalchemy import SQLAlchemy
-from flask_wtf import FlaskForm
+from flask_wtf import FlaskForm, RecaptchaField
 from wtforms import StringField, TextAreaField, SelectField, PasswordField
 from wtforms.validators import InputRequired, Email, Length
 
@@ -29,6 +29,8 @@ app.config['MAIL_USERNAME'] = config_f['MAIL_USERNAME']
 app.config['MAIL_PASSWORD'] = config_f['MAIL_PASSWORD']
 app.config['MAIL_USE_TLS'] = config_f['MAIL_USE_TLS']
 app.config['MAIL_USE_SSL'] = config_f['MAIL_USE_SSL']
+app.config['RECAPTCHA_PUBLIC_KEY'] = config_f['cap_pub']
+app.config['RECAPTCHA_PRIVATE_KEY'] = config_f['cap_sec']
 
 # Create multiple objects for different libraries
 Bootstrap(app)
@@ -72,7 +74,6 @@ class Tickets(db.Model):
     # define relationship
     department = db.relationship('Departments')
     customer = db.relationship('Customers')
-
 
 
 class Departments(db.Model):
@@ -164,6 +165,7 @@ class TicketForm(FlaskForm):
                                     ('1', 'P1 - Critical Outage')
                                     ])
     message = TextAreaField('Message:', [InputRequired()])
+    recaptcha = RecaptchaField()
 
 
 class EmployeeLogin(db.Model):
@@ -226,12 +228,13 @@ class TicketAdminView(ModelView):
                               Departments.dept_name)
 
     def _message_formatter(view, context, model, name):
-        # Reduce the amount of the message shown inside of Flask-Admin (19 characters)
+        # Reduce the amount of the `tix_msg` shown inside of Flask-Admin (19 characters)
         return model.tix_msg[:20]
 
     column_formatters = {
         'tix_msg': _message_formatter,
     }
+    
 
 class DepartmentAdminView(ModelView):
     """
