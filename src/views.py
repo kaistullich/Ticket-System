@@ -5,7 +5,9 @@ import time
 from flask import flash, redirect, render_template, request, url_for
 
 from src.all_notifications import email_notification, twilio_sms, ticket_creation_call
-from src.models import TicketForm, LoginForm, Tickets, EmployeeLogin, Customers, db, app
+from src.models import Tickets, EmployeeLogin, Customers, db, app
+
+from src.forms import *
 
 from twilio.twiml.voice_response import VoiceResponse
 
