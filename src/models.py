@@ -7,9 +7,6 @@ from flask_admin.contrib.sqla import ModelView
 from flask_bootstrap import Bootstrap
 from flask_mail import Mail
 from flask_sqlalchemy import SQLAlchemy
-from flask_wtf import FlaskForm, RecaptchaField
-from wtforms import StringField, TextAreaField, SelectField, PasswordField
-from wtforms.validators import InputRequired, Email, Length
 
 from src import app
 
@@ -37,14 +34,6 @@ Bootstrap(app)
 db = SQLAlchemy(app)
 mail = Mail(app)
 admin = Admin(app, template_mode='bootstrap3')
-
-
-class LoginForm(FlaskForm):
-    """
-    Agent Login Form to access Flask-Admin views
-    """
-    username = StringField('Username:', [InputRequired()])
-    password = PasswordField('Password', [InputRequired()])
 
 
 class Tickets(db.Model):
@@ -97,6 +86,32 @@ class Departments(db.Model):
         return self.dept_name
 
 
+def dept_choice():
+    """
+    Queries the `department` table and pulls the `dept_name`
+    and the `deptID`. It will then loop through the entire
+    `department` table and append `deptID` & `dept_names` to
+    lists.
+
+    :return: zip of `deptID` & `dept_name`
+    """
+    dept = Departments.query.all()
+
+    # Names of all departments
+    dept_names = []
+    # ID's for all departments
+    dept_ids = []
+
+    for d in dept:
+        dept_names.append(str(d.dept_name))
+        dept_ids.append(str(d.deptID))
+
+    # zip together `dept_ids` & `dept_names`
+    zipped = list(zip(dept_ids, dept_names))
+
+    return zipped
+
+
 class Customers(db.Model):
     """
     `customers` table creation
@@ -117,55 +132,6 @@ class Customers(db.Model):
         :return: cust_f_name
         """
         return self.cust_f_name
-
-
-def dept_choice():
-    """
-    Queries the `department` table and pulls the `dept_name`
-    and the `deptID`. It will then loop through the entire
-    `department` table and append `deptID` & `dept_names` to
-    lists.
-    
-    :return: zip of `deptID` & `dept_name`
-    """
-    dept = Departments.query.all()
-
-    # Names of all departments
-    dept_names = []
-    # ID's for all departments
-    dept_ids = []
-
-    for d in dept:
-        dept_names.append(str(d.dept_name))
-        dept_ids.append(str(d.deptID))
-
-    # zip together `dept_ids` & `dept_names`
-    zipped = list(zip(dept_ids, dept_names))
-
-    return zipped
-
-
-class TicketForm(FlaskForm):
-    """
-    Ticket form found on URL route `/` & `/home`. Includes
-    certain validators for form submission
-    """
-    f_name = StringField('First Name:', [InputRequired()])
-    l_name = StringField('Last Name:', [InputRequired()])
-    email = StringField('Email:', [InputRequired(), Email('Invalid Email!')])
-    phone_number = StringField('Phone Number:', [InputRequired(),
-                                                 Length(min=10,
-                                                        max=10,
-                                                        message='Phone number must be 10 digits!')
-                                                 ])
-    ticket_type = SelectField('Select an issue:', [InputRequired()], choices=dept_choice())
-    severity = SelectField('Business Impact:', [InputRequired()],
-                           choices=[('3', 'P3 - General'),
-                                    ('2', 'P2 - Degraded'),
-                                    ('1', 'P1 - Critical Outage')
-                                    ])
-    message = TextAreaField('Message:', [InputRequired()])
-    recaptcha = RecaptchaField()
 
 
 class EmployeeLogin(db.Model):
