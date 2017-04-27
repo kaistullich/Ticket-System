@@ -1,39 +1,7 @@
 import flask_restless
-import json
-import os
-
-from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
-from flask_bootstrap import Bootstrap
-from flask_mail import Mail
-from flask_sqlalchemy import SQLAlchemy
 
-from src import app
-
-# JSON config file
-with open('src/config.json') as f:
-    config_f = json.load(f)
-
-# All configuration needed for Flask
-app.secret_key = os.urandom(24)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////' + os.getcwd() + '/ticket_system.sqlite'
-app.config['DATABASE_FILE'] = config_f['DATABASE_FILE']
-app.config['SQLALCHEMY_ECHO'] = config_f['SQLALCHEMY_ECHO']
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = config_f['SQLALCHEMY_TRACK_MODIFICATIONS']
-app.config['MAIL_SERVER'] = config_f['MAIL_SERVER']
-app.config['MAIL_PORT'] = config_f['MAIL_PORT']
-app.config['MAIL_USERNAME'] = config_f['MAIL_USERNAME']
-app.config['MAIL_PASSWORD'] = config_f['MAIL_PASSWORD']
-app.config['MAIL_USE_TLS'] = config_f['MAIL_USE_TLS']
-app.config['MAIL_USE_SSL'] = config_f['MAIL_USE_SSL']
-app.config['RECAPTCHA_PUBLIC_KEY'] = config_f['cap_pub']
-app.config['RECAPTCHA_PRIVATE_KEY'] = config_f['cap_sec']
-
-# Create multiple objects for different libraries
-Bootstrap(app)
-db = SQLAlchemy(app)
-mail = Mail(app)
-admin = Admin(app, template_mode='bootstrap3')
+from src._app_config import db, admin, app
 
 
 class Tickets(db.Model):
@@ -52,7 +20,7 @@ class Tickets(db.Model):
     __tablename__ = 'tickets'
 
     ticketID = db.Column(db.Integer, nullable=False, primary_key=True, autoincrement=True, unique=True)
-    custID = db.Column(db.Integer,  db.ForeignKey('customers.custID'))
+    custID = db.Column(db.Integer, db.ForeignKey('customers.custID'))
     tix_dept = db.Column(db.Integer, db.ForeignKey('department.deptID'))
     tix_severity = db.Column(db.String(2), nullable=False)
     tix_msg = db.Column(db.String(500), nullable=False)
@@ -200,7 +168,7 @@ class TicketAdminView(ModelView):
     column_formatters = {
         'tix_msg': _message_formatter,
     }
-    
+
 
 class DepartmentAdminView(ModelView):
     """
@@ -231,6 +199,7 @@ class CustomersAdminView(ModelView):
                          cust_email='Email',
                          cust_phone='Phone Number',
                          )
+
 
 # All Flask-Admin Views
 admin.add_view(TicketAdminView(Tickets, db.session, menu_icon_type='glyph', menu_icon_value='glyphicon-home'))
