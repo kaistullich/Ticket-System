@@ -98,8 +98,13 @@ def home():
             tix_num = tickets.ticketID
 
             # Send off both Email / SMS notifications
-            email_notification(cust_f_name, cust_email, tix_num)
-            twilio_sms(cust_phone, cust_f_name, tix_num)
+            # email_notification(cust_f_name, cust_email, tix_num)
+            try:
+                # TODO: Uncomment twilio_sms() for presentation
+                # twilio_sms(cust_phone, cust_f_name, tix_num)
+                pass
+            except BaseException:
+                pass
 
         # If customer already exists
         else:
@@ -127,8 +132,13 @@ def home():
             tix_num = ticketIDs[-1]
 
             # Send off both Email / SMS notifications
-            email_notification(cust_f_name, cust_email, tix_num)
-            twilio_sms(cust_phone, cust_f_name, tix_num)
+            # email_notification(cust_f_name, cust_email, tix_num)
+            try:
+                # TODO: Uncomment twilio_sms() for presentation
+                # twilio_sms(cust_phone, cust_f_name, tix_num)
+                pass
+            except BaseException:
+                pass
 
         # If the `tix_severity` was selected as P1, call agent.
         if tix_severity == '1':
@@ -164,11 +174,11 @@ def login():
                 return redirect(url_for('admin.index'))
             # If password does not match flash message
             else:
-                flash(u'That username or password does not match, try again', 'danger')
+                flash('That username or password does not match, try again.', 'danger')
                 return redirect(url_for('login'))
         # If username does not match flash message.
         else:
-            flash(u'That username or password does not match, try again', 'danger')
+            flash('That username or password does not match, try again.', 'danger')
             return redirect(url_for('login'))
 
     return render_template('login.html', form=form)
