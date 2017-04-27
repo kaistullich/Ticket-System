@@ -8,40 +8,21 @@
     <!-- Navbar CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
 <body>
-    <nav class="navbar navbar-default">
-      <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="{{ url_for('home') }}">fitBody</a>
-            <ul class="nav navbar-nav">
-                <li><a href="{{ url_for('login') }}">Login</a></li>
-            </ul>
-        </div>
-      </div><!-- /.container-fluid -->
-    </nav>
+    <!-- Navbar include -->
+    {% include 'includes/_navbar.html' %}
+
+    <!-- Error Message Macro include-->
     <div>
-	{% for category, message in get_flashed_messages(with_categories=true) %}
-		<div class="alert alert-{{category}} alert-dismissible">
-		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-		{{ message }}
-		</div>
-	{% endfor %}
+        {% include 'includes/_errors.html' %}
 	</div>
 
     <!-- All HTML goes between this block -->
-	{% block container %}
+	{% block body %}
 	{% endblock %}
 
     <!-- jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <!-- Latest compiled and minified JavaScript -->
-    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}">
-    </script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
 </body>
 </html>
