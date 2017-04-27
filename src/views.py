@@ -12,7 +12,7 @@ from src.forms import *
 from twilio.twiml.voice_response import VoiceResponse
 
 # JSON config file
-with open('src/config.json') as f:
+with open('src/_app_config_values.json') as f:
     config_f = json.load(f)
 
 

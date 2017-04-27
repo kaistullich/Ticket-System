@@ -8,7 +8,7 @@ from src import app
 from src._app_config import mail
 from .decorators import async_
 
-with open('src/config.json') as f:
+with open('src/_app_config_values.json') as f:
     config_f = json.load(f)
 
 account_sid = config_f['account_sid']

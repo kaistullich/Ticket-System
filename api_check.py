@@ -5,7 +5,7 @@ import requests
 
 from src.all_notifications import ticket_reminder_call
 
-with open('src/config.json') as f:
+with open('src/_app_config_values.json') as f:
     config_f = json.load(f)
 
 # TODO: change url to NEW ngrok url
