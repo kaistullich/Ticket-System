@@ -37,3 +37,5 @@ requests == 2.13.0
 # src/all_notifications.py: 5
 # src/views.py: 10
 twilio == 6.0.0
+
+pytest == 3.0.7
