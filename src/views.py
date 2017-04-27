@@ -100,7 +100,8 @@ def home():
             tix_num = tickets.ticketID
 
             # Send off both Email / SMS notifications
-            # email_notification(cust_f_name, cust_email, tix_num)
+            # TODO: Uncomment email_notification() when presenting
+            email_notification(cust_f_name, cust_email, tix_num)
             try:
                 # TODO: Uncomment twilio_sms() for presentation
                 # twilio_sms(cust_phone, cust_f_name, tix_num)
@@ -134,7 +135,8 @@ def home():
             tix_num = ticketIDs[-1]
 
             # Send off both Email / SMS notifications
-            # email_notification(cust_f_name, cust_email, tix_num)
+            # TODO: Uncomment email_notification() when presenting
+            email_notification(cust_f_name, cust_email, tix_num)
             try:
                 # TODO: Uncomment twilio_sms() for presentation
                 # twilio_sms(cust_phone, cust_f_name, tix_num)
