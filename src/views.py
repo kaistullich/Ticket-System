@@ -1,15 +1,14 @@
-import bcrypt
 import json
 import time
 
+import bcrypt
 from flask import flash, redirect, render_template, request, url_for
+from twilio.base.exceptions import TwilioRestException
+from twilio.twiml.voice_response import VoiceResponse
 
 from src.all_notifications import email_notification, twilio_sms, ticket_creation_call
-from src.models import Tickets, EmployeeLogin, Customers, db, app
-
 from src.forms import *
-
-from twilio.twiml.voice_response import VoiceResponse
+from src.models import Tickets, EmployeeLogin, Customers, db, app
 
 # JSON config file
 with open('src/_app_config_values.json') as f:
@@ -104,10 +103,9 @@ def home():
             email_notification(cust_f_name, cust_email, tix_num)
             try:
                 # TODO: Uncomment twilio_sms() for presentation
-                # twilio_sms(cust_phone, cust_f_name, tix_num)
-                pass
-            except BaseException:
-                pass
+                twilio_sms(cust_phone, cust_f_name, tix_num)
+            except TwilioRestException:
+                flash('The phone number provided was unable to be reached', 'warning')
 
         # If customer already exists
         else:
@@ -139,16 +137,15 @@ def home():
             email_notification(cust_f_name, cust_email, tix_num)
             try:
                 # TODO: Uncomment twilio_sms() for presentation
-                # twilio_sms(cust_phone, cust_f_name, tix_num)
-                pass
-            except BaseException:
-                pass
+                twilio_sms(cust_phone, cust_f_name, tix_num)
+            except TwilioRestException:
+                flash('The phone number provided was unable to be reached', 'warning')
 
         # If the `tix_severity` was selected as P1, call agent.
         if tix_severity == '1':
             ticket_creation_call(config_f['dept_num'])
 
-        flash('Your tickets was successfully submitted!', 'success')
+        flash('Your ticket was successfully submitted!', 'success')
         return redirect(url_for('home'))
 
     return render_template('home.html', form=form)
