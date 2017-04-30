@@ -8,7 +8,6 @@ from src.all_notifications import ticket_reminder_call
 with open('src/_app_config_values.json') as f:
     config_f = json.load(f)
 
-# TODO: change url to NEW ngrok url
 r = requests.get(config_f['api_url'])
 print('Request status: ' + str(r.status_code))
 api_objs = r.text
@@ -32,7 +31,7 @@ while True:
                         open_tix_found = True
                 elif date_now != tix_date:
                     open_tix_found = True
+
     if open_tix_found:
         print('~~~ FOUND OPEN P1 TICKETS ~~~')
-        # TODO: Change number to cellphone when testing away from home
-        ticket_reminder_call(config_f['dept_num'])  # Home number currently
+        ticket_reminder_call(config_f['dept_num'])
