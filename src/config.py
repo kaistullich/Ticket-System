@@ -13,12 +13,33 @@ from src import app
 with open('src/config_values.json') as f:
     config_f = json.load(f)
 
+
+def db_uri(system):
+    """
+    Check system type for database URI setup
+    
+    :param system: `sys.platform()` will be passed in
+    :return: system type
+    """
+    # Mac
+    if system == 'darwin':
+        uri = app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////' + os.getcwd() + '/ticket_system.sqlite'
+    # Windows
+    elif system == 'win32':
+        uri = app.config['SQLALCHEMY_DATABASE_URI'] = (r'sqlite:///' + os.getcwd() + '\ticket_system.sqlite')
+    # Linux
+    elif system == 'linux2':
+        uri = app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////' + os.getcwd() + '/ticket_system.sqlite'
+    # If system could not be determined
+    else:
+        raise FileNotFoundError('SQLite File was not able to be found')
+
+    return uri
+
+
 # All configuration needed for Flask
 app.secret_key = os.urandom(24)
-if sys.platform == 'darwin':
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////' + os.getcwd() + '/ticket_system.sqlite'
-elif sys.platform == 'win32':
-    app.config['SQLALCHEMY_DATABASE_URI'] = (r'sqlite:///' + os.getcwd() + '\ticket_system.sqlite')
+app.config['SQLALCHEMY_DATABASE_URI'] = db_uri(sys.platform)
 app.config['DATABASE_FILE'] = config_f['DATABASE_FILE']
 app.config['SQLALCHEMY_ECHO'] = config_f['SQLALCHEMY_ECHO']
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = config_f['SQLALCHEMY_TRACK_MODIFICATIONS']
