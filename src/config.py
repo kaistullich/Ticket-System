@@ -23,17 +23,17 @@ def db_uri(system):
     """
     # Mac
     if system == 'darwin':
-        uri = app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////' + os.getcwd() + '/ticket_system.sqlite'
+        uri = 'sqlite:////' + os.getcwd() + '/ticket_system.sqlite'
     # Windows
     elif system == 'win32':
-        uri = app.config['SQLALCHEMY_DATABASE_URI'] = (r'sqlite:///' + os.getcwd() + '\ticket_system.sqlite')
+        uri = r'sqlite:///' + os.getcwd() + '\ticket_system.sqlite'
     # Linux
     elif system == 'linux2':
-        uri = app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////' + os.getcwd() + '/ticket_system.sqlite'
+        uri = 'sqlite:////' + os.getcwd() + '/ticket_system.sqlite'
     # If system could not be determined
     else:
         raise FileNotFoundError('SQLite File was not able to be found')
-
+    # Return system type
     return uri
 
 
