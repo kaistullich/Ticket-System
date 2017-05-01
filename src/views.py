@@ -6,12 +6,12 @@ from flask import flash, redirect, render_template, request, url_for
 from twilio.base.exceptions import TwilioRestException
 from twilio.twiml.voice_response import VoiceResponse
 
-from src.all_notifications import email_notification, twilio_sms, ticket_creation_call
+from src.notifications import email_notification, twilio_sms, ticket_creation_call
 from src.forms import *
 from src.models import Tickets, EmployeeLogin, Customers, db, app
 
 # JSON config file
-with open('src/_app_config_values.json') as f:
+with open('src/config_values.json') as f:
     config_f = json.load(f)
 
 

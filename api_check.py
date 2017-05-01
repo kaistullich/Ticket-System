@@ -3,9 +3,9 @@ import time
 
 import requests
 
-from src.all_notifications import ticket_reminder_call
+from src.notifications import ticket_reminder_call
 
-with open('src/_app_config_values.json') as f:
+with open('src/config_values.json') as f:
     config_f = json.load(f)
 
 r = requests.get(config_f['api_url'])

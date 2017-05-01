@@ -1,7 +1,7 @@
 import flask_restless
 from flask_admin.contrib.sqla import ModelView
 
-from src._app_config import db, admin, app
+from src.config import db, admin, app
 
 
 class Tickets(db.Model):

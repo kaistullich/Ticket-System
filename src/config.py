@@ -1,5 +1,6 @@
 import json
 import os
+import sys
 
 from flask_admin import Admin
 from flask_bootstrap import Bootstrap
@@ -9,12 +10,15 @@ from flask_sqlalchemy import SQLAlchemy
 from src import app
 
 # JSON config file
-with open('src/_app_config_values.json') as f:
+with open('src/config_values.json') as f:
     config_f = json.load(f)
 
 # All configuration needed for Flask
 app.secret_key = os.urandom(24)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////' + os.getcwd() + '/ticket_system.sqlite'
+if sys.platform == 'darwin':
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////' + os.getcwd() + '/ticket_system.sqlite'
+elif sys.platform == 'win32':
+    app.config['SQLALCHEMY_DATABASE_URI'] = (r'sqlite:///' + os.getcwd() + '\ticket_system.sqlite')
 app.config['DATABASE_FILE'] = config_f['DATABASE_FILE']
 app.config['SQLALCHEMY_ECHO'] = config_f['SQLALCHEMY_ECHO']
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = config_f['SQLALCHEMY_TRACK_MODIFICATIONS']

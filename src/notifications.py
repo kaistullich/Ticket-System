@@ -5,10 +5,10 @@ from flask_mail import Message
 from twilio.rest import Client
 
 from src import app
-from src._app_config import mail
+from src.config import mail
 from .decorators import async_
 
-with open('src/_app_config_values.json') as f:
+with open('src/config_values.json') as f:
     config_f = json.load(f)
 
 account_sid = config_f['account_sid']
