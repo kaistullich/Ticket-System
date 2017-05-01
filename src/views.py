@@ -100,10 +100,11 @@ def home():
 
             # Send off both Email / SMS notifications
             # TODO: Uncomment email_notification() when presenting
-            email_notification(cust_f_name, cust_email, tix_num)
+            # email_notification(cust_f_name, cust_email, tix_num)
             try:
                 # TODO: Uncomment twilio_sms() for presentation
-                twilio_sms(cust_phone, cust_f_name, tix_num)
+                # twilio_sms(cust_phone, cust_f_name, tix_num)
+                pass
             except TwilioRestException:
                 flash('The phone number provided was unable to be reached', 'warning')
 
@@ -134,10 +135,11 @@ def home():
 
             # Send off both Email / SMS notifications
             # TODO: Uncomment email_notification() when presenting
-            email_notification(cust_f_name, cust_email, tix_num)
+            # email_notification(cust_f_name, cust_email, tix_num)
             try:
                 # TODO: Uncomment twilio_sms() for presentation
-                twilio_sms(cust_phone, cust_f_name, tix_num)
+                # twilio_sms(cust_phone, cust_f_name, tix_num)
+                pass
             except TwilioRestException:
                 flash('The phone number provided was unable to be reached', 'warning')
 
