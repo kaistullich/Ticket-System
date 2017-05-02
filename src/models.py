@@ -109,7 +109,7 @@ class EmployeeLogin(db.Model):
     for employees
     """
     __tablename__ = 'login'
-
+    adminID = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.String(4), primary_key=True)
     password = db.Column(db.String(60))
 
