@@ -1,20 +1,21 @@
 {% if 'admin' in session %}
     {% extends 'admin/master.html' %}
+    <!-- Change the `logo` on navbar -->
+    {% block brand %}
+        <a class="navbar-brand" href="{{ url_for('home') }}">fitBody</a>
+    {% endblock %}
+    <!-- All HTML for the `home` tab goes between the block body -->
     {% block body %}
         {{ super() }}
         <div class="container">
-            <div class="row">
-                <div class="col-sm-10 col-sm-offset-1">
-                    <a class="btn btn-primary" href="{{ url_for('home') }}">
-                        <i class="glyphicon glyphicon-chevron-left"></i>
-                        Back
-                    </a>
-                </div>
+            <div class="jumbotron">
+                <h3>Welcome {{ session.admin }}!</h3>
             </div>
         </div>
     {% endblock body %}
-
+<!-- If user has not logged in yet -->
 {% elif 'admin' not in session %}
+    <!-- Render the 401 error page -->
     {% block error %}
         <head>
             <title>Error - 401</title>
