@@ -1,0 +1,11 @@
+{% extends 'admin/model/edit.html' %}
+    <!-- Change the `logo` on navbar -->
+    {% block brand %}
+        {{ super() }}
+        <a class="navbar-brand" href="{{ url_for('home') }}">fitBody</a>
+    {% endblock %}
+
+    {% block tail %}
+        {{ super() }}
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.0.1/ckeditor.js"></script>
+    {% endblock %}
