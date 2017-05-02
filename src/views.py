@@ -193,7 +193,10 @@ def logout():
     """
     Logout `admin` from the session to re-protect the `/admin` route
     
-    :return: redirect to home when session is dropped
+    If `admin` is not in the session we will redirect to the home route,
+    but flash a different message
+    
+    :return: redirect to home & drop session if allowed
     """
     if 'admin' in session:
         session.pop('admin', None)
