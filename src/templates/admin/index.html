@@ -1,12 +1,33 @@
-{% extends 'admin/master.html' %}
-{% block body %}
-{{ super() }}
-<div class="container">
-    <div class="row">
-        <div class="col-sm-10 col-sm-offset-1">
-            <a class="btn btn-primary" href="{{ url_for('home') }}">
-                <i class="glyphicon glyphicon-chevron-left"></i>Back</a>
+{% if 'admin' in session %}
+    {% extends 'admin/master.html' %}
+    {% block body %}
+        {{ super() }}
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-10 col-sm-offset-1">
+                    <a class="btn btn-primary" href="{{ url_for('home') }}">
+                        <i class="glyphicon glyphicon-chevron-left"></i>
+                        Back
+                    </a>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
-{% endblock body %}
+    {% endblock body %}
+
+{% elif 'admin' not in session %}
+    {% block error %}
+        <head>
+            <title>Error - 401</title>
+            <link rel="stylesheet" href="{{ url_for('static', filename='css/error.css') }}">
+        </head>
+        <div class="cover">
+            <h1>Unauthorized
+                <small>Error 401</small>
+            </h1>
+            <p class="lead">The requested resource requires authentication. Please login!</p>
+        </div>
+        <footer>
+            <p>Technical Contact: <a href="#">fitbodycutomersupport@gmail.com</a></p>
+        </footer>
+    {% endblock %}
+{% endif %}
