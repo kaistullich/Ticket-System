@@ -41,7 +41,7 @@ while True:
         if tix_severity == 1:
             if tix_status == "Open":
                 if date_now == tix_date:
-                    if time_now - tix_time >= 5:
+                    if time_now - tix_time >= 60:
                         # Matching ticket found
                         open_tix_found = True
                 elif date_now != tix_date:
