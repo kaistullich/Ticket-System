@@ -214,6 +214,7 @@ admin.add_view(CustomersAdminView(Customers, db.session))
 manager = flask_restless.APIManager(app, flask_sqlalchemy_db=db)
 manager.create_api(Tickets,
                    methods=['GET', 'POST'],
+                   exclude_columns=['customer.cust_phone', 'customer.cust_email'],
                    results_per_page=-1,
                    max_results_per_page=-1
                    )
