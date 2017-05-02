@@ -2,7 +2,7 @@ import json
 import time
 
 import bcrypt
-from flask import flash, redirect, render_template, request, url_for
+from flask import flash, redirect, render_template, request, url_for, session
 from twilio.base.exceptions import TwilioRestException
 from twilio.twiml.voice_response import VoiceResponse
 
@@ -174,6 +174,7 @@ def login():
             psw_hash = bcrypt.checkpw(password.encode('utf-8'), agent.password.encode('utf-8'))
             # If password matches hash
             if psw_hash:
+                session['admin'] = username
                 return redirect(url_for('admin.index'))
             # If password does not match flash message
             else:
