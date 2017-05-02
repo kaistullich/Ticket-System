@@ -8,8 +8,8 @@
     {% block body %}
         {{ super() }}
         <div class="container">
-            <div class="jumbotron">
-                <h3>Welcome {{ session.admin }}!</h3>
+            <div class="jumbotron text-center">
+                <h3>Welcome {{ session.admin | capitalize }}!</h3>
             </div>
         </div>
     {% endblock body %}
