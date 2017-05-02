@@ -188,6 +188,19 @@ def login():
     return render_template('login.html', form=form)
 
 
+@app.route('/logout')
+def logout():
+    """
+    Logout `admin` from the session to re-protect the `/admin` route
+    
+    :return: redirect to home when session is dropped
+    """
+
+    session.pop('admin', None)
+    flash('You have been successfully logged out!', 'success')
+    return redirect(url_for('home'))
+
+
 @app.route("/reminder", methods=['GET', 'POST'])
 def ticket_reminder_route():
     """
