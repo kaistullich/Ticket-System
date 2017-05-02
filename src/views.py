@@ -195,10 +195,13 @@ def logout():
     
     :return: redirect to home when session is dropped
     """
-
-    session.pop('admin', None)
-    flash('You have been successfully logged out!', 'success')
-    return redirect(url_for('home'))
+    if 'admin' in session:
+        session.pop('admin', None)
+        flash('You have been successfully logged out!', 'success')
+        return redirect(url_for('home'))
+    else:
+        flash('You need to first sign in to logout', 'warning')
+        return redirect(url_for('home'))
 
 
 @app.route("/reminder", methods=['GET', 'POST'])
