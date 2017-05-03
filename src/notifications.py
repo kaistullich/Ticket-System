@@ -11,12 +11,15 @@ from .decorators import async_
 with open('src/config_values.json') as f:
     config_f = json.load(f)
 
+# Twilio Account SID
 account_sid = config_f['account_sid']
+# Twilio Authentication Token
 auth_token = config_f['auth_token']
+# Create object for `Client()` class and pass in the access rights
 client = Client(account_sid, auth_token)
 
 
-# Decorator is utilized for Asynchronous tasks
+# Decorator is utilized for Asynchronous tasks (found in `decorators.py`)
 @async_
 def send_async_email(app, msg):
     """

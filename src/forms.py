@@ -10,21 +10,33 @@ class TicketForm(FlaskForm):
     Ticket form found on URL route `/` & `/home`. Includes
     certain validators for form submission
     """
+
+    # `First Name` HTML input field
     f_name = StringField('First Name:', [InputRequired()])
+    # `Last Name` HTML input field
     l_name = StringField('Last Name:', [InputRequired()])
+    # `Email` HTML input field
     email = StringField('Email:', [InputRequired(), Email('Invalid Email!')])
+    # `Phone Number` HTML input field
     phone_number = StringField('Phone Number:', [InputRequired(),
+                                                 # Min length of 10 digit
                                                  Length(min=10,
+                                                        # Max length of 10 digit
                                                         max=10,
+                                                        # Message if not correct length
                                                         message='Phone number must be 10 digits!')
                                                  ])
+    # `Issue Type` HTML input field
     ticket_type = SelectField('Select an issue:', [InputRequired()], choices=dept_choice())
+    # `Severity` HTML input field
     severity = SelectField('Business Impact:', [InputRequired()],
                            choices=[('3', 'P3 - General'),
                                     ('2', 'P2 - Degraded'),
                                     ('1', 'P1 - Critical Outage')
                                     ])
+    # `Message` HTML input field
     message = TextAreaField('Message:', [InputRequired()])
+    # `reCAPTCHA` HTML input field
     recaptcha = RecaptchaField()
 
 
@@ -32,5 +44,8 @@ class LoginForm(FlaskForm):
     """
     Agent Login Form to access Flask-Admin views
     """
+
+    # `Username` HTML input field
     username = StringField('Username:', [InputRequired()])
+    # `Password` HTML input field
     password = PasswordField('Password', [InputRequired()])

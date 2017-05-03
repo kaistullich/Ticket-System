@@ -48,21 +48,32 @@ def home():
              - send SMS/email to customer 
              - send call to agent if P1 ticket submitted
     """
-
+    # Create object from `TicketForm()`
     form = TicketForm()
-
+    # If form is fully validated and the request is of type 'POST'
     if form.validate_on_submit() and request.method == 'POST':
         # All customer entered data from the form fields
+        # `First Name` field
         cust_f_name = form.f_name.data
+        # `Lat Name` field
         cust_l_name = form.l_name.data
+        # Make `cust_email` global to use for `/ticket_creation` route
         global cust_email
+        # `Email` field
         cust_email = form.email.data
+        # `Phone Number` field
         cust_phone = form.phone_number.data
+        # `Issue` field
         tix_dept = form.ticket_type.data
+        # `Business Impact` field
         tix_severity = form.severity.data
+        # `Message` field
         tix_msg = form.message.data
+        # Always inset new tickets with "Open" status
         tix_status = "Open"
+        # Current local date
         tix_recv_date = time.strftime('%D')
+        # Current local time
         tix_recv_time = time.strftime('%H%M')
 
         # Query Customer DB to check if customer already exists
@@ -146,10 +157,12 @@ def home():
         # If the `tix_severity` was selected as P1, call agent.
         if tix_severity == '1':
             ticket_creation_call(config_f['dept_num'])
-
+        # When form is successfully submitted flash success message
         flash('Your ticket was successfully submitted!', 'success')
+        # Redirect to `/home` route when ticket is submitted
         return redirect(url_for('home'))
 
+    # Render `login.html` template and pass `form` object along
     return render_template('home.html', form=form)
 
 
@@ -162,29 +175,38 @@ def login():
     
     :return: Upon successful login, re-route to Flask-Admin view
     """
-    form = LoginForm()
 
+    # Create object for `LoginForm()`
+    form = LoginForm()
+    # If form is fully validated and the request is of type 'POST'
     if form.validate_on_submit() and request.method == 'POST':
+        # `Username` field
         username = form.username.data
+        # `Password` field
         password = form.password.data
+        # Query `Login` table to pull `username` (there is only 1 entry in the `username` column)
         agent = EmployeeLogin.query.filter_by(username=username).first()
 
         # If username matches
         if agent:
+            # Check if password entered matches hash in `password` columns in `Login` table
             psw_hash = bcrypt.checkpw(password.encode('utf-8'), agent.password.encode('utf-8'))
             # If password matches hash
             if psw_hash:
+                # Start session for 'admin'
                 session['admin'] = username
                 return redirect(url_for('admin.index'))
             # If password does not match flash message
             else:
                 flash('That username or password does not match, try again.', 'danger')
+                # Redirect to `/login` if in this block
                 return redirect(url_for('login'))
         # If username does not match flash message.
         else:
             flash('That username or password does not match, try again.', 'danger')
+            # Redirect to `/login` if in this block
             return redirect(url_for('login'))
-
+    # Render `login.html` template and pass `form` object along
     return render_template('login.html', form=form)
 
 
@@ -198,12 +220,20 @@ def logout():
     
     :return: redirect to home & drop session if allowed
     """
+
+    # If session object matches what is in session
     if 'admin' in session:
+        # Drop session for `admin`
         session.pop('admin', None)
+        # Flash success message for logout
         flash('You have been successfully logged out!', 'success')
+        # Redirect to `/home`
         return redirect(url_for('home'))
+    # If `admin` NOT in the session
     else:
+        # Flash the message below
         flash('You need to first sign in to logout', 'warning')
+        # Redirect to `/home`
         return redirect(url_for('home'))
 
 
@@ -223,6 +253,7 @@ def ticket_reminder_route():
             
     :return: the response telling user the number of open tickets
     """
+
     # Create today's date
     date_now = time.strftime('%D')
     # Create current local time
@@ -245,8 +276,9 @@ def ticket_reminder_route():
     if len(open_p1_list) == 1:
         # Create VoiceResponse object from Twilio
         resp = VoiceResponse()
-        resp.say('There is 1 open Priority 1 tickets. Please check your queue.'.format(loop=2, voice='man'))
         # Command given to TwiML XML
+        resp.say('There is 1 open Priority 1 tickets. Please check your queue.'.format(loop=2, voice='man'))
+        # Send response to route
         return str(resp)
     # If there are more than 1 matching P1 tickets
     else:
@@ -257,6 +289,7 @@ def ticket_reminder_route():
         resp.say('There are {num_tix} open Priority 1 tickets. Please check your queue.'.format(num_tix=open_p1_list,
                                                                                                 loop=2,
                                                                                                 voice='man'))
+        # Send response to route
         return str(resp)
 
 
@@ -275,6 +308,7 @@ def ticket_creation():
     
     :return: response telling agent the P1 `ticketID`
     """
+
     # Query Tickets table to pull `ticketID` by `cust_email`
     tickets = Tickets.query.filter_by(cust_email=cust_email).all()
     # Loop through all tickets by given `cust_email`
@@ -287,5 +321,5 @@ def ticket_creation():
     resp.say('A new priority 1 ticket with ID {tix_ID} has been created'.format(tix_ID=last_p1_ticket),
              loop=2,
              voice='man')
-
+    # Send response to route
     return str(resp)
