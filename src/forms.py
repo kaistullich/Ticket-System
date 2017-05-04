@@ -12,30 +12,58 @@ class TicketForm(FlaskForm):
     """
 
     # `First Name` HTML input field
-    f_name = StringField('First Name:', [InputRequired()])
+    f_name = StringField('First Name:',
+                         [InputRequired()],
+                         render_kw={'placeholder': 'First Name'}
+                         )
+
     # `Last Name` HTML input field
-    l_name = StringField('Last Name:', [InputRequired()])
+    l_name = StringField('Last Name:',
+                         [InputRequired()],
+                         render_kw={'placeholder': 'Last Name'}
+                         )
+
     # `Email` HTML input field
-    email = StringField('Email:', [InputRequired(), Email('Invalid Email!')])
+    email = StringField('Email:',
+                        [InputRequired(),
+                         Email('Invalid Email!')],
+                        render_kw={'placeholder': 'ex. support@support.org'}
+                        )
+
     # `Phone Number` HTML input field
-    phone_number = StringField('Phone Number:', [InputRequired(),
-                                                 # Min length of 10 digit
-                                                 Length(min=10,
-                                                        # Max length of 10 digit
-                                                        max=10,
-                                                        # Message if not correct length
-                                                        message='Phone number must be 10 digits!')
-                                                 ])
+    phone_number = StringField('Phone Number:',
+                               [InputRequired(),
+                                # Min length of 10 digit
+                                Length(min=10,
+                                       # Max length of 10 digit
+                                       max=10,
+                                       # Message if not correct length
+                                       message='Phone number must be 10 digits!')
+                                ],
+                               render_kw={'placeholder': 'ex. 6501234567'}
+                               )
+
     # `Issue Type` HTML input field
-    ticket_type = SelectField('Select an issue:', [InputRequired()], choices=dept_choice())
+    ticket_type = SelectField('Select an issue:',
+                              [InputRequired()],
+                              choices=dept_choice()
+                              )
+
     # `Severity` HTML input field
-    severity = SelectField('Business Impact:', [InputRequired()],
+    severity = SelectField('Business Impact:',
+                           [InputRequired()],
                            choices=[('3', 'P3 - General'),
                                     ('2', 'P2 - Degraded'),
                                     ('1', 'P1 - Critical Outage')
-                                    ])
+                                    ]
+                           )
+
     # `Message` HTML input field
-    message = TextAreaField('Message:', [InputRequired()])
+    message = TextAreaField('Message:',
+                            [InputRequired()],
+                            render_kw={'placeholder': 'Please describe the issue...'}
+                            )
+
     # `reCAPTCHA` HTML input field
     recaptcha = RecaptchaField()
 
@@ -46,6 +74,13 @@ class LoginForm(FlaskForm):
     """
 
     # `Username` HTML input field
-    username = StringField('Username:', [InputRequired()])
+    username = StringField('Username:',
+                           [InputRequired()],
+                           render_kw={'placeholder': 'Username'}
+                           )
+
     # `Password` HTML input field
-    password = PasswordField('Password', [InputRequired()])
+    password = PasswordField('Password',
+                             [InputRequired()],
+                             render_kw={'placeholder': 'Password'}
+                             )
