@@ -34,9 +34,9 @@ class TicketForm(FlaskForm):
     phone_number = StringField('Phone Number:',
                                [InputRequired(),
                                 # Min length of 10 digit
-                                Length(min=10,
+                                Length(min=14,
                                        # Max length of 10 digit
-                                       max=10,
+                                       max=14,
                                        # Message if not correct length
                                        message='Phone number must be 10 digits!')
                                 ],
