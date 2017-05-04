@@ -8,35 +8,32 @@
 </head>
 <body>
     <div class="container">
-        <div class="jumbotron text-center" id="home-jumbotron">
-            <h1>fitBody Customer Support</h1>
-        </div>
-    </div>
-    <div class="container">
-        <div class="row" style="width: 51%; margin-left: 280px;">
-            <div class="register-box text-left">
-            <h3 id="tix_header">Submit a new Support Ticket</h3>
-            <br>
-            {% if error %}
-                <p class="error"><strong>Error:</strong> {{ error }}</p>
-            {% endif %}
-            <form method="POST" action="{{ url_for('home') }}" id="register-form" class="form-group">
-                {{ form.hidden_tag() }}
-                {{ wtf.form_field(form.f_name) }}
-                {{ wtf.form_field(form.l_name) }}
-                {{ wtf.form_field(form.email) }}
-                {{ wtf.form_field(form.phone_number) }}
-                {{ wtf.form_field(form.ticket_type) }}
-                {{ wtf.form_field(form.severity) }}
-                <p><b><i>General</i></b> - you have a question about fitBody or how to use it's products</p><br>
-                <p><b><i>Degraded</i></b> - fitBody or your configuration is not functioning properly or intermittently</p><br>
-                <p><b><i>Critical Outage</i></b> - fitBody or your configuration is experiencing a complete business outage</p><br>
-                <div id="message">
-                    {{ wtf.form_field(form.message) }}
+        <div class="row">
+            <div class="col-lg-9 col-md-9 col-sm-9 col-lg-offset-2">
+                <div class="register-box text-left">
+                <h3 id="tix_header">Submit a new Support Ticket</h3>
+                <br>
+                {% if error %}
+                    <p class="error"><strong>Error:</strong> {{ error }}</p>
+                {% endif %}
+                <form method="POST" action="{{ url_for('home') }}" id="register-form" class="form-group" id="box">
+                    {{ form.hidden_tag() }}
+                    {{ wtf.form_field(form.f_name) }}
+                    {{ wtf.form_field(form.l_name) }}
+                    {{ wtf.form_field(form.email) }}
+                    {{ wtf.form_field(form.phone_number) }}
+                    {{ wtf.form_field(form.ticket_type) }}
+                    {{ wtf.form_field(form.severity) }}
+                    <p><b><i>General</i></b> - you have a question about fitBody or how to use it's products</p><br>
+                    <p><b><i>Degraded</i></b> - fitBody or your configuration is not functioning properly or intermittently</p><br>
+                    <p><b><i>Critical Outage</i></b> - fitBody or your configuration is experiencing a complete business outage</p><br>
+                    <div id="message">
+                        {{ wtf.form_field(form.message) }}
+                    </div>
+                    {{ wtf.form_field(form.recaptcha) }}
+                    <p><input class="btn btn-primary" type="submit" value="Submit Ticket"></p>
+                </form>
                 </div>
-                {{ wtf.form_field(form.recaptcha) }}
-                <p><input class="btn btn-primary" type="submit" value="Submit Ticket"></p>
-            </form>
             </div>
         </div>
     </div>
