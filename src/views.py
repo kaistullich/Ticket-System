@@ -56,7 +56,6 @@ def home():
 
         cust_f_name = form.f_name.data
         cust_l_name = form.l_name.data
-        global cust_email
         cust_email = form.email.data
         cust_phone = form.phone_number.data
         formatted_cust_phone = int(''.join(x for x in cust_phone if x.isdigit() or x == '+'))
@@ -79,6 +78,7 @@ def home():
                                  )
             db.session.add(new_cust)
             db.session.commit()
+
             new_cust_ID = new_cust.custID
 
             # Insert ticket into Tickets for new customer
@@ -136,7 +136,7 @@ def home():
                 flash('The phone number provided was unable to be reached', 'warning')
 
         # If the `tix_severity` was selected as P1, call agent.
-        if tix_severity == '1':
+        if tix_severity == 'P1':
             ticket_creation_call(config_f['dept_num'])
 
         flash('Your ticket was successfully submitted!', 'success')
@@ -215,7 +215,7 @@ def ticket_reminder_route():
     This route is only accessed when the `api_check.py` process
     is run. It will check the tickets for 4 conditions:
     
-        1. If Ticket Severity == 1
+        1. If Ticket Severity == P1
         2. If Ticket Status == "Open"
         3. If Ticket Received Date == Today's Date
             3a. If Ticket Received Time - Time Now is >= 60
@@ -235,7 +235,7 @@ def ticket_reminder_route():
     open_p1_list = []
     # Loop through the tickets and check for the given requirements
     for t in open_p1_tix:
-        if t.tix_severity == 1:
+        if t.tix_severity == 'P1':
             if t.tix_status == 'Open':
                 if date_now == t.tix_recv_date:
                     if time_now - t.tix_recv_time >= 60:
@@ -276,7 +276,7 @@ def ticket_creation():
     """
 
     # Query Tickets table to pull `ticketID` by `cust_email`
-    tickets = Tickets.query.filter_by(cust_email=cust_email).all()
+    tickets = Tickets.query.filter_by(tix_severity='P1').all()
     # Loop through all tickets by given `cust_email`
     all_tickets = [t.ticketID for t in tickets]
     # Assign last P1 ticket to `last_p1_ticket`
