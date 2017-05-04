@@ -52,9 +52,9 @@ class TicketForm(FlaskForm):
     # `Severity` HTML input field
     severity = SelectField('Business Impact:',
                            [InputRequired()],
-                           choices=[('3', 'P3 - General'),
-                                    ('2', 'P2 - Degraded'),
-                                    ('1', 'P1 - Critical Outage')
+                           choices=[('P3', 'P3 - General'),
+                                    ('P2', 'P2 - Degraded'),
+                                    ('P1', 'P1 - Critical Outage')
                                     ]
                            )
 
