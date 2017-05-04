@@ -63,6 +63,11 @@ def home():
         cust_email = form.email.data
         # `Phone Number` field
         cust_phone = form.phone_number.data
+        formatted_cust_phone = int(''.join(x for x in cust_phone if x.isdigit() or x == '+'))
+        print(formatted_cust_phone)
+        print(formatted_cust_phone)
+        print(formatted_cust_phone)
+        print(formatted_cust_phone)
         # `Issue` field
         tix_dept = form.ticket_type.data
         # `Business Impact` field
@@ -84,7 +89,7 @@ def home():
             new_cust = Customers(cust_f_name=cust_f_name,
                                  cust_l_name=cust_l_name,
                                  cust_email=cust_email,
-                                 cust_phone=cust_phone
+                                 cust_phone=6507876895
                                  )
             db.session.add(new_cust)
             # Submit new customer to `customers` table
@@ -114,7 +119,7 @@ def home():
             # email_notification(cust_f_name, cust_email, tix_num)
             try:
                 # TODO: Uncomment twilio_sms() for presentation
-                # twilio_sms(cust_phone, cust_f_name, tix_num)
+                # twilio_sms(formatted_cust_phone, cust_f_name, tix_num)
                 pass
             except TwilioRestException:
                 flash('The phone number provided was unable to be reached', 'warning')
@@ -149,7 +154,7 @@ def home():
             # email_notification(cust_f_name, cust_email, tix_num)
             try:
                 # TODO: Uncomment twilio_sms() for presentation
-                # twilio_sms(cust_phone, cust_f_name, tix_num)
+                # twilio_sms(formatted_cust_phone, cust_f_name, tix_num)
                 pass
             except TwilioRestException:
                 flash('The phone number provided was unable to be reached', 'warning')
