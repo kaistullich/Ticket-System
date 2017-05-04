@@ -21,21 +21,13 @@ class Tickets(db.Model):
     # Name of the table
     __tablename__ = 'tickets'
 
-    # `ticketID` column
     ticketID = db.Column(db.Integer, nullable=False, primary_key=True, autoincrement=True, unique=True)
-    # `custID` column, this is a foreign key
     custID = db.Column(db.Integer, db.ForeignKey('customers.custID'))
-    # `custID` column, this is a foreign key
     tix_dept = db.Column(db.Integer, db.ForeignKey('department.deptID'))
-    # `tix_severity` column
     tix_severity = db.Column(db.String(2), nullable=False)
-    # `tix_msg` column
     tix_msg = db.Column(db.String(500), nullable=False)
-    # `tix_status` column
     tix_status = db.Column(db.String(10), nullable=False)
-    # `tix_recv_date` column
     tix_recv_date = db.Column(db.String(20), nullable=False)
-    # `tix_recv_time` column
     tix_recv_time = db.Column(db.Integer, nullable=False)
 
     # define relationship between `tickets` table and these 2 tables
@@ -51,13 +43,9 @@ class Departments(db.Model):
     # Name of the table
     __tablename__ = 'department'
 
-    # `deptID` column
     deptID = db.Column(db.Integer, primary_key=True, autoincrement=True, unique=True)
-    # `dept_name` column
     dept_name = db.Column(db.String(40), nullable=False)
-    # `dept_empl` column
     dept_empl = db.Column(db.String(40), nullable=False)
-    # `dept_empl_phone` column
     dept_empl_phone = db.Column(db.Integer, nullable=False)
 
     def __str__(self):
@@ -79,13 +67,13 @@ def dept_choice():
 
     :return: zip of `deptID` & `dept_name`
     """
+    # Query `departments` table
     dept = Departments.query.all()
 
-    # Names of all departments
     dept_names = []
-    # ID's for all departments
     dept_ids = []
 
+    # Loop through all `dept` data
     for d in dept:
         dept_names.append(str(d.dept_name))
         dept_ids.append(str(d.deptID))
@@ -105,15 +93,10 @@ class Customers(db.Model):
     # Name of the table
     __tablename__ = 'customers'
 
-    # `custID` column
     custID = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    # `cust_f_name` column
     cust_f_name = db.Column(db.String(30), nullable=False)
-    # `cust_l_name` column
     cust_l_name = db.Column(db.String(30), nullable=False)
-    # `cust_email` column
     cust_email = db.Column(db.String(60), nullable=False)
-    # `cust_phone` column
     cust_phone = db.Column(db.Integer, nullable=False)
 
     def __str__(self):
@@ -136,11 +119,8 @@ class EmployeeLogin(db.Model):
     # Name of the table
     __tablename__ = 'login'
 
-    # `adminID` column
     adminID = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    # `username` column
     username = db.Column(db.String(4), primary_key=True)
-    # `password` column
     password = db.Column(db.String(60))
 
 
@@ -153,12 +133,11 @@ class TicketAdminView(ModelView):
 
     # Allow for the Primary Key to be shown in Flask-Admin
     column_display_pk = True
-    # Create template if needed
+
     create_template = 'create.html'
-    # Create template if needed
     edit_template = 'edit.html'
+
     # Creates read only fields inside of `tickets` Flask-Admin view
-    # TODO: Change this to create the read only fields dynamically
     form_widget_args = {
         'ticketID': {
             'readonly': True
@@ -211,9 +190,7 @@ class DepartmentAdminView(ModelView):
     Creates the `department` admin view in Flask-Admin
     """
 
-    # Create template if needed
     create_template = 'create.html'
-    # Edit template if needed
     edit_template = 'edit.html'
 
     # `Department` column names in Flask-Admin model view
@@ -230,9 +207,8 @@ class CustomersAdminView(ModelView):
 
     # Display Primary Key inside of Flask-Admin
     column_display_pk = True
-    # Create template if needed
+
     create_template = 'create.html'
-    # Edit template if needed
     edit_template = 'edit.html'
 
     # `Customers` column names inside of Flask-Admin model view
@@ -254,7 +230,6 @@ admin.add_view(CustomersAdminView(Customers, db.session))
  
  :route: 127.0.0.1:5000/api/tickets
 """
-# Create object of `APIManager()` class
 manager = flask_restless.APIManager(app, flask_sqlalchemy_db=db)
 # Create API
 manager.create_api(Tickets,

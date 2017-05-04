@@ -48,37 +48,23 @@ def home():
              - send SMS/email to customer 
              - send call to agent if P1 ticket submitted
     """
-    # Create object from `TicketForm()`
+
     form = TicketForm()
-    # If form is fully validated and the request is of type 'POST'
+
     if form.validate_on_submit() and request.method == 'POST':
         # All customer entered data from the form fields
-        # `First Name` field
+
         cust_f_name = form.f_name.data
-        # `Lat Name` field
         cust_l_name = form.l_name.data
-        # Make `cust_email` global to use for `/ticket_creation` route
         global cust_email
-        # `Email` field
         cust_email = form.email.data
-        # `Phone Number` field
         cust_phone = form.phone_number.data
         formatted_cust_phone = int(''.join(x for x in cust_phone if x.isdigit() or x == '+'))
-        print(formatted_cust_phone)
-        print(formatted_cust_phone)
-        print(formatted_cust_phone)
-        print(formatted_cust_phone)
-        # `Issue` field
         tix_dept = form.ticket_type.data
-        # `Business Impact` field
         tix_severity = form.severity.data
-        # `Message` field
         tix_msg = form.message.data
-        # Always inset new tickets with "Open" status
         tix_status = "Open"
-        # Current local date
         tix_recv_date = time.strftime('%D')
-        # Current local time
         tix_recv_time = time.strftime('%H%M')
 
         # Query Customer DB to check if customer already exists
@@ -89,12 +75,10 @@ def home():
             new_cust = Customers(cust_f_name=cust_f_name,
                                  cust_l_name=cust_l_name,
                                  cust_email=cust_email,
-                                 cust_phone=6507876895
+                                 cust_phone=formatted_cust_phone
                                  )
             db.session.add(new_cust)
-            # Submit new customer to `customers` table
             db.session.commit()
-            # Get new customer ID
             new_cust_ID = new_cust.custID
 
             # Insert ticket into Tickets for new customer
@@ -107,7 +91,6 @@ def home():
                                  tix_recv_time=tix_recv_time
                                  )
             db.session.add(new_ticket)
-            # Submit new ticket into `tickets` table with new customer
             db.session.commit()
 
             # Query Tickets table to retrieve the ticketID for customer
@@ -115,12 +98,9 @@ def home():
             tix_num = tickets.ticketID
 
             # Send off both Email / SMS notifications
-            # TODO: Uncomment email_notification() when presenting
-            # email_notification(cust_f_name, cust_email, tix_num)
+            email_notification(cust_f_name, cust_email, tix_num)
             try:
-                # TODO: Uncomment twilio_sms() for presentation
-                # twilio_sms(formatted_cust_phone, cust_f_name, tix_num)
-                pass
+                twilio_sms(formatted_cust_phone, cust_f_name, tix_num)
             except TwilioRestException:
                 flash('The phone number provided was unable to be reached', 'warning')
 
@@ -139,7 +119,6 @@ def home():
                                  tix_recv_time=tix_recv_time
                                  )
             db.session.add(new_ticket)
-            # Submit new ticket with existing customer into `tickets` table
             db.session.commit()
 
             # Query Tickets table to retrieve the ticketID for customer
@@ -150,24 +129,19 @@ def home():
             tix_num = ticketIDs[-1]
 
             # Send off both Email / SMS notifications
-            # TODO: Uncomment email_notification() when presenting
-            # email_notification(cust_f_name, cust_email, tix_num)
+            email_notification(cust_f_name, cust_email, tix_num)
             try:
-                # TODO: Uncomment twilio_sms() for presentation
-                # twilio_sms(formatted_cust_phone, cust_f_name, tix_num)
-                pass
+                twilio_sms(formatted_cust_phone, cust_f_name, tix_num)
             except TwilioRestException:
                 flash('The phone number provided was unable to be reached', 'warning')
 
         # If the `tix_severity` was selected as P1, call agent.
         if tix_severity == '1':
             ticket_creation_call(config_f['dept_num'])
-        # When form is successfully submitted flash success message
+
         flash('Your ticket was successfully submitted!', 'success')
-        # Redirect to `/home` route when ticket is submitted
         return redirect(url_for('home'))
 
-    # Render `login.html` template and pass `form` object along
     return render_template('home.html', form=form)
 
 
@@ -181,13 +155,11 @@ def login():
     :return: Upon successful login, re-route to Flask-Admin view
     """
 
-    # Create object for `LoginForm()`
     form = LoginForm()
-    # If form is fully validated and the request is of type 'POST'
+
     if form.validate_on_submit() and request.method == 'POST':
-        # `Username` field
+
         username = form.username.data
-        # `Password` field
         password = form.password.data
         # Query `Login` table to pull `username` (there is only 1 entry in the `username` column)
         agent = EmployeeLogin.query.filter_by(username=username).first()
@@ -201,17 +173,15 @@ def login():
                 # Start session for 'admin'
                 session['admin'] = username
                 return redirect(url_for('admin.index'))
-            # If password does not match flash message
+            # If password does not
             else:
                 flash('That username or password does not match, try again.', 'danger')
-                # Redirect to `/login` if in this block
                 return redirect(url_for('login'))
-        # If username does not match flash message.
+        # If username does not
         else:
             flash('That username or password does not match, try again.', 'danger')
-            # Redirect to `/login` if in this block
             return redirect(url_for('login'))
-    # Render `login.html` template and pass `form` object along
+
     return render_template('login.html', form=form)
 
 
@@ -230,15 +200,12 @@ def logout():
     if 'admin' in session:
         # Drop session for `admin`
         session.pop('admin', None)
-        # Flash success message for logout
         flash('You have been successfully logged out!', 'success')
-        # Redirect to `/home`
         return redirect(url_for('home'))
+
     # If `admin` NOT in the session
     else:
-        # Flash the message below
         flash('You need to first sign in to logout', 'warning')
-        # Redirect to `/home`
         return redirect(url_for('home'))
 
 
@@ -259,13 +226,12 @@ def ticket_reminder_route():
     :return: the response telling user the number of open tickets
     """
 
-    # Create today's date
     date_now = time.strftime('%D')
-    # Create current local time
     time_now = int(time.strftime('%H%M'))
+
     # Query `tickets` table for all tickets
     open_p1_tix = Tickets.query.all()
-    # List that will append all matching requirement tickets
+
     open_p1_list = []
     # Loop through the tickets and check for the given requirements
     for t in open_p1_tix:
@@ -279,22 +245,17 @@ def ticket_reminder_route():
 
     # If there is only 1 matching P1 ticket
     if len(open_p1_list) == 1:
-        # Create VoiceResponse object from Twilio
         resp = VoiceResponse()
-        # Command given to TwiML XML
         resp.say('There is 1 open Priority 1 tickets. Please check your queue.'.format(loop=2, voice='man'))
-        # Send response to route
         return str(resp)
+
     # If there are more than 1 matching P1 tickets
     else:
         open_p1_list = len(open_p1_list)
-        # Create VoiceResponse object from Twilio
         resp = VoiceResponse()
-        # Command given to TwiML XML
         resp.say('There are {num_tix} open Priority 1 tickets. Please check your queue.'.format(num_tix=open_p1_list,
                                                                                                 loop=2,
                                                                                                 voice='man'))
-        # Send response to route
         return str(resp)
 
 
@@ -320,11 +281,9 @@ def ticket_creation():
     all_tickets = [t.ticketID for t in tickets]
     # Assign last P1 ticket to `last_p1_ticket`
     last_p1_ticket = all_tickets[-1]
-    # Create VoiceResponse object from Twilio
+
     resp = VoiceResponse()
-    # Command given to TwiML XML
     resp.say('A new priority 1 ticket with ID {tix_ID} has been created'.format(tix_ID=last_p1_ticket),
              loop=2,
              voice='man')
-    # Send response to route
     return str(resp)
