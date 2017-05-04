@@ -38,7 +38,7 @@ while True:
         tix_time = ticket['tix_recv_time']
         # Date ticket was received
         tix_date = ticket['tix_recv_date']
-        if tix_severity == 1:
+        if tix_severity == 'P1':
             if tix_status == "Open":
                 if date_now == tix_date:
                     if time_now - tix_time >= 60:
