@@ -40,7 +40,7 @@ class TicketForm(FlaskForm):
                                        # Message if not correct length
                                        message='Phone number must be 10 digits!')
                                 ],
-                               render_kw={'placeholder': 'ex. 6501234567'}
+                               render_kw={'placeholder': 'ex. (555) 555-5555'}
                                )
 
     # `Issue Type` HTML input field
@@ -50,7 +50,7 @@ class TicketForm(FlaskForm):
                               )
 
     # `Severity` HTML input field
-    severity = SelectField('Business Impact:',
+    severity = SelectField('Issue Severity:',
                            [InputRequired()],
                            choices=[('P3', 'P3 - General'),
                                     ('P2', 'P2 - Degraded'),
