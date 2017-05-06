@@ -92,10 +92,10 @@ class LoginForm(FlaskForm):
 class ChatForm(FlaskForm):
     username = StringField('Name:',
                            [InputRequired()],
-                            render_kw={'placeholder': 'Username'}
+                            render_kw={'placeholder': 'Name'}
                            )
 
-    message = TextAreaField('Message',
+    message = TextAreaField('Message:',
                             [InputRequired()],
                             render_kw={'placeholder': 'Message'}
                             )
