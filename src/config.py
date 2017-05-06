@@ -6,6 +6,7 @@ from flask_admin import Admin
 from flask_bootstrap import Bootstrap
 from flask_mail import Mail
 from flask_sqlalchemy import SQLAlchemy
+from flask_socketio import SocketIO
 
 from src import app
 
@@ -57,3 +58,4 @@ Bootstrap(app)
 db = SQLAlchemy(app)
 mail = Mail(app)
 admin = Admin(app, name='Tickets', template_mode='bootstrap3')
+socketio = SocketIO(app)
