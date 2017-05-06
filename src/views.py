@@ -304,4 +304,4 @@ def chat():
 @socketio.on('my event')
 def handle_my_custom_event(json):
     print('Received a message: ' + str(json))
-    emit('message', json)
+    emit('message', json, broadcast=True)
