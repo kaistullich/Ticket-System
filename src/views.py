@@ -3,12 +3,14 @@ import time
 
 import bcrypt
 from flask import flash, redirect, render_template, request, url_for, session
+from flask_socketio import emit
 from twilio.base.exceptions import TwilioRestException
 from twilio.twiml.voice_response import VoiceResponse
 
 from src.notifications import email_notification, twilio_sms, ticket_creation_call
 from src.forms import *
 from src.models import Tickets, EmployeeLogin, Customers, db, app
+from src.config import socketio
 
 # JSON config file
 with open('src/config_values.json') as f:
@@ -291,3 +293,14 @@ def ticket_creation():
              loop=2,
              voice='man')
     return str(resp)
+
+
+@app.route('/chat')
+def chat():
+    return render_template('chat.html')
+
+
+@socketio.on('my event')
+def handle_my_custom_event(json):
+    print('Received a message: ' + str(json))
+    socketio.emit('message', json)
