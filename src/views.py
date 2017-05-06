@@ -297,10 +297,11 @@ def ticket_creation():
 
 @app.route('/chat')
 def chat():
-    return render_template('chat.html')
+    form = ChatForm()
+    return render_template('chat.html', form=form)
 
 
 @socketio.on('my event')
 def handle_my_custom_event(json):
     print('Received a message: ' + str(json))
-    socketio.emit('message', json)
+    emit('message', json)
