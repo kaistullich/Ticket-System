@@ -67,6 +67,7 @@ class TicketForm(FlaskForm):
     # `reCAPTCHA` HTML input field
     recaptcha = RecaptchaField()
 
+    # `Submit` HTML button
     submit = SubmitField()
 
 
