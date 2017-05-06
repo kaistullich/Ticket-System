@@ -6,6 +6,6 @@ div.msg_bubble {
     margin-bottom: 5px;
 }
 
-.nomsg > h1 {
+.no-message > h1 {
     color: #898c8f;
 }
