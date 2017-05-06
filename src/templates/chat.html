@@ -9,7 +9,7 @@
     </head>
     <div class="container">
         <div class="well text-center">
-            <h4>My Chat App</h4>
+            <h4>Chat with a live representative!</h4>
         </div>
         <div class="col-sm-8">
             <div class="nomsg">
@@ -22,12 +22,12 @@
                 <b>Type your message below <span class="glyphicon glyphicon-arrow-down"></span></b>
                 <hr>
                 <div class="form-group">
-                    <label for="username">Username</label>
-                    <input type="text" class="username form-control" id="username" placeholder="Username">
-                </div>
-                <div class="form-group">
-                    <label for="message">Message</label>
-                    <input type="text" class="message form-control" id="message" placeholder="Message">
+                    {{ form.username.label }}
+                    <br>
+                    {{ form.username(class="username form-control") }}
+                    {{ form.message.label }}
+                    <br>
+                    {{ form.message(class="message form-control") }}
                 </div>
                 <button type="submit" class="btn btn-success">Send! <span class="glyphicon glyphicon-send"></span>
                 </button>
@@ -43,7 +43,7 @@
     <!-- socketIO library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
     <script>
-        var socket = io.connect('http://localhost:5000')
+        var socket = io.connect('http://localhost:5000');
         // Broadcast a message
         socket.on('connect', function () {
             socket.emit('joined', {})
@@ -55,7 +55,8 @@
             // Select the username input and get the value
             var userName = $('input.username').val();
             // Select the message input and get the value
-            var message = $('input.message').val();
+            var message = $('textarea.message').val();
+            console.log(message);
             socket.emit('my event', {
                 user: userName,
                 msg: message
