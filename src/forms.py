@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm, RecaptchaField
-from wtforms import StringField, TextAreaField, SelectField, PasswordField
+from wtforms import StringField, TextAreaField, SelectField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Email, Length
 
 from src.models import dept_choice
@@ -66,6 +66,8 @@ class TicketForm(FlaskForm):
 
     # `reCAPTCHA` HTML input field
     recaptcha = RecaptchaField()
+
+    submit = SubmitField()
 
 
 class LoginForm(FlaskForm):
