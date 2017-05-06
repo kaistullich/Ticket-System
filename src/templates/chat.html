@@ -11,13 +11,13 @@
         <div class="well text-center">
             <h4>Chat with a live representative!</h4>
         </div>
-        <div class="col-sm-8">
+        <div class="col-lg-8">
             <div class="no-message">
                 <h1>No messages yet...</h1>
                 <div class="msg-wrapper"></div>
             </div>
         </div>
-        <div class="col-sm-4">
+        <div class="col-lg-4">
             <form action="" method="POST">
                 <b>Type your message below <span class="glyphicon glyphicon-arrow-down"></span></b>
                 <hr>
@@ -56,23 +56,24 @@
             var userName = $('input.username').val();
             // Select the message input and get the value
             var message = $('textarea.message').val();
-            console.log(message);
             socket.emit('my event', {
                 user: userName,
-                msg: message
+                message: message
             });
+
             // Clear the message field after sending a message
             $('textarea.message').val('').focus();
-            $('#username').remove();
-            $('label[for=username]').remove();
+            // Disable edits to `username` field
+            $('#username').prop('disabled', true);
         });
 
         // Capture message
         socket.on('message', function (msg) {
-            console.log(msg);
             if (typeof msg.user !== 'undefined') {
+                // Clear the `message` textarea after each message is sent
                 $('h1').remove();
-                $('div.msg-wrapper').append('<div class="msg_bubble"><b>' + msg.user + ':</b> ' + msg.msg + '</div')
+                // Append the message to the `msg-wrapper`
+                $('div.msg-wrapper').append('<div class="msg_bubble"><b>' + msg.user + ':</b> ' + msg.message + '</div')
             }
         });
     </script>
