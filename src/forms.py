@@ -87,3 +87,15 @@ class LoginForm(FlaskForm):
                              [InputRequired()],
                              render_kw={'placeholder': 'Password'}
                              )
+
+
+class ChatForm(FlaskForm):
+    username = StringField('Name:',
+                           [InputRequired()],
+                            render_kw={'placeholder': 'Username'}
+                           )
+
+    message = TextAreaField('Message',
+                            [InputRequired()],
+                            render_kw={'placeholder': 'Message'}
+                            )
