@@ -154,33 +154,37 @@ def login():
     
     :return: Upon successful login, re-route to Flask-Admin view
     """
+    if 'admin' not in session:
 
-    form = LoginForm()
+        form = LoginForm()
 
-    if form.validate_on_submit() and request.method == 'POST':
+        if form.validate_on_submit() and request.method == 'POST':
 
-        username = form.username.data
-        password = form.password.data
-        # Query `Login` table to pull `username` (there is only 1 entry in the `username` column)
-        agent = EmployeeLogin.query.filter_by(username=username).first()
+            username = form.username.data
+            password = form.password.data
+            # Query `Login` table to pull `username` (there is only 1 entry in the `username` column)
+            agent = EmployeeLogin.query.filter_by(username=username).first()
 
-        # If username matches
-        if agent:
-            # Check if password entered matches hash in `password` columns in `Login` table
-            psw_hash = bcrypt.checkpw(password.encode('utf-8'), agent.password.encode('utf-8'))
-            # If password matches hash
-            if psw_hash:
-                # Start session for 'admin'
-                session['admin'] = username
-                return redirect(url_for('admin.index'))
-            # If password does not
+            # If username matches
+            if agent:
+                # Check if password entered matches hash in `password` columns in `Login` table
+                psw_hash = bcrypt.checkpw(password.encode('utf-8'), agent.password.encode('utf-8'))
+                # If password matches hash
+                if psw_hash:
+                    # Start session for 'admin'
+                    session['admin'] = username
+                    return redirect(url_for('admin.index'))
+                # If password does not
+                else:
+                    flash('That username or password does not match, try again.', 'danger')
+                    return redirect(url_for('login'))
+            # If username does not
             else:
                 flash('That username or password does not match, try again.', 'danger')
                 return redirect(url_for('login'))
-        # If username does not
-        else:
-            flash('That username or password does not match, try again.', 'danger')
-            return redirect(url_for('login'))
+
+    else:
+        return redirect(url_for('admin.index'))
 
     return render_template('login.html', form=form)
 
