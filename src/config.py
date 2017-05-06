@@ -56,4 +56,4 @@ app.testing = True
 Bootstrap(app)
 db = SQLAlchemy(app)
 mail = Mail(app)
-admin = Admin(app, template_mode='bootstrap3')
+admin = Admin(app, name='Tickets', template_mode='bootstrap3')
