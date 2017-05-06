@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+              integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+              crossorigin="anonymous">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/chat.css') }}">
+    </head>
+    <div class="container">
+        <div class="well text-center">
+            <h4>My Chat App</h4>
+        </div>
+        <div class="col-sm-8">
+            <div class="nomsg">
+                <h1>No messages yet...</h1>
+                <div class="msg-wrapper"></div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <form action="" method="POST">
+                <b>Type your message below <span class="glyphicon glyphicon-arrow-down"></span></b>
+                <hr>
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" class="username form-control" id="username" placeholder="Username">
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <input type="text" class="message form-control" id="message" placeholder="Message">
+                </div>
+                <button type="submit" class="btn btn-success">Send! <span class="glyphicon glyphicon-send"></span>
+                </button>
+            </form>
+        </div>
+    </div>
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+    <!-- socketIO library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+    <script>
+        var socket = io.connect('http://localhost:5000')
+        // Broadcast a message
+        socket.on('connect', function () {
+            socket.emit('joined', {})
+        });
+        // Select From
+        var form = $('form').on('submit', function (e) {
+            // Prevent default submit of the form
+            e.preventDefault();
+            // Select the username input and get the value
+            var userName = $('input.username').val();
+            // Select the message input and get the value
+            var message = $('input.message').val();
+            socket.emit('my event', {
+                user: userName,
+                msg: message
+            });
+            // Clear the message field after sending a message
+            $(message).val('').focus();
+        });
+
+        // Capture message
+        socket.on('message', function (msg) {
+            console.log(msg);
+            if (typeof msg.user !== 'undefined') {
+                $('h1').remove();
+                $('div.msg-wrapper').append('<div class="msg_bubble"><b>' + msg.user + ':</b> ' + msg.msg + '</div')
+            }
+        });
+    </script>
+{% endblock %}
