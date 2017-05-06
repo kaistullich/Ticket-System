@@ -12,7 +12,7 @@
             <h4>Chat with a live representative!</h4>
         </div>
         <div class="col-sm-8">
-            <div class="nomsg">
+            <div class="no-message">
                 <h1>No messages yet...</h1>
                 <div class="msg-wrapper"></div>
             </div>
@@ -62,7 +62,9 @@
                 msg: message
             });
             // Clear the message field after sending a message
-            $(message).val('').focus();
+            $('textarea.message').val('').focus();
+            $('#username').remove();
+            $('label[for=username]').remove();
         });
 
         // Capture message
