@@ -29,6 +29,9 @@ def db_uri(system):
     elif system == 'win32':
         uri = r'sqlite:///' + os.getcwd() + '\ticket_system.sqlite'
     # Linux
+    elif system == 'linux':
+        uri = 'sqlite:////' + os.getcwd() + '/ticket_system.sqlite'
+    # Linux2
     elif system == 'linux2':
         uri = 'sqlite:////' + os.getcwd() + '/ticket_system.sqlite'
     # If system could not be determined
