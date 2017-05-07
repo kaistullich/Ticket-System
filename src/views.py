@@ -311,9 +311,9 @@ def chat_login():
 
 @app.route('/chat')
 def chat():
-    form = ChatForm()
     """Chat room. The user's name and room must be stored in
-        the session."""
+            the session."""
+    form = ChatForm()
     name = session.get('name', '')
     room = session.get('room', '')
     if name == '' or room == '':
