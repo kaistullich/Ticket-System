@@ -39,3 +39,4 @@ requests == 2.13.0
 twilio == 6.0.0
 
 pytest == 3.0.7
+flask-socketio == 2.8.6
