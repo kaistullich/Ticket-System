@@ -99,3 +99,9 @@ class ChatForm(FlaskForm):
                             [InputRequired()],
                             render_kw={'placeholder': 'Message'}
                             )
+
+
+class ChatLoginForm(FlaskForm):
+    name = StringField('Name', [InputRequired()])
+    room = SelectField('Room', [InputRequired()], choices=dept_choice())
+    submit = SubmitField('Enter Chatroom')
