@@ -323,7 +323,8 @@ def chat():
 
 @socketio.on('joined', namespace='/chat')
 def joined(message):
-    """Sent by clients when they enter a room.
+    """
+    Sent when a certain user enters a room
     A status message is broadcast to all people in the room."""
     room = session.get('room')
     join_room(room)
@@ -332,7 +333,8 @@ def joined(message):
 
 @socketio.on('text', namespace='/chat')
 def text(message):
-    """Sent by a client when the user entered a new message.
+    """
+    Sent when a certain user sends a message
     The message is sent to all people in the room."""
     room = session.get('room')
     emit('message', {'msg': session.get('name') + ': ' + message['msg']}, room=room)
@@ -340,7 +342,8 @@ def text(message):
 
 @socketio.on('left', namespace='/chat')
 def left(message):
-    """Sent by clients when they leave a room.
+    """
+    Sent when a certain user exits the room
     A status message is broadcast to all people in the room."""
     room = session.get('room')
     leave_room(room)
