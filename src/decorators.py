@@ -8,5 +8,6 @@ def async_(func):
         thr = Thread(target=func, args=args, kwargs=kwargs)
         # Start new thread
         thr.start()
+
     # Return the wrapper function
     return wrapper

@@ -239,6 +239,6 @@ manager.create_api(Tickets,
                    exclude_columns=['customer.cust_phone', 'customer.cust_email'],
                    # Allow all result from `Tickets` to be shown in the API
                    results_per_page=-1,
-                    # Allow all result from `Tickets` to be shown in the API
+                   # Allow all result from `Tickets` to be shown in the API
                    max_results_per_page=-1
                    )

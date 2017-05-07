@@ -5,8 +5,8 @@ import sys
 from flask_admin import Admin
 from flask_bootstrap import Bootstrap
 from flask_mail import Mail
-from flask_sqlalchemy import SQLAlchemy
 from flask_socketio import SocketIO
+from flask_sqlalchemy import SQLAlchemy
 
 from src import app
 

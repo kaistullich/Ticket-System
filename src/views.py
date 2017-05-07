@@ -7,10 +7,10 @@ from flask_socketio import emit, join_room, leave_room
 from twilio.base.exceptions import TwilioRestException
 from twilio.twiml.voice_response import VoiceResponse
 
-from src.notifications import email_notification, twilio_sms, ticket_creation_call
+from src.config import socketio
 from src.forms import *
 from src.models import Tickets, EmployeeLogin, Customers, db, app
-from src.config import socketio
+from src.notifications import email_notification, twilio_sms, ticket_creation_call
 
 # JSON config file
 with open('src/config_values.json') as f:
