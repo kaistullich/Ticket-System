@@ -46,7 +46,7 @@
                         $('#text').val('');
                         // Emit the message to the chat from the `input` element
                         socket.emit('text', {msg: text});
-                    }
+                    } // END `if` block
                 }); // END `.keypress()`
             }); // END `$(document).ready()`
 
