@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <html>
+    <head>
+        <title>Chat Room Login</title>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Please Login to a Department Chat Room</h1>
+            <div class="form-group">
+                <form method="POST">
+                {{ form.hidden_tag() }}
+                <br>
+                {{ form.name.label }}:
+                <br>
+                {{ form.name(class="form-control") }}
+                <br>
+                {{ form.room.label }}:
+                <br>
+                {{ form.room(class="form-control") }}
+                <br>
+                {{ form.submit(class="btn btn-primary") }}
+            </form>
+            </div>
+        </div>
+    </body>
+    </html>
+{% endblock %}
