@@ -9,3 +9,20 @@ div.msg_bubble {
 .no-message > h1 {
     color: #898c8f;
 }
+
+textarea {
+    width: 600px;
+    height: 300px;
+    font: normal 14px verdana;
+    line-height: 25px;
+    padding: 2px 10px;
+    border: solid 1px #ddd;
+}
+
+#box {
+    border: solid #66becb 2px;
+    border-radius: 25px;
+    padding: 15px;
+    margin-bottom: 15px;
+    height: 500px;
+}
