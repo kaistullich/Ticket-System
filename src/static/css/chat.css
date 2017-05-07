@@ -25,4 +25,5 @@ textarea {
     padding: 15px;
     margin-bottom: 15px;
     height: 500px;
+    overflow: auto;
 }
