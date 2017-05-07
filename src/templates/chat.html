@@ -1,80 +1,75 @@
 {% extends 'base.html' %}
 
 {% block body %}
+    <html>
     <head>
+        <title>{{ room }}'s Chat Room</title>
+        <!-- jQuery CDN -->
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+                integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+                crossorigin="anonymous"></script>
+        <!-- SocketIO CDN -->
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+        <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
               integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
               crossorigin="anonymous">
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+                crossorigin="anonymous"></script>
+
         <link rel="stylesheet" href="{{ url_for('static', filename='css/chat.css') }}">
-    </head>
-    <div class="container">
-        <div class="well text-center">
-            <h4>Chat with a live representative!</h4>
-        </div>
-        <div class="col-lg-8">
-            <div class="no-message">
-                <h1>No messages yet...</h1>
-                <div class="msg-wrapper"></div>
-            </div>
-        </div>
-        <div class="col-lg-4">
-            <form action="" method="POST">
-                <b>Type your message below <span class="glyphicon glyphicon-arrow-down"></span></b>
-                <hr>
-                <div class="form-group">
-                    {{ form.username.label }}
-                    <br>
-                    {{ form.username(class="username form-control") }}
-                    {{ form.message.label }}
-                    <br>
-                    {{ form.message(class="message form-control") }}
-                </div>
-                <button type="submit" class="btn btn-success">Send! <span class="glyphicon glyphicon-send"></span>
-                </button>
-            </form>
-        </div>
-    </div>
-    <!-- jQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-            crossorigin="anonymous"></script>
-    <!-- socketIO library -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
-    <script>
-        var socket = io.connect('http://localhost:5000');
-        // Broadcast a message
-        socket.on('connect', function () {
-            socket.emit('joined', {})
-        });
-        // Select From
-        var form = $('form').on('submit', function (e) {
-            // Prevent default submit of the form
-            e.preventDefault();
-            // Select the username input and get the value
-            var userName = $('input.username').val();
-            // Select the message input and get the value
-            var message = $('textarea.message').val();
-            socket.emit('my event', {
-                user: userName,
-                message: message
+
+        <script type="text/javascript" charset="utf-8">
+            var socket;
+            $(document).ready(function () {
+                // Connect socket to URL
+                socket = io.connect('http://' + document.domain + ':' + location.port + '/chat');
+                // Connection to the chat room
+                socket.on('connect', function () {
+                    socket.emit('joined', {});
+                });
+                // Connected to the chat room message
+                socket.on('status', function (data) {
+                    $('div.msg-wrapper').append('<div class="msg_bubble"><b>' + data.msg + '</b></div')
+                });
+                // Messages sent inside of the chat room
+                socket.on('message', function (data) {
+                    $('div.msg-wrapper').append('<div class="msg_bubble"> ' + data.msg + ' </div')
+                });
+                // Clear the input box every time msg is sent off
+                $('#text').keypress(function (e) {
+                    var code = e.keyCode || e.which;
+                    if (code === 13) {
+                        var text = $('#text').val();
+                        $('#text').val('');
+                        socket.emit('text', {msg: text});
+                    }
+                });
             });
-
-            // Clear the message field after sending a message
-            $('textarea.message').val('').focus();
-            // Disable edits to `username` field
-            $('#username').prop('disabled', true);
-        });
-
-        // Capture message
-        socket.on('message', function (msg) {
-            if (typeof msg.user !== 'undefined') {
-                // Clear the `message` textarea after each message is sent
-                $('h1').remove();
-                // Append the message to the `msg-wrapper`
-                $('div.msg-wrapper').append('<div class="msg_bubble"><b>' + msg.user + ':</b> ' + msg.message + '</div')
+            // Leave the chat room
+            function leave_room() {
+                socket.emit('left', {}, function () {
+                    // Disconnect the socket
+                    socket.disconnect();
+                    // go back to the login page
+                    window.location.href = "{{ url_for('chat_login') }}";
+                });
             }
-        });
-    </script>
+        </script>
+    </head>
+    <body>
+    <div class="container text-center">
+        <h1>{{ room }}'s Chat Room</h1>
+        <div id="box">
+            <div class="chat msg-wrapper text-left"></div>
+        </div>
+        <label for="text">Type your message below <span class="glyphicon glyphicon-arrow-down"></span></label>
+        <input class="form-control" id="text" size="80" placeholder="Message..."><br><br>
+        <button class="btn btn-danger align-left" href="#" onclick="leave_room()">Leave the chat!</button>
+    </div>
+
+    </body>
+    </html>
 {% endblock %}
