@@ -2,7 +2,7 @@ import json
 import time
 
 import bcrypt
-from flask import flash, redirect, render_template, request, url_for, session
+from flask import flash, redirect, render_template, request, url_for, session, Markup
 from flask_socketio import emit, join_room, leave_room
 from twilio.base.exceptions import TwilioRestException
 from twilio.twiml.voice_response import VoiceResponse
@@ -337,7 +337,8 @@ def text(message):
     Sent when a certain user sends a message
     The message is sent to all people in the room."""
     room = session.get('room')
-    emit('message', {'msg': session.get('name') + ': ' + message['msg']}, room=room)
+    name = Markup('<strong style="color: green;">' + session.get('name') + '</strong>')
+    emit('message', {'msg': name + ': ' + message['msg']}, room=room)
 
 
 @socketio.on('left', namespace='/chat')
