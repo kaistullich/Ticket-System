@@ -1,5 +1,13 @@
 {% extends 'base.html' %}
 
 {% block body %}
-    <h1>Test</h1>
+    <div class="container">
+        <div class="well">
+            <h2 class="text-center">Information for Ticket # {{ ticket.ticketID }}</h2><hr>
+            <h4>Name:</h4><p>{{ customer.cust_f_name }} {{ customer.cust_l_name }}</p>
+            <h4>Ticket Severity:</h4><p>{{ ticket.tix_severity }}</p>
+            <h4>Date Received:</h4><p>{{ ticket.tix_recv_date }}</p>
+            <h4>Status:</h4><p>{{ ticket.tix_status }}</p>
+        </div>
+    </div>
 {% endblock %}
