@@ -17,6 +17,11 @@ with open('src/config_values.json') as f:
     config_f = json.load(f)
 
 
+#-----------------------------------------
+# ~~~~~~~~~~~~~~~~~ HOME ~~~~~~~~~~~~~~~~~
+#-----------------------------------------
+
+
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/home', methods=['GET', 'POST'])
 def home():
@@ -147,6 +152,19 @@ def home():
     return render_template('home.html', form=form)
 
 
+#-----------------------------------------
+# ~~~~~~~~~~~TICKET STATUS ~~~~~~~~~~~~~~~
+#-----------------------------------------
+
+@app.route('/ticket_status')
+def ticket_status():
+    return render_template('ticket_status.html')
+
+
+#-----------------------------------------
+# ~~~~~~~~~~~~~~~~~ Login ~~~~~~~~~~~~~~~~
+#-----------------------------------------
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     """
@@ -191,6 +209,10 @@ def login():
     return render_template('login.html', form=form)
 
 
+#-----------------------------------------
+# ~~~~~~~~~~~~~~~~~ Logout ~~~~~~~~~~~~~~~
+#-----------------------------------------
+
 @app.route('/logout')
 def logout():
     """
@@ -214,6 +236,10 @@ def logout():
         flash('You need to first sign in to logout', 'warning')
         return redirect(url_for('home'))
 
+
+#-----------------------------------------
+# ~~~~~~~~~~~~~~~~~ REMINDER ~~~~~~~~~~~~~
+#-----------------------------------------
 
 @app.route("/reminder", methods=['GET', 'POST'])
 def ticket_reminder_route():
@@ -265,6 +291,10 @@ def ticket_reminder_route():
         return str(resp)
 
 
+#-----------------------------------------
+# ~~~~~~~~~~~~~~TIX CREATION ~~~~~~~~~~~~~
+#-----------------------------------------
+
 @app.route('/ticket_creation', methods=['GET', 'POST'])
 def ticket_creation():
     """
@@ -295,6 +325,10 @@ def ticket_creation():
     return str(resp)
 
 
+#-----------------------------------------
+# ~~~~~~~~~~~~~~ CHAT LOGIN ~~~~~~~~~~~~~~
+#-----------------------------------------
+
 @app.route('/chat_login', methods=['GET', 'POST'])
 def chat_login():
     """"Login form to enter a room."""
@@ -309,6 +343,10 @@ def chat_login():
     return render_template('chat_login.html', form=form)
 
 
+#-----------------------------------------
+# ~~~~~~~~~~~~~~~~~ CHAT ~~~~~~~~~~~~~~~~~
+#-----------------------------------------
+
 @app.route('/chat')
 def chat():
     """Chat room. The user's name and room must be stored in
@@ -321,6 +359,9 @@ def chat():
     return render_template('chat.html', name=name, room=room, form=form)
 
 
+#-----------------------------------------
+# ~~~~~~~~~~~~~ JOINED ~~~~~~~~~~~~~~~~~~
+#-----------------------------------------
 @socketio.on('joined', namespace='/chat')
 def joined(message):
     """
@@ -328,8 +369,15 @@ def joined(message):
     A status message is broadcast to all people in the room."""
     room = session.get('room')
     join_room(room)
-    emit('status', {'msg': session.get('name') + ' has entered the room.'}, room=room)
+    try:
+        emit('status', {'msg': session.get('name') + ' has entered the room.'}, room=room)
+    except TypeError:
+        pass
 
+
+#-----------------------------------------
+# ~~~~~~~~~~~~~~~~~ TEXT ~~~~~~~~~~~~~~~~~
+#-----------------------------------------
 
 @socketio.on('text', namespace='/chat')
 def text(message):
@@ -340,6 +388,10 @@ def text(message):
     name = Markup('<strong style="color: green;">' + session.get('name') + '</strong>')
     emit('message', {'msg': name + ': ' + message['msg']}, room=room)
 
+
+#-----------------------------------------
+# ~~~~~~~~~~~~~~~~~ LEFT ~~~~~~~~~~~~~~~~~
+#-----------------------------------------
 
 @socketio.on('left', namespace='/chat')
 def left(message):
