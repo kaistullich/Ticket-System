@@ -363,12 +363,11 @@ def chat_login():
 def chat():
     """Chat room. The user's name and room must be stored in
             the session."""
-    form = ChatForm()
     name = session.get('name', '')
     room = session.get('room', '')
     if name == '' or room == '':
         return redirect(url_for('chat_login'))
-    return render_template('chat.html', name=name, room=room, form=form)
+    return render_template('chat.html', name=name, room=room)
 
 
 #-----------------------------------------

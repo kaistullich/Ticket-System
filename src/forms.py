@@ -89,18 +89,6 @@ class LoginForm(FlaskForm):
                              )
 
 
-class ChatForm(FlaskForm):
-    username = StringField('Name:',
-                           [InputRequired()],
-                           render_kw={'placeholder': 'Name'}
-                           )
-
-    message = TextAreaField('Message:',
-                            [InputRequired()],
-                            render_kw={'placeholder': 'Message'}
-                            )
-
-
 class ChatLoginForm(FlaskForm):
     name = StringField('Name', [InputRequired()])
     room = SelectField('Room', [InputRequired()], choices=dept_choice())
