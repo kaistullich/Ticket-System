@@ -5,7 +5,7 @@
     <div class="container">
         <div class="col-lg-6 col-lg-offset-3">
             <h4 class="text-center">Check the status of your ticket!</h4><br>
-            <form method="POST" action="{{ url_for('ticket_status') }}" id="register-form" class="form-group" id="box">
+            <form method="POST" action="{{ url_for('ticket_status') }}" id="status-form" class="form-group">
                 {{ form.hidden_tag() }}
                 {{ wtf.form_field(form.tix_num) }}
                 {{ form.submit(class="btn btn-primary") }}
