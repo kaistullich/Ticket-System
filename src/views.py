@@ -156,9 +156,21 @@ def home():
 # ~~~~~~~~~~~TICKET STATUS ~~~~~~~~~~~~~~~
 #-----------------------------------------
 
-@app.route('/ticket_status')
+@app.route('/ticket_status', methods=['GET', 'POST'])
 def ticket_status():
-    return render_template('ticket_status.html')
+
+    form = TicketStatusForm()
+
+    if form.validate_on_submit() and request.method == 'POST':
+        ticket_num = form.tix_num.data
+        ticket = Tickets.query.filter_by(ticketID=ticket_num).first()
+        if ticket is not None:
+            customer = Customers.query.filter_by(custID=ticket.custID).first()
+            return render_template('ticket_status.html', ticket=ticket, customer=customer)
+        else:
+            flash('We do not have that ticket # on file, please double check!', 'warning')
+
+    return render_template('ticket_status_form.html', form=form)
 
 
 #-----------------------------------------
