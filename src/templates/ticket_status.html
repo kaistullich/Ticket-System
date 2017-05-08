@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
 
 {% block body %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/ticket_status.css') }}">
     <div class="container">
         <div class="well">
-            <h2 class="text-center">Information for Ticket # {{ ticket.ticketID }}</h2><hr>
+            <h2 class="text-center">Information for Ticket: #{{ ticket.ticketID }}</h2><hr>
             <h4>Name:</h4><p>{{ customer.cust_f_name }} {{ customer.cust_l_name }}</p>
             <h4>Ticket Severity:</h4><p>{{ ticket.tix_severity }}</p>
             <h4>Date Received:</h4><p>{{ ticket.tix_recv_date }}</p>
