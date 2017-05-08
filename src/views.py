@@ -246,7 +246,7 @@ def logout():
     # If `admin` NOT in the session
     else:
         flash('You need to first sign in to logout', 'warning')
-        return redirect(url_for('home'))
+        return redirect(url_for('login'))
 
 
 #-----------------------------------------
