@@ -1,3 +1,4 @@
+import os
 import flask_restless
 from flask_admin.contrib.sqla import ModelView
 
@@ -123,6 +124,10 @@ class EmployeeLogin(db.Model):
     username = db.Column(db.String(4), primary_key=True)
     password = db.Column(db.String(60))
 
+
+if not os.path.isfile('ticket_system.sqlite'):
+    db.create_all()
+    db.session.commit()
 
 class TicketAdminView(ModelView):
     """
