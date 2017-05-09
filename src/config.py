@@ -55,7 +55,6 @@ app.config['MAIL_USE_TLS'] = config_f['MAIL_USE_TLS']
 app.config['MAIL_USE_SSL'] = config_f['MAIL_USE_SSL']
 app.config['RECAPTCHA_PUBLIC_KEY'] = config_f['cap_pub']
 app.config['RECAPTCHA_PRIVATE_KEY'] = config_f['cap_sec']
-app.testing = True
 
 Bootstrap(app)
 db = SQLAlchemy(app)
