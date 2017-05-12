@@ -48,8 +48,9 @@ while True:
                     # Matching ticket found
                     open_tix_found = True
 
-    # `open_tix_found` changed to `True`
+    # `open_tix_found` changed to `True`GE
     if open_tix_found:
         print('~~~ FOUND OPEN P1 TICKETS ~~~')
         # Start call
         ticket_reminder_call(config_f['dept_num'])
+
