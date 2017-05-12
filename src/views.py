@@ -173,7 +173,7 @@ def ticket_status():
                 if cust_email == customer.cust_email:
                     return render_template('ticket_status.html', ticket=ticket, customer=customer)
                 else:
-                    flash('Wrong name!', 'warning')
+                    flash('We do not have that ticket # on file, please double check', 'warning')
         else:
             flash('We do not have that ticket # on file, please double check!', 'warning')
 
