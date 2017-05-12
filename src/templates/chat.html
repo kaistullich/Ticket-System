@@ -62,21 +62,21 @@
         </script>
     </head>
     <body>
-    <!-- Main container -->
-    <div class="container text-center">
-        <h1>{{ room }}'s Chat Room</h1>
-        <!-- All messages get placed inside of this wrapper box -->
-        <div id="box">
-            <!-- Messages are placed inside of this div -->
-            <div id="new-msg" class="chat msg-wrapper text-left"></div>
-        </div>
-        <label for="text">Type your message below <span class="glyphicon glyphicon-arrow-down"></span></label>
-        <p class="text-left"><span class="glyphicon glyphicon-user"></span> Welcome, <i><b>{{ name }}</b></i> !</p>
-        <!-- Input box, where messages are typed -->
-        <input class="form-control" id="text" size="80" placeholder="Message..."><br><br>
-        <!-- Exit chat room button -->
-        <button class="btn btn-danger align-left" href="#" onclick="leave_room()">Exit Chat Room <span class="glyphicon glyphicon-remove-sign"></span></button>
-    </div> <!-- ./end container -->
+      <!-- Main container -->
+      <div class="container text-center">
+          <h1>{{ room }}'s Chat Room</h1>
+          <!-- All messages get placed inside of this wrapper box -->
+          <div id="box">
+              <!-- Messages are placed inside of this div -->
+              <div id="new-msg" class="chat msg-wrapper text-left"></div>
+          </div>
+          <label for="text">Type your message below <span class="glyphicon glyphicon-arrow-down"></span></label>
+          <p class="text-left"><span class="glyphicon glyphicon-user"></span> Welcome, <i><b>{{ name }}</b></i> !</p>
+          <!-- Input box, where messages are typed -->
+          <input class="form-control" id="text" size="80" placeholder="Message..."><br><br>
+          <!-- Exit chat room button -->
+          <button class="btn btn-danger align-left" href="#" onclick="leave_room()">Exit Chat Room <span class="glyphicon glyphicon-remove-sign"></span></button>
+      </div> <!-- ./end container -->
     </body>
     </html>
 {% endblock %}

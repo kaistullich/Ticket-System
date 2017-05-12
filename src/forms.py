@@ -97,4 +97,5 @@ class ChatLoginForm(FlaskForm):
 
 class TicketStatusForm(FlaskForm):
     tix_num = IntegerField('Ticket Number:', [InputRequired()])
+    cust_f_name = StringField('First Name:', [InputRequired()])
     submit = SubmitField('Submit')
