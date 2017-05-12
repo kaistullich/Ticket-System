@@ -105,9 +105,10 @@ def home():
             tix_num = tickets.ticketID
 
             # Send off both Email / SMS notifications
-            email_notification(cust_f_name, cust_email, tix_num)
+            # email_notification(cust_f_name, cust_email, tix_num)
             try:
-                twilio_sms(formatted_cust_phone, cust_f_name, tix_num)
+                # twilio_sms(formatted_cust_phone, cust_f_name, tix_num)
+                pass
             except TwilioRestException:
                 flash('The phone number provided was unable to be reached', 'warning')
 
@@ -136,9 +137,10 @@ def home():
             tix_num = ticketIDs[-1]
 
             # Send off both Email / SMS notifications
-            email_notification(cust_f_name, cust_email, tix_num)
+            # email_notification(cust_f_name, cust_email, tix_num)
             try:
-                twilio_sms(formatted_cust_phone, cust_f_name, tix_num)
+                # twilio_sms(formatted_cust_phone, cust_f_name, tix_num)
+                pass
             except TwilioRestException:
                 flash('The phone number provided was unable to be reached', 'warning')
 
@@ -162,11 +164,16 @@ def ticket_status():
     form = TicketStatusForm()
 
     if form.validate_on_submit() and request.method == 'POST':
+        cust_email = form.cust_name.data
         ticket_num = form.tix_num.data
+
         ticket = Tickets.query.filter_by(ticketID=ticket_num).first()
         if ticket is not None:
-            customer = Customers.query.filter_by(custID=ticket.custID).first()
-            return render_template('ticket_status.html', ticket=ticket, customer=customer)
+                customer = Customers.query.filter_by(custID=ticket.custID).first()
+                if cust_email == customer.cust_email:
+                    return render_template('ticket_status.html', ticket=ticket, customer=customer)
+                else:
+                    flash('Wrong name!', 'warning')
         else:
             flash('We do not have that ticket # on file, please double check!', 'warning')
 
