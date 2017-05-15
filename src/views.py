@@ -105,10 +105,9 @@ def home():
             tix_num = tickets.ticketID
 
             # Send off both Email / SMS notifications
-            # email_notification(cust_f_name, cust_email, tix_num)
+            email_notification(cust_f_name, cust_email, tix_num)
             try:
-                # twilio_sms(formatted_cust_phone, cust_f_name, tix_num)
-                pass
+                twilio_sms(formatted_cust_phone, cust_f_name, tix_num)
             except TwilioRestException:
                 flash('The phone number provided was unable to be reached', 'warning')
 
@@ -137,10 +136,9 @@ def home():
             tix_num = ticketIDs[-1]
 
             # Send off both Email / SMS notifications
-            # email_notification(cust_f_name, cust_email, tix_num)
+            email_notification(cust_f_name, cust_email, tix_num)
             try:
-                # twilio_sms(formatted_cust_phone, cust_f_name, tix_num)
-                pass
+                twilio_sms(formatted_cust_phone, cust_f_name, tix_num)
             except TwilioRestException:
                 flash('The phone number provided was unable to be reached', 'warning')
 
@@ -368,8 +366,11 @@ def chat_login():
 
 @app.route('/chat')
 def chat():
-    """Chat room. The user's name and room must be stored in
-            the session."""
+    """
+    Chat room. The user's name and room must be stored in
+    the session.
+    """
+
     name = session.get('name', '')
     room = session.get('room', '')
     if name == '' or room == '':
@@ -384,7 +385,9 @@ def chat():
 def joined(message):
     """
     Sent when a certain user enters a room
-    A status message is broadcast to all people in the room."""
+    A status message is broadcast to all people in the room.
+    """
+
     room = session.get('room')
     join_room(room)
     try:
@@ -401,7 +404,9 @@ def joined(message):
 def text(message):
     """
     Sent when a certain user sends a message
-    The message is sent to all people in the room."""
+    The message is sent to all people in the room.
+    """
+
     room = session.get('room')
     name = Markup('<strong style="color: green;">' + session.get('name') + '</strong>')
     emit('message', {'msg': name + ': ' + message['msg']}, room=room)
@@ -415,7 +420,9 @@ def text(message):
 def left(message):
     """
     Sent when a certain user exits the room
-    A status message is broadcast to all people in the room."""
+    A status message is broadcast to all people in the room.
+    """
+
     room = session.get('room')
     leave_room(room)
     emit('status', {'msg': session.get('name') + ' has left the room.'}, room=room)
