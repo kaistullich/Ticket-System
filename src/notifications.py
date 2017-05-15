@@ -26,10 +26,10 @@ def send_async_email(app, msg):
     This function take email from `send_email()` and send it
     asynchronously, using threading. The `@async_` comes
     from `decorators.py`.
-    
+
     :param app: Flask app
     :param msg: The HTML email (`ticket_email.html`)
-    
+
     :return: send the email
     """
     with app.app_context():
@@ -39,8 +39,8 @@ def send_async_email(app, msg):
 def send_email(subject, sender, recipients, html_body):
     """
     This functions actually sends the email
-    
-    :param subject: the subject in the email    
+
+    :param subject: the subject in the email
     :param sender: the email sender
     :param recipients: `list` of email addresses
     :param html_body: the body for HTML, alternative
@@ -48,7 +48,7 @@ def send_email(subject, sender, recipients, html_body):
     """
     msg = Message(subject, sender=sender, recipients=recipients)
     msg.html = html_body
-    send_async_email(app, msg)
+    send_async_email.delay(app, msg)
 
 
 def email_notification(cust_name, cust_email, tix):
@@ -56,12 +56,12 @@ def email_notification(cust_name, cust_email, tix):
     Prepping all the information needed to put the
     email together. It will then pass all the information
     to the `send_email()`
-    
+
     :param cust_name: customer name comes from form submission
     :param cust_email: customer email comes from form submission
     :param tix: this is the ticket num, randomly generated
     """
-    send_email("fitBody: Support Ticket #{tix}!".format(tix=tix),
+    send_email("[Support Ticket #{tix}]!".format(tix=tix),
                config_f['MAIL_USERNAME'],
                [cust_email],
                render_template("ticket_email.html",
@@ -73,14 +73,14 @@ def twilio_sms(cust_to, cust_name, tix_num):
     Sending the SMS regarding customer new ticket
     creation. It will mention their name and the
     ticket ID for their reference.
-    
+
     :param cust_to: phone number, comes from form submission
     :param cust_name: customer name comes from form submission
     :param tix_num: this is the ticket num, randomly generated
     :return: sends the SMS
     """
 
-    message = ("Dear {name}, your ticket #{t_num} was successfully received by fitBody! \n\n\n\
+    message = ("Dear {name}, your ticket #{t_num} was successfully received by Customer Support! \n\n\n\
     *** DO NOT RESPOND, THIS IS AN AUTOMATED MESSAGE ***".format(name=cust_name, t_num=tix_num))
 
     client.messages.create(
@@ -92,12 +92,12 @@ def twilio_sms(cust_to, cust_name, tix_num):
 
 def ticket_reminder_call(dept_number):
     """
-    Initiates the call for any tickets meeting the 
+    Initiates the call for any tickets meeting the
     4 requirements set out in the `/reminder` route
     in views.py.
-    
+
     :param dept_number: the number coming from `config.json`
-    
+
     :return: initiate the reminder call
     """
     call = client.api.account.calls.create(to=dept_number,
@@ -110,11 +110,11 @@ def ticket_reminder_call(dept_number):
 def ticket_creation_call(dept_number):
     """
     Initiates the call for any new ticket submission
-    where the ticket severity == 1. Take a look at the 
+    where the ticket severity == 1. Take a look at the
     `/ticket_creation` route in views.py.
-    
+
     :param dept_number: the number coming from `config.json`
-    
+
     :return: initiate the ticket creation call
     """
     call = client.api.account.calls.create(to=dept_number,
