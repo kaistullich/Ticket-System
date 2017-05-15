@@ -162,7 +162,7 @@ def ticket_status():
     form = TicketStatusForm()
 
     if form.validate_on_submit() and request.method == 'POST':
-        cust_email = form.cust_name.data
+        cust_email = form.cust_email.data
         ticket_num = form.tix_num.data
 
         ticket = Tickets.query.filter_by(ticketID=ticket_num).first()

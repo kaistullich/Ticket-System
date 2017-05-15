@@ -51,5 +51,5 @@ while True:
     # `open_tix_found` changed to `True`
     if open_tix_found:
         print('~~~ FOUND OPEN P1 TICKETS ~~~')
-        # Start call
+        # Send call
         ticket_reminder_call(config_f['dept_num'])
