@@ -21,7 +21,7 @@ client = Client(account_sid, auth_token)
 
 # Decorator is utilized for Asynchronous tasks (found in `decorators.py`)
 @async_
-def send_async_email(msg):
+def send_async_email(msg, app):
     """
     This function take email from `send_email()` and send it
     asynchronously, using threading. The `@async_` comes
@@ -48,7 +48,7 @@ def send_email(subject, sender, recipients, html_body):
     """
     msg = Message(subject, sender=sender, recipients=recipients)
     msg.html = html_body
-    send_async_email(msg)
+    send_async_email(msg, app)
 
 
 def email_notification(cust_name, cust_email, tix):
