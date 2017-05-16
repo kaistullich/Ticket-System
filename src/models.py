@@ -42,10 +42,10 @@ class Tickets(db.Model):
 class Comments(db.Model):
 
     __tablename__ = 'comments'
-
+    commID = db.Column(db.Integer, primary_key=True)
     cust_email = db.Column(db.String(50))
-    ticketID = db.Column(db.Integer, primary_key=True)
-    comm_datetime = db.Column(db.DateTime, default=datetime.datetime.now().strftime('%m-%d-%Y'))
+    ticketID = db.Column(db.Integer)
+    comm_datetime = db.Column(db.String(10))
     comm_text = db.Column(db.Text)
 
 
