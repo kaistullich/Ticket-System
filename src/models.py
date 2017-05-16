@@ -31,6 +31,7 @@ class Tickets(db.Model):
     tix_status = db.Column(db.String(10), nullable=False)
     tix_recv_date = db.Column(db.String(20), nullable=False)
     tix_recv_time = db.Column(db.Integer, nullable=False)
+    tix_comments = db.Column(db.String(500), nullable=True)
 
     # define relationship between `tickets` table and these 2 tables
     department = db.relationship('Departments')
