@@ -2,7 +2,7 @@ import json
 import time
 
 import bcrypt
-from flask import flash, redirect, render_template, request, url_for, session, Markup
+from flask import flash, redirect, render_template, request, url_for, session, Markup, jsonify
 from flask_socketio import emit, join_room, leave_room
 from twilio.base.exceptions import TwilioRestException
 from twilio.twiml.voice_response import VoiceResponse
@@ -163,6 +163,7 @@ def ticket_status():
 
     if form.validate_on_submit() and request.method == 'POST':
         cust_email = form.cust_email.data
+        global ticket_num
         ticket_num = form.tix_num.data
 
         ticket = Tickets.query.filter_by(ticketID=ticket_num).first()
@@ -176,6 +177,22 @@ def ticket_status():
             flash('We do not have that ticket # on file, please double check!', 'warning')
 
     return render_template('ticket_status_form.html', form=form)
+
+
+#-----------------------------------------
+# ~~~~~~~~~~~ Process Comments ~~~~~~~~~~
+#-----------------------------------------
+
+@app.route('/process_comments', methods=['GET', 'POST'])
+def process():
+
+    comment = request.form['comment']
+
+    if comment:
+        newComment = comment[::-1]
+        return jsonify({'newComment': newComment})
+
+    return jsonify({'error': 'Missing data!'})
 
 
 #-----------------------------------------
