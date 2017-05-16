@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 
 {% block body %}
+
+    {% include 'includes/_frameworks.html' %}
+
     <link rel="stylesheet" href="{{ url_for('static', filename='css/ticket_status.css') }}">
     <div class="container">
         <div class="well">
@@ -9,6 +12,30 @@
             <h4>Ticket Severity:</h4><p>{{ ticket.tix_severity }}</p>
             <h4>Date Received:</h4><p>{{ ticket.tix_recv_date }}</p>
             <h4>Status:</h4><p>{{ ticket.tix_status }}</p>
+            <br>
+            <div class="box">
+                <div id="comment-append" class="comment-area text-left"></div>
+                <br>
+                <p class="text-left">Enter comments for tickets below! <span class="glyphicon glyphicon-arrow-down"></span></p>
+                <input class="form-control" id="comment" size="80" placeholder="Message..."><br><br>
+                <input id="submit-btn" type="submit" value="Submit" class="btn btn-success">
+            </div>
         </div>
     </div>
+    <script type="text/javascript" src="{{ url_for('static', filename="js/ticket-comments.js") }}">
+
+        $(document).ready(function () {
+
+            var commentAppend = $('#comment-append');
+            if (commentAppend.html() === '') {
+                commentAppend.append('<i><h4 id="com-placeholder">No comments so far...</h4></i>');
+            }
+
+            $('#submit-btn').click(function() {
+                var comment = $('#comment').val();
+                $('#com-placeholder').remove();
+                commentAppend.append('<div class="msg_bubble"> ' + comment + ' </div')
+            });
+        });
+    </script>
 {% endblock %}
