@@ -8,17 +8,20 @@
     <div class="container">
         <div class="well">
             <h2 class="text-center">Information for Ticket: #{{ ticket.ticketID }}</h2><hr>
-            <h4>Name:</h4><p>{{ customer.cust_f_name }} {{ customer.cust_l_name }}</p>
+            <h4>Name:</h4><p id="first-name">{{ customer.cust_f_name }} {{ customer.cust_l_name }}</p>
             <h4>Ticket Severity:</h4><p>{{ ticket.tix_severity }}</p>
             <h4>Date Received:</h4><p>{{ ticket.tix_recv_date }}</p>
             <h4>Status:</h4><p>{{ ticket.tix_status }}</p>
             <br>
-            <div class="box">
+            <p class="text-left">Enter comments for tickets below! <span class="glyphicon glyphicon-arrow-down"></span></p>
+            <br>
+            <div id="box">
                 <div id="comment-append" class="comment-area text-left"></div>
-                <br>
-                <p class="text-left">Enter comments for tickets below! <span class="glyphicon glyphicon-arrow-down"></span></p>
-                <textarea id="comment" class="form-control" placeholder="Comment..."></textarea>
+            </div>
+            <form action="{{ url_for('process') }}" method="POST">
+                <textarea name="comment" id="comment" class="form-control" placeholder="Comment..."></textarea>
                 <input id="submit-btn" type="submit" value="Submit" class="btn btn-success">
+            </form>
             </div>
         </div>
     </div>
