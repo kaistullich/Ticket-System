@@ -9,7 +9,7 @@ from twilio.twiml.voice_response import VoiceResponse
 
 from src.config import socketio
 from src.forms import *
-from src.models import Tickets, EmployeeLogin, Customers, db, app
+from src.models import Tickets, EmployeeLogin, Customers, Comments, db, app
 from src.notifications import email_notification, twilio_sms, ticket_creation_call
 
 # JSON config file
@@ -169,8 +169,9 @@ def ticket_status():
         ticket = Tickets.query.filter_by(ticketID=ticket_num).first()
         if ticket is not None:
                 customer = Customers.query.filter_by(custID=ticket.custID).first()
+                comments = Comments.query.filter_by(cust_email=customer.cust_email).all()
                 if cust_email == customer.cust_email:
-                    return render_template('ticket_status.html', ticket=ticket, customer=customer)
+                    return render_template('ticket_status.html', ticket=ticket, customer=customer, comments=comments)
                 else:
                     flash('We do not have that ticket # on file, please double check', 'warning')
         else:
