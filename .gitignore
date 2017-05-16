@@ -1,6 +1,7 @@
 # Created by .ignore support plugin (hsz.mobi)
 .idea/
 *__pycache__*
+*.pyc
 src/config_values.json
 ticket_system.sqlite
 venv/
