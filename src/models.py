@@ -1,3 +1,4 @@
+import datetime
 import os
 
 import flask_restless
@@ -36,6 +37,16 @@ class Tickets(db.Model):
     # define relationship between `tickets` table and these 2 tables
     department = db.relationship('Departments')
     customer = db.relationship('Customers')
+
+
+class Comments(db.Model):
+
+    __tablename__ = 'comments'
+
+    cust_email = db.Column(db.String(50))
+    ticketID = db.Column(db.Integer, primary_key=True)
+    comm_datetime = db.Column(db.DateTime, default=datetime.datetime.now().strftime('%m-%d-%Y'))
+    comm_text = db.Column(db.Text)
 
 
 class Departments(db.Model):
