@@ -61,11 +61,12 @@ def email_notification(cust_name, cust_email, tix):
     :param cust_email: customer email comes from form submission
     :param tix: this is the ticket num, randomly generated
     """
-    send_email("[Support Ticket #{tix}]!".format(tix=tix),
+    send_email("[Support Ticket #{tix}]".format(tix=tix),
                config_f['MAIL_USERNAME'],
                [cust_email],
                render_template("ticket_email.html",
                                c_name=cust_name, tix=tix))
+
 
 @async_
 def twilio_sms(cust_to, cust_name, tix_num):
@@ -90,6 +91,7 @@ def twilio_sms(cust_to, cust_name, tix_num):
         )
 
 
+@async_
 def ticket_reminder_call(dept_number):
     """
     Initiates the call for any tickets meeting the
@@ -100,13 +102,15 @@ def ticket_reminder_call(dept_number):
 
     :return: initiate the reminder call
     """
-    call = client.api.account.calls.create(to=dept_number,
-                                           from_=config_f['from_'],
-                                           url=config_f['reminder'],
-                                           )
-    print(call.sid)
+    with app.app_context():
+        call = client.api.account.calls.create(to=dept_number,
+                                               from_=config_f['from_'],
+                                               url=config_f['reminder'],
+                                               )
+        print(call.sid)
 
 
+@async_
 def ticket_creation_call(dept_number):
     """
     Initiates the call for any new ticket submission
@@ -117,8 +121,9 @@ def ticket_creation_call(dept_number):
 
     :return: initiate the ticket creation call
     """
-    call = client.api.account.calls.create(to=dept_number,
-                                           from_=config_f['from_'],
-                                           url=config_f['ticket_creation'],
-                                           )
-    print(call.sid)
+    with app.app_context():
+        call = client.api.account.calls.create(to=dept_number,
+                                               from_=config_f['from_'],
+                                               url=config_f['ticket_creation'],
+                                               )
+        print(call.sid)
