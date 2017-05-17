@@ -23,7 +23,7 @@ $(document).ready(function () {
         // AJAX
         $.ajax({
             type: 'POST',
-            url: 'https://acae7c65.ngrok.io/process_form',
+            url: '/process_form',
             data: JSON.stringify(form_data, null, '\t'),
             contentType: 'application/json;charset=UTF-8',
             success: function (response) {

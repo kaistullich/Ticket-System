@@ -331,7 +331,7 @@ def ticket_reminder_route():
         if t.tix_severity == 'P1':
             if t.tix_status == 'Open':
                 if date_now == t.tix_recv_date:
-                    if time_now - t.tix_recv_time >= 60:
+                    if time_now - t.tix_recv_time >= 1:
                         open_p1_list.append(t.ticketID)
                 elif date_now != t.tix_recv_date:
                     open_p1_list.append(t.ticketID)
@@ -339,7 +339,7 @@ def ticket_reminder_route():
     # If there is only 1 matching P1 ticket
     if len(open_p1_list) == 1:
         resp = VoiceResponse()
-        resp.say('There is 1 open Priority 1 tickets. Please check your queue.'.format(loop=2, voice='man'))
+        resp.say('There is 1 open Priority 1 ticket. Please check your queue.'.format(loop=2, voice='man'))
         return str(resp)
 
     # If there are more than 1 matching P1 tickets
