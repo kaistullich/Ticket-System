@@ -29,7 +29,7 @@ def home():
         - This is the main ticket submission form handled on two 
           routes (`/` & `/home`), the form can be accessed from
           either route.
-    
+
         - On submit of the form all the form data is accessed and 
           stored  inside of the `tickets` table. Further, a new customer 
           is created in the `customers` table. But before
@@ -38,18 +38,18 @@ def home():
           To check if a a customer already exists we will use their email
           address as a unique identifier, given that usually an email address
           can only be assigned to a single person.
-          
+
             - If customer already exists, no new customer entry will occur.
-    
+
         - After entry into both (or one) table, the customer will be 
           contacted via SMS and Email, utilizing Twilio's API for SMS.
-    
+
         - If the customer submitted a P1 ticket, regardless of the 
           department, the agent of that department will receive a call
           letting them know that a new P1 ticket has been created
           along with the `ticketID`. 
             ** See `/ticket_creation` route
-            
+
     :return: - new ticket creation 
              - new customer (if not exists) 
              - send SMS/email to customer 
@@ -232,7 +232,7 @@ def login():
     This route is used to log into the Flask-Admin views.
     The username and password are checked from the `login` table
     to make sure of a positive match.
-    
+
     :return: Upon successful login, re-route to Flask-Admin view
     """
     if 'admin' not in session:
@@ -278,10 +278,10 @@ def login():
 def logout():
     """
     Logout `admin` from the session to re-protect the `/admin` route
-    
+
     If `admin` is not in the session we will redirect to the home route,
     but flash a different message
-    
+
     :return: redirect to home & drop session if allowed
     """
 
@@ -307,7 +307,7 @@ def ticket_reminder_route():
     """
     This route is only accessed when the `api_check.py` process
     is run. It will check the tickets for 4 conditions:
-    
+
         1. If Ticket Severity == P1
         2. If Ticket Status == "Open"
         3. If Ticket Received Date == Today's Date
@@ -315,7 +315,7 @@ def ticket_reminder_route():
             3b. Then append the TicketID to a list
         4. Else If Ticket Received Date NOT = Today's Date
             4a. Then append the TicketID to a list
-            
+
     :return: the response telling user the number of open tickets
     """
 
@@ -363,12 +363,12 @@ def ticket_creation():
     is submitted to the Database. The `tickets` table is then
     queried to check for the `ticketID` through a customers
     email address.
-    
+
     It will check if the customer has submitted a ticket before.
     If a customer HAS submitted a ticket before then it will 
     retrieve the LAST tickets submitted, which is the most
     current one.
-    
+
     :return: response telling agent the P1 `ticketID`
     """
 
