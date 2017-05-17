@@ -18,7 +18,8 @@ $(document).ready(function () {
             $('#comment').val('');
             // If error occurred
             if (data.error) {
-                console.log(data.error);
+                window.scrollTo(0,0);
+                $('#errorAlert').text('An unexpected error occurred, please try again!!').show();
             // Success
             } else {
                 // Append the message entered
