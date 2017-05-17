@@ -1,6 +1,5 @@
 import json
 import time
-import datetime
 
 import bcrypt
 from flask import flash, redirect, render_template, request, url_for, session, Markup, jsonify
