@@ -6,6 +6,7 @@
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/ticket_status.css') }}">
     <div class="container">
+        <div id="errorAlert" class="alert alert-danger" role="alert" style="display:none;"></div>
         <div class="well">
             <h2 class="text-center">Information for Ticket: #{{ ticket.ticketID }}</h2><hr>
             <h4>Name:</h4><p id="first-name">{{ customer.cust_f_name }} {{ customer.cust_l_name }}</p>
