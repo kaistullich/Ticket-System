@@ -16,6 +16,20 @@
             <p class="text-left">Enter comments for tickets below! <span class="glyphicon glyphicon-arrow-down"></span></p>
             <br>
             <div id="box">
+                {% for c in comments %}
+                    {% if c is not none %}
+                        <div id="comment-db" class="comment-area text-left">
+                        <div class="msg_bubble">
+                            <i>
+                                <u>{{ c.comm_datetime }}</u>
+                            </i><br>
+                            {{ c.comm_text }}
+                        </div>
+                        </div>
+                    {% else %}
+                        <div id="comment-append-none" class="comment-area text-left"></div>
+                    {% endif %}
+                {% endfor %}
                 <div id="comment-append" class="comment-area text-left"></div>
             </div>
             <form action="{{ url_for('process') }}" method="POST">
