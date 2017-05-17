@@ -179,15 +179,19 @@ def ticket_status():
 
     if form.validate_on_submit() and request.method == 'POST':
         cust_email = form.cust_email.data
-        global ticket_num
-        ticket_num = form.tix_num.data
-
-        ticket = Tickets.query.filter_by(ticketID=ticket_num).first()
+        # Globalize the ticketID for use in the /process route
+        global comment_tixID
+        comment_tixID = form.tix_num.data
+        # Query table; filter by ticketID entered
+        ticket = Tickets.query.filter_by(ticketID=comment_tixID).first()
         if ticket is not None:
             customer = Customers.query.filter_by(custID=ticket.custID).first()
-            global customer_email
-            customer_email = customer.cust_email
-            comments = Comments.query.filter_by(ticketID=ticket_num).all()
+            # Globalize the cust_email for use in the /process route
+            global comment_cust_email
+            comment_cust_email = customer.cust_email
+            # Query table by the ticketID
+            comments = Comments.query.filter_by(ticketID=comment_tixID).all()
+            # If the cust_email entered == cust_email in table
             if cust_email == customer.cust_email:
                 return render_template('ticket_status.html', ticket=ticket, customer=customer, comments=comments)
             else:
@@ -207,8 +211,8 @@ def process():
     date = time.strftime('%D')
     comment = request.form['comment']
     if comment:
-        newComment = Comments(cust_email=customer_email,
-                              ticketID=ticket_num,
+        newComment = Comments(cust_email=comment_cust_email,
+                              ticketID=comment_tixID,
                               comm_datetime=date,
                               comm_text=comment)
         db.session.add(newComment)
