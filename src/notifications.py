@@ -67,7 +67,7 @@ def email_notification(cust_name, cust_email, tix):
                render_template("ticket_email.html",
                                c_name=cust_name, tix=tix))
 
-
+@async_
 def twilio_sms(cust_to, cust_name, tix_num):
     """
     Sending the SMS regarding customer new ticket
@@ -79,15 +79,15 @@ def twilio_sms(cust_to, cust_name, tix_num):
     :param tix_num: this is the ticket num, randomly generated
     :return: sends the SMS
     """
+    with app.app_context():
+        message = ("Dear {name}, your ticket #{t_num} was successfully received by Customer Support! \n\n\n\
+        *** DO NOT RESPOND, THIS IS AN AUTOMATED MESSAGE ***".format(name=cust_name, t_num=tix_num))
 
-    message = ("Dear {name}, your ticket #{t_num} was successfully received by Customer Support! \n\n\n\
-    *** DO NOT RESPOND, THIS IS AN AUTOMATED MESSAGE ***".format(name=cust_name, t_num=tix_num))
-
-    client.messages.create(
-        to=cust_to,
-        from_=config_f['from_'],
-        body=message
-    )
+        client.messages.create(
+            to=cust_to,
+            from_=config_f['from_'],
+            body=message
+        )
 
 
 def ticket_reminder_call(dept_number):
