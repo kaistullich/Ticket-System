@@ -1,5 +1,6 @@
 import json
 import time
+import datetime
 
 import bcrypt
 from flask import flash, redirect, render_template, request, url_for, session, Markup, jsonify
@@ -17,9 +18,9 @@ with open('src/config_values.json') as f:
     config_f = json.load(f)
 
 
-#-----------------------------------------
+# -----------------------------------------
 # ~~~~~~~~~~~~~~~~~ HOME ~~~~~~~~~~~~~~~~~
-#-----------------------------------------
+# -----------------------------------------
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -100,6 +101,14 @@ def home():
             db.session.add(new_ticket)
             db.session.commit()
 
+            # Insert new comment into `comments` table
+            new_cust_comment = Comments(cust_email=cust_email,
+                                        ticketID=new_ticket.ticketID,
+                                        comm_datetime=tix_recv_date,
+                                        comm_text=tix_msg)
+            db.session.add(new_cust_comment)
+            db.session.commit()
+
             # Query Tickets table to retrieve the ticketID for customer
             tickets = Tickets.query.filter_by(custID=new_cust_ID).first()
             tix_num = tickets.ticketID
@@ -128,6 +137,14 @@ def home():
             db.session.add(new_ticket)
             db.session.commit()
 
+            # Insert new comment into `comments` table
+            exist_cust_comment = Comments(cust_email=cust_email,
+                                          ticketID=new_ticket.ticketID,
+                                          comm_datetime=tix_recv_date,
+                                          comm_text=tix_msg)
+            db.session.add(exist_cust_comment)
+            db.session.commit()
+
             # Query Tickets table to retrieve the ticketID for customer
             tickets = Tickets.query.filter_by(custID=exist_cust_ID).order_by('custID').all()
             # Loop through all tickets
@@ -152,13 +169,12 @@ def home():
     return render_template('home.html', form=form)
 
 
-#-----------------------------------------
+# -----------------------------------------
 # ~~~~~~~~~~~TICKET STATUS ~~~~~~~~~~~~~~~
-#-----------------------------------------
+# -----------------------------------------
 
 @app.route('/ticket_status', methods=['GET', 'POST'])
 def ticket_status():
-
     form = TicketStatusForm()
 
     if form.validate_on_submit() and request.method == 'POST':
@@ -168,37 +184,44 @@ def ticket_status():
 
         ticket = Tickets.query.filter_by(ticketID=ticket_num).first()
         if ticket is not None:
-                customer = Customers.query.filter_by(custID=ticket.custID).first()
-                comments = Comments.query.filter_by(cust_email=customer.cust_email).all()
-                if cust_email == customer.cust_email:
-                    return render_template('ticket_status.html', ticket=ticket, customer=customer, comments=comments)
-                else:
-                    flash('We do not have that ticket # on file, please double check', 'warning')
+            customer = Customers.query.filter_by(custID=ticket.custID).first()
+            global customer_email
+            customer_email = customer.cust_email
+            comments = Comments.query.filter_by(ticketID=ticket_num).all()
+            if cust_email == customer.cust_email:
+                return render_template('ticket_status.html', ticket=ticket, customer=customer, comments=comments)
+            else:
+                flash('We do not have that ticket # on file, please double check', 'warning')
         else:
             flash('We do not have that ticket # on file, please double check!', 'warning')
 
     return render_template('ticket_status_form.html', form=form)
 
 
-#-----------------------------------------
+# -----------------------------------------
 # ~~~~~~~~~~~ Process Comments ~~~~~~~~~~
-#-----------------------------------------
+# -----------------------------------------
 
 @app.route('/process_comments', methods=['GET', 'POST'])
 def process():
-
+    date = time.strftime('%D')
     comment = request.form['comment']
-
     if comment:
-        newComment = comment[::-1]
-        return jsonify({'newComment': newComment})
+        newComment = Comments(cust_email=customer_email,
+                              ticketID=ticket_num,
+                              comm_datetime=date,
+                              comm_text=comment)
+        db.session.add(newComment)
+        db.session.commit()
 
-    return jsonify({'error': 'Missing data!'})
+        return jsonify({'newComment': newComment.comm_text})
+
+    return jsonify({'error': 'SOMETHING WENT WRONG!'})
 
 
-#-----------------------------------------
+# -----------------------------------------
 # ~~~~~~~~~~~~~~~~~ Login ~~~~~~~~~~~~~~~~
-#-----------------------------------------
+# -----------------------------------------
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -244,9 +267,9 @@ def login():
     return render_template('login.html', form=form)
 
 
-#-----------------------------------------
+# -----------------------------------------
 # ~~~~~~~~~~~~~~~~~ Logout ~~~~~~~~~~~~~~~
-#-----------------------------------------
+# -----------------------------------------
 
 @app.route('/logout')
 def logout():
@@ -272,9 +295,9 @@ def logout():
         return redirect(url_for('login'))
 
 
-#-----------------------------------------
+# -----------------------------------------
 # ~~~~~~~~~~~~~~~~~ REMINDER ~~~~~~~~~~~~~
-#-----------------------------------------
+# -----------------------------------------
 
 @app.route("/reminder", methods=['GET', 'POST'])
 def ticket_reminder_route():
@@ -326,9 +349,9 @@ def ticket_reminder_route():
         return str(resp)
 
 
-#-----------------------------------------
+# -----------------------------------------
 # ~~~~~~~~~~~~~~TIX CREATION ~~~~~~~~~~~~~
-#-----------------------------------------
+# -----------------------------------------
 
 @app.route('/ticket_creation', methods=['GET', 'POST'])
 def ticket_creation():
@@ -360,9 +383,9 @@ def ticket_creation():
     return str(resp)
 
 
-#-----------------------------------------
+# -----------------------------------------
 # ~~~~~~~~~~~~~~ CHAT LOGIN ~~~~~~~~~~~~~~
-#-----------------------------------------
+# -----------------------------------------
 
 @app.route('/chat_login', methods=['GET', 'POST'])
 def chat_login():
@@ -378,9 +401,9 @@ def chat_login():
     return render_template('chat_login.html', form=form)
 
 
-#-----------------------------------------
+# -----------------------------------------
 # ~~~~~~~~~~~~~~~~~ CHAT ~~~~~~~~~~~~~~~~~
-#-----------------------------------------
+# -----------------------------------------
 
 @app.route('/chat')
 def chat():
@@ -396,9 +419,9 @@ def chat():
     return render_template('chat.html', name=name, room=room)
 
 
-#-----------------------------------------
+# -----------------------------------------
 # ~~~~~~~~~~~~~ JOINED ~~~~~~~~~~~~~~~~~~
-#-----------------------------------------
+# -----------------------------------------
 @socketio.on('joined', namespace='/chat')
 def joined(message):
     """
@@ -414,9 +437,9 @@ def joined(message):
         pass
 
 
-#-----------------------------------------
+# -----------------------------------------
 # ~~~~~~~~~~~~~~~~~ TEXT ~~~~~~~~~~~~~~~~~
-#-----------------------------------------
+# -----------------------------------------
 
 @socketio.on('text', namespace='/chat')
 def text(message):
@@ -430,9 +453,9 @@ def text(message):
     emit('message', {'msg': name + ': ' + message['msg']}, room=room)
 
 
-#-----------------------------------------
+# -----------------------------------------
 # ~~~~~~~~~~~~~~~~~ LEFT ~~~~~~~~~~~~~~~~~
-#-----------------------------------------
+# -----------------------------------------
 
 @socketio.on('left', namespace='/chat')
 def left(message):
