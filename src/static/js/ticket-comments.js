@@ -2,13 +2,9 @@ $(document).ready(function () {
     // Get Name of the user
     var custName = $('#first-name').text();
 
-    // On submit of form
     $('form').on('submit', function (event) {
-        // Grab `box` ID
         var divBox = document.getElementById("box");
-        // Auto scroll when messages exceed the height of the box
         divBox.scrollTop = divBox.scrollHeight;
-        // Grab input entered in textarea
         var comment = $('#comment').val();
 
         // AJAX request
@@ -18,9 +14,7 @@ $(document).ready(function () {
             },
             type: 'POST',
             url: '/process_comments'
-        // On success of AJAX request
         }).done(function (data) {
-            // Clear the textarea after new comment submitted
             $('#comment').val('');
             // If error occurred
             if (data.error) {
