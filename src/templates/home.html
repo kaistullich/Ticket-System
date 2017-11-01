@@ -28,10 +28,11 @@
                     <p><b><i>General</i></b> - you have a question about fitBody or how to use it's products</p><br>
                     <p><b><i>Degraded</i></b> - fitBody or your configuration is not functioning properly or intermittently</p><br>
                     <p><b><i>Critical Outage</i></b> - fitBody or your configuration is experiencing a complete business outage</p><br>
-                    <div id="message">
+                    <div id="message-wrapper">
                         {{ wtf.form_field(form.message) }}
                     </div>
-                    {{ wtf.form_field(form.recaptcha) }}
+					<!-- TODO: uncomment this when not testing with selenium -->
+{#                    {{ wtf.form_field(form.recaptcha) }}#}
                     {{ form.submit(class="btn btn-primary") }}
                 </form>
                 </div>

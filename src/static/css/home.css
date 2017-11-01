@@ -1,4 +1,4 @@
-#message > .form-group textarea{
+#message-wrapper > .form-group textarea{
     height: 300px;
 }
 

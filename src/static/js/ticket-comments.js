@@ -3,7 +3,7 @@ $(document).ready(function () {
     var custName = $('#first-name').text();
 
     $('form').on('submit', function (event) {
-        var divBox = document.getElementById("box");
+        var divBox = $("#box");
         divBox.scrollTop = divBox.scrollHeight;
         var comment = $('#comment').val();
 
@@ -19,7 +19,7 @@ $(document).ready(function () {
             // If error occurred
             if (data.error) {
                 window.scrollTo(0,0);
-                $('#errorAlert').text('An unexpected error occurred, please try again!!').show();
+                $('#errorAlert').text('An unexpected error occurred, please try again!').show();
             // Success
             } else {
                 // Append the message entered
@@ -28,6 +28,5 @@ $(document).ready(function () {
         }); // END .done()
         // Prevent default form submission event
         event.preventDefault();
-
     }); // END $('form')
 }); // END $.ready()
