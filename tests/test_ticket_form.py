@@ -1,4 +1,5 @@
 import unittest
+import os
 
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
@@ -16,7 +17,7 @@ class FormCompletion(unittest.TestCase):
         # URL to get
         driver.get("http://localhost:5000")
 
-        assert "Support Ticket" in self.driver.title
+        assert "Support Ticket" in driver.title
 
         # grab all input elements
         f_name = driver.find_element_by_id("f_name")
@@ -40,11 +41,14 @@ class FormCompletion(unittest.TestCase):
         p_number.send_keys("6507876895")
         p_number.send_keys(Keys.TAB)
 
-        issue.select_by_value("102")  # there are values from 101 - 110 (102 = maps)
+        issue.select_by_value("106")  # there are values from 101 - 110 (102 = maps)
         severity.select_by_value("P3")  # there are vales from P3 - P1 (P3 = priority)
 
         msg.send_keys("Testing this first selenium test script")
         msg.send_keys(Keys.TAB)
+
+        # save a screenshot of the filled out form
+        driver.save_screenshot(os.path.join(os.getcwd(), 'screenshot.png'))
 
     def tearDown(self):
         self.driver.close()
@@ -52,4 +56,3 @@ class FormCompletion(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-
