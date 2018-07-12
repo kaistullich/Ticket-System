@@ -10,11 +10,14 @@ from twilio.twiml.voice_response import VoiceResponse
 from src.config import socketio
 from src.forms import *
 from src.models import Tickets, EmployeeLogin, Customers, Comments, db, app
-from src.notifications import email_notification, twilio_sms, ticket_creation_call
+from src.notifications import Notifications
 
 # JSON config file
 with open('src/config_values.json') as f:
     config_f = json.load(f)
+
+# initialize a new Notification object
+notification = Notifications(app)
 
 
 # -----------------------------------------
@@ -57,9 +60,11 @@ def home():
     """
 
     form = TicketForm()
-
+    print('hellooo')
     if form.validate_on_submit() and request.method == 'POST':
         # All customer entered data from the form fields
+
+        print('hellooo inside POST')
 
         cust_f_name = form.f_name.data
         cust_l_name = form.l_name.data
@@ -113,9 +118,9 @@ def home():
             tix_num = tickets.ticketID
 
             # Send off both Email / SMS notifications
-            email_notification(cust_f_name, cust_email, tix_num)
+            notification.email_notification(cust_f_name, cust_email, tix_num)
             try:
-                twilio_sms(formatted_cust_phone, cust_f_name, tix_num)
+                notification.twilio_sms(formatted_cust_phone, cust_f_name, tix_num)
             except TwilioRestException:
                 flash('The phone number provided was unable to be reached', 'warning')
 
@@ -152,15 +157,15 @@ def home():
             tix_num = ticketIDs[-1]
 
             # Send off both Email / SMS notifications
-            email_notification(cust_f_name, cust_email, tix_num)
+            notification.email_notification(cust_f_name, cust_email, tix_num)
             try:
-                twilio_sms(formatted_cust_phone, cust_f_name, tix_num)
+                notification.twilio_sms(formatted_cust_phone, cust_f_name, tix_num)
             except TwilioRestException:
                 flash('The phone number provided was unable to be reached', 'warning')
 
         # If the `tix_severity` was selected as P1, call agent.
         if tix_severity == 'P1':
-            ticket_creation_call(config_f['dept_num'])
+            notification.ticket_creation_call(config_f['dept_num'])
 
         flash('Your ticket was successfully submitted!', 'success')
         return redirect(url_for('home'))
